@@ -153,6 +153,55 @@ namespace TASMA
                 currentPassword = password;
                 loginState = true;
             }
+
+            /// <summary>
+            /// 현재 계정에서 로그아웃 합니다.
+            /// </summary>
+            public void Logout()
+            {
+                if (loginState == true)
+                {
+                    currentId = null;
+                    currentPassword = null;
+                    loginState = false;
+                }
+            }
+            
+            /// <summary>
+            /// 새로운 학년을 생성합니다.
+            /// </summary>
+            /// <returns>
+            /// 실행 완료 여부
+            /// </returns>
+            /// <param name="gradeName">학년 이름</param>
+            public bool CreateGrade(string gradeName)
+            {
+                if(loginState == false)
+                {
+                    MessageBox.Show("You have to login first");
+                    return false;
+                }
+
+                var connStr = @"Data Source=" + CurrentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+
+                var conn = new SQLiteConnection(connStr);
+
+                conn.Open();
+                var cmd = new SQLiteCommand(conn);
+                cmd.CommandText = "INSERT INTO GRADE VALUES('" + gradeName + "');";
+
+                try{
+                    cmd.ExecuteNonQuery();
+                }catch(SQLiteException se)
+                {
+                    MessageBox.Show(se.ErrorCode.ToString());
+                    return false;
+                }
+
+                MessageBox.Show("Created Grade successful");
+                return true;
+            }
+            
         }
     }
 }

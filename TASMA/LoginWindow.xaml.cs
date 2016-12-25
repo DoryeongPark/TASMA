@@ -36,7 +36,9 @@ namespace TASMA
             var dao = AdminDAO.GetDAO();
             dao.RegisterAdmin("FelixPark", "");
             dao.LoginAs("FelixPark", "");
-            dao.Test();
+            dao.CreateGrade("1");
+            dao.CreateGrade("2");
+            
         }
     }
 }
