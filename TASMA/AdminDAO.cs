@@ -14,21 +14,44 @@ namespace TASMA
         class AdminDAO
         {
             private static AdminDAO instance = new AdminDAO();
-            
+
+            //현재 로그인된 선생님 계정과 비밀번호 
             private string currentId = null;
             private string currentPassword = null;
-             
+
             public string CurrentId
             {
                 get { return currentId; }
             }
 
+            //선생님 계정 로그인 상태
             private bool loginState = false;
-            
+
             public bool LoginState
             {
                 get { return loginState; }
             }
+
+            //현재 선택된 학년, 반, 학생 번호
+            private string currentGrade = null;
+            private string currentClass = null;
+            private int currentSnum = -1;
+
+            public string CurrentGrade
+            {
+                get { return currentGrade; }
+            }
+
+            public string CurrentClass
+            {
+                get { return currentClass; }
+            }
+
+            public int CurrentSnum
+            {
+                get { return currentSnum; }
+            }
+           
 
             private AdminDAO() { }
 
@@ -185,7 +208,6 @@ namespace TASMA
                 var connStr = @"Data Source=" + CurrentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
 
                 var conn = new SQLiteConnection(connStr);
-
                 conn.Open();
                 var cmd = new SQLiteCommand(conn);
                 cmd.CommandText = "INSERT INTO GRADE VALUES('" + gradeName + "');";
@@ -201,6 +223,49 @@ namespace TASMA
                 MessageBox.Show("Created Grade successful");
                 return true;
             }
+
+            /// <summary>
+            /// 현재 계정에 저장되어 있는 모든 학년 항목을 리스트 형태로 가져옵니다.
+            /// </summary>
+            /// <returns>
+            /// 학년 항목 리스트
+            /// </returns>
+            public List<string> GetGradeList()
+            {
+                if (loginState == false)
+                {
+                    MessageBox.Show("You have to login first");
+                    return null;
+                }
+
+                var connStr = @"Data Source=" + CurrentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+
+                var cmdStr = "SELECT GRADE FROM GRADE;";
+                var cmd = new SQLiteCommand(cmdStr, conn);
+                var reader = cmd.ExecuteReader();
+                var result = new List<string>();
+                
+                while (reader.Read())
+                {
+                    result.Add(reader["GRADE"].ToString());
+                }
+
+                return result;
+            }
+
+            
+            public void SelectGrade(string gradeName)
+            {
+
+                currentGrade = gradeName;       
+            }
+
+            
+            
+            
             
         }
     }

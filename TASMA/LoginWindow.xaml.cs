@@ -37,8 +37,8 @@ namespace TASMA
             dao.RegisterAdmin("FelixPark", "");
             dao.LoginAs("FelixPark", "");
             dao.CreateGrade("1");
-            dao.CreateGrade("2");
             
+            dao.GetGradeList();
         }
     }
 }
