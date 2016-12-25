@@ -6,9 +6,43 @@
         xmlns:local="clr-namespace:TASMA"
         mc:Ignorable="d"
         Height="350" Width="525" WindowStyle="None" AllowsTransparency="True">
-    <Grid>
-
+    <Window.Resources>
+        <Style x:Key="loginButtonStyle">
+            <Setter Property="Button.Background" Value="Indigo" />
+            <Setter Property="Button.Foreground" Value="White" />
+            <Setter Property="Button.Width" Value="200"/>
+            <Setter Property="Button.Height" Value="25" />
+            <Setter Property="Button.FontFamily" Value="Segoe UI" />
+            <Setter Property="Button.Margin" Value="5"/>
+        </Style>
+    </Window.Resources>
+    
+    <Grid Margin="0,0,-0.2,0.4">
+        
         <Button Name="LoginWindow_Exit" Content="Exit" Width="40" Height="25" Background="Transparent" Margin="468,10,10.4,309" BorderThickness="0" Click="ExitRoutine"/>
-        <Button Name="LoginWindow_LoginTest" Content="LoginTest" Width="80" Height="25" Background="Snow" Click="LoginTest"/>
+
+        <Grid Width="210" Height="220">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1.5*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Content="TASMA" FontFamily="Segoe UI" FontSize="25" FontWeight="Bold" Foreground="Indigo"/>
+            </StackPanel>
+            <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Orientation="Vertical">
+                    <Label Content="User ID" FontSize="10" Width="210"/>
+                        <TextBox Width="200" Name="LoginWindow_ID"/>
+                        <Label Content="Password" FontSize="10" Width="210"/>
+                    <TextBox Width="200" Name="LoginWindow_Password"/>
+                </StackPanel>
+            </Grid>
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <!--<Button Style="{StaticResource loginButtonStyle}" Name="LoginWindow_Register" Content="Register" Click="RegisterAdmin"/> -->
+                <Button Style="{StaticResource loginButtonStyle}" Name="LoginWindow_Login" Content="Login" Click="Login"/>
+                <!--<Button Style="{StaticResource loginButtonStyle}" Name="LoginWindow_NewPassword" Content="New Password" Click="ChangePassword" FontSize="10"/> -->
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

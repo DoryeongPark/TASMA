@@ -21,9 +21,13 @@ namespace TASMA
     /// </summary>
     public partial class LoginWindow : Window
     {
+        private AdminDAO adminDAO;
+
         public LoginWindow()
         {
             InitializeComponent();
+            Style = (Style)FindResource(typeof(Window));
+            adminDAO = AdminDAO.GetDAO();
         }
 
         private void ExitRoutine(object sender, EventArgs e)
@@ -31,27 +35,19 @@ namespace TASMA
             Close();
         }
 
-        private void LoginTest(object sender, RoutedEventArgs e)
+        private void RegisterAdmin(object sender, RoutedEventArgs e)
         {
-            var dao = AdminDAO.GetDAO();
-            dao.RegisterAdmin("FelixPark", "");
-            dao.LoginAs("FelixPark", "");
-            dao.CreateGrade("1");
-            dao.CreateGrade("2");
+            
+            
+        }
 
-            dao.SelectGrade("1");
+        private void Login(object sender, RoutedEventArgs e)
+        {
 
-            dao.CreateClass("1");
-            dao.CreateClass("2");
+        }
 
-            dao.MovePrevious();
-
-            dao.SelectGrade("2");
-
-            dao.CreateClass("1");
-            dao.CreateClass("3");
-
-            dao.UpdateClass("3", "8");
+        private void ChangePassword(object sender, RoutedEventArgs e)
+        {
             
         }
     }

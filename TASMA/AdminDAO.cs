@@ -69,18 +69,24 @@ namespace TASMA
             /// </summary>
             /// <param name="id">등록할 ID</param>
             /// <param name="password">비밀번호</param>
-            public void RegisterAdmin(string id, string password)
+            /// <returns>실행성공여부</returns>
+            public bool RegisterAdmin(string id, string password)
             {
+                if (loginState == true)
+                {
+                    MessageBox.Show("You should logout first");
+                    return false;
+                }
+
                 if (new FileInfo(id + ".db").Exists)
                 {
                     MessageBox.Show("ID already exists");
-                    return;
+                    return false;
                 }
 
                 var connStr = @"Data Source=" + id + ".db";
 
                 SQLiteConnection conn = new SQLiteConnection(connStr);
-
                 conn.Open();
                 conn.ChangePassword(password);
                 conn.Close();
@@ -135,8 +141,109 @@ namespace TASMA
                                 + "ON UPDATE CASCADE "
                                 + ");";
                 cmd.ExecuteNonQuery();
-                
+
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS CHECKPASSWORD("
+                                + "CHECKPASSWORD STRING NOT NULL, "
+                                + "PRIMARY KEY(CHECKPASSWORD) "
+                                + ");";
+                cmd.ExecuteNonQuery();
+                               
                 conn.Close();
+                MessageBox.Show("ID is successfully created");
+                return true;
+            }
+
+            /// <summary>
+            /// 계정의 비밀번호를 바꿉니다.
+            /// </summary>
+            /// <param name="id">선생님 계정</param>
+            /// <param name="oldPassword">이전 비밀번호</param>
+            /// <param name="newPassword">새 비밀번호</param>
+            /// <returns>실행성공여부</returns>
+            public bool ChangePassword(string id, string oldPassword, string newPassword)
+            {
+                if(loginState == true)
+                {
+                    MessageBox.Show("You should logout first");
+                    return false;
+                }
+
+                if (!new FileInfo(id + ".db").Exists)
+                {
+                    MessageBox.Show("ID doesn't exist");
+                    return false;
+                }
+
+                var connStr = @"Data Source=" + id + ".db;Password=" + oldPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+
+                var cmd = new SQLiteCommand(conn);
+                cmd.CommandText = "UPDATE CHECKPASSWORD SET CHECKPASSWORD = '1' WHERE CHECKPASSWORD = '0'";
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException se)
+                {
+                    //비밀번호 틀렸을 시의 SQLite 에러코드 알아볼 것
+                    MessageBox.Show("Error code - " + se.ErrorCode.ToString());
+                    return false;
+                }
+
+                conn.ChangePassword(newPassword);
+                conn.Close();
+
+                MessageBox.Show("Password is successfully changed");
+                return true;
+            }
+
+            /// <summary>
+            /// 선생님 계정을 지웁니다.
+            /// </summary>
+            /// <param name="id">선생님 계정</param>
+            /// <param name="password">계정 비밀번호</param>
+            /// <returns>실행성공여부</returns>
+            public bool DeleteAdmin(string id, string password)
+            {
+                if (loginState == true)
+                {
+                    MessageBox.Show("You should logout first");
+                    return false;
+                }
+
+                if (!new FileInfo(id + ".db").Exists)
+                {
+                    MessageBox.Show("ID doesn't exist");
+                    return false;
+                }
+
+                var connStr = @"Data Source=" + id + ".db;Password=" + password + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+                
+                var cmd = new SQLiteCommand(conn);
+                cmd.CommandText = "UPDATE CHECKPASSWORD SET CHECKPASSWORD = '1' WHERE CHECKPASSWORD = '0'";
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException se)
+                {
+                    //비밀번호 틀렸을 시의 SQLite 에러코드 알아볼 것
+                    MessageBox.Show("Error code - " + se.ErrorCode.ToString());
+                    return false;
+                }
+
+                cmd.Dispose();
+                conn.Close();
+                
+                GC.Collect();
+
+                File.Delete(id + ".db");
+
+                MessageBox.Show("ID is successfully removed");
+                return true;
             }
 
             /// <summary>
@@ -170,6 +277,7 @@ namespace TASMA
                     return;
                 }
 
+                cmd.Dispose();
                 conn.Close();
 
                 currentId = id;
@@ -254,6 +362,7 @@ namespace TASMA
                     return false;
                 }
 
+                cmd.Dispose();
                 conn.Close();
 
                 MessageBox.Show("Grade is successfully created");
@@ -289,6 +398,7 @@ namespace TASMA
                     result.Add(reader["GRADE"].ToString());
                 }
 
+                cmd.Dispose();
                 conn.Close();
 
                 return result;
@@ -323,6 +433,7 @@ namespace TASMA
                     return false;
                 }
 
+                cmd.Dispose();
                 conn.Close();
 
                 MessageBox.Show("Grade is successfully deleted");
@@ -359,6 +470,7 @@ namespace TASMA
                     return false;
                 }
 
+                cmd.Dispose();
                 conn.Close();
                 return true;
             }
@@ -415,6 +527,7 @@ namespace TASMA
                     return false;
                 }
 
+                cmd.Dispose();
                 conn.Close();
 
                 MessageBox.Show("Class is successfully created");
@@ -453,6 +566,7 @@ namespace TASMA
                     result.Add(reader["CLASS"].ToString());
                 }
 
+                cmd.Dispose();
                 conn.Close();
 
                 return result;
@@ -493,6 +607,7 @@ namespace TASMA
                     return false;
                 }
 
+                cmd.Dispose();
                 conn.Close();
                 return true;
             }
@@ -532,6 +647,9 @@ namespace TASMA
                     return false;
                 }
 
+                cmd.Dispose();
+                conn.Close();
+
                 return true;
             }
 
@@ -554,7 +672,8 @@ namespace TASMA
                     return false;
                 }
 
-                currentClass = className; 
+                currentClass = className;
+                currentSnum = -1;
                 return true;
             }
 
