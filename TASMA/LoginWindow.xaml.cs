@@ -51,7 +51,7 @@ namespace TASMA
             dao.CreateClass("1");
             dao.CreateClass("3");
 
-            dao.DeleteClass("3");
+            dao.UpdateClass("3", "8");
             
         }
     }

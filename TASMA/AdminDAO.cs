@@ -495,7 +495,68 @@ namespace TASMA
 
                 conn.Close();
                 return true;
-           }
+            }
+
+            /// <summary>
+            /// 반 이름을 수정합니다.
+            /// </summary>
+            /// <param name="oldClassName">수정할 반 이름</param>
+            /// <param name="newClassName">수정한 반 이름</param>
+            /// <returns>실행성공여부</returns>
+            public bool UpdateClass(string oldClassName, string newClassName)
+            {
+                if(loginState == false)
+                {
+                    MessageBox.Show("You should login first");
+                    return false;
+                }
+
+                if(currentGrade == null)
+                {
+                    MessageBox.Show("You should select grade first");
+                    return false;
+                }
+
+                var connStr = @"Data Source=" + CurrentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+                var cmd = new SQLiteCommand(conn);
+                cmd.CommandText = "UPDATE CLASS SET CLASS = '" + newClassName + "' WHERE CLASS = '" + oldClassName + "';";
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException se)
+                {
+                    MessageBox.Show("Error code - " + se.ErrorCode.ToString());
+                    return false;
+                }
+
+                return true;
+            }
+
+            /// <summary>
+            /// 반을 선택합니다.
+            /// </summary>
+            /// <param name="className"></param>
+            /// <returns>실행성공여부</returns>
+            public bool SelectClass(string className)
+            {
+                if(loginState == false)
+                {
+                    MessageBox.Show("You should login first");
+                    return false;    
+                }
+
+                if(currentGrade == null)
+                {
+                    MessageBox.Show("You should select grade first");
+                    return false;
+                }
+
+                currentClass = className; 
+                return true;
+            }
 
         }
     }
