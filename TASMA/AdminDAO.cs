@@ -313,6 +313,42 @@ namespace TASMA
                 return true;
             }
 
+            /// <summary>
+            /// 현재 학년의 클래스 목록을 불러옵니다.
+            /// </summary>
+            /// <returns></returns>
+            public List<string> GetClassList()
+            {
+                if(loginState == false)
+                {
+                    MessageBox.Show("You should login first");
+                    return null;
+                }
+
+                if(currentGrade == null)
+                {
+                    MessageBox.Show("You should select grade first");
+                    return null;
+                }
+
+                var connStr = @"Data Source=" + CurrentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+
+                var cmdStr = "SELECT CLASS FROM CLASS WHERE GRADE = '" + currentGrade + "';";
+                var cmd = new SQLiteCommand(cmdStr, conn);
+                var reader = cmd.ExecuteReader();
+                var result = new List<string>();
+
+                while (reader.Read())
+                {
+                    result.Add(reader["CLASS"].ToString());
+                }
+
+                return result;
+
+            }
         }
     }
 }
