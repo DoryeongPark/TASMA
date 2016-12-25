@@ -16,6 +16,7 @@ namespace TASMA
             private static AdminDAO instance = new AdminDAO();
             
             private string currentId = null;
+            private string currentPassword = null;
              
             public string CurrentId
             {
@@ -47,42 +48,71 @@ namespace TASMA
             /// <param name="password">비밀번호</param>
             public void RegisterAdmin(string id, string password)
             {
-                if (new FileInfo(id + ".sqlite").Exists)
+                if (new FileInfo(id + ".db").Exists)
                 {
                     MessageBox.Show("ID already exists");
                     return;
                 }
 
-                var connStr = @"Data Source=" + id + ".sqlite";
+                var connStr = @"Data Source=" + id + ".db";
 
                 SQLiteConnection conn = new SQLiteConnection(connStr);
 
                 conn.Open();
                 conn.ChangePassword(password);
                 conn.Close();
-            
-                connStr = @"Data Source=" + id + ".sqlite;Password=" + password + ";";
+
+                connStr = @"Data Source=" + id + ".db;Password=" + password + ";Foreign Keys=True;";
                 conn = new SQLiteConnection(connStr);
                 conn.Open();
 
                 var cmd = new SQLiteCommand(conn);
-                cmd.CommandText = "CREATE TABLE IF NOT EXISTS STUDENTS("
-                                + "GRADE STRING NOT NULL,"
-                                + "CLASS STRING NOT NULL,"
-                                + "SNUM INTEGER NOT NULL,"
-                                + "NAME STRING NOT NULL, "
-                                + "PRIMARY KEY(GRADE, CLASS, SNUM)"
-                                + ");";
 
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS GRADE("
+                                + "GRADE STRING NOT NULL, "
+                                + "PRIMARY KEY(GRADE)"
+                                + ");";
                 try
                 {
                     cmd.ExecuteNonQuery();
-                }catch(SQLiteException se)
+                } catch (SQLiteException se)
                 {
-                    //비밀번호 틀렸을 시의 SQLite 에러코드 알아볼 것
                     se.ErrorCode.ToString();
                 }
 
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS CLASS("
+                                + "GRADE STRING NOT NULL, "
+                                + "CLASS STRING NOT NULL, "
+                                + "PRIMARY KEY(GRADE, CLASS),"
+                                + "FOREIGN KEY(GRADE) REFERENCES GRADE(GRADE) "
+                                + "ON DELETE CASCADE "
+                                + "ON UPDATE CASCADE "
+                                + ");";
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS STUDENT("
+                                + "GRADE STRING NOT NULL, "
+                                + "CLASS STRING NOT NULL, "
+                                + "SNUM INTEGER NOT NULL, "
+                                + "SNAME STRING NOT NULL, "
+                                + "PRIMARY KEY(GRADE, CLASS, SNUM), "
+                                + "FOREIGN KEY(GRADE, CLASS) REFERENCES CLASS(GRADE, CLASS) "
+                                + "ON DELETE CASCADE "
+                                + "ON UPDATE CASCADE "
+                                + ");";
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS SUBJECT("
+                                + "GRADE STRING NOT NULL, "
+                                + "CLASS STRING NOT NULL, "
+                                + "SUBJECT STRING NOT NULL, "
+                                + "PRIMARY KEY(GRADE, CLASS, SUBJECT), "
+                                + "FOREIGN KEY(GRADE, CLASS) REFERENCES CLASS(GRADE, CLASS) "
+                                + "ON DELETE CASCADE "
+                                + "ON UPDATE CASCADE "
+                                + ");";
+                cmd.ExecuteNonQuery();
+                
                 conn.Close();
             }
 
@@ -93,25 +123,26 @@ namespace TASMA
             /// <param name="password">비밀번호</param>
             public void LoginAs(string id, string password)
             {
-                if (!new FileInfo(id + ".sqlite").Exists)
+                if (!new FileInfo(id + ".db").Exists)
                 {
                     MessageBox.Show("ID is not registered");
                     return;
                 }
 
-                var connStr = @"Data Source=" + id + ".db;Password=" + password + ";";
+                var connStr = @"Data Source=" + id + ".db;Password=" + password + ";Foreign Keys=True;";
 
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
 
                 var cmd = new SQLiteCommand(conn);
-
+                cmd.CommandText = "SELECT SQLITE_VERSION();";
                 try
                 {
                     cmd.ExecuteNonQuery();
                 }
                 catch (SQLiteException se)
                 {
+                    //비밀번호 틀렸을 시의 SQLite 에러코드 알아볼 것
                     MessageBox.Show(se.ErrorCode.ToString());
                     return;
                 }
@@ -119,6 +150,7 @@ namespace TASMA
                 conn.Close();
 
                 currentId = id;
+                currentPassword = password;
                 loginState = true;
             }
         }

@@ -34,7 +34,9 @@ namespace TASMA
         private void LoginTest(object sender, RoutedEventArgs e)
         {
             var dao = AdminDAO.GetDAO();
-            dao.RegisterAdmin("FelixPark", "qkrehfud22");
+            dao.RegisterAdmin("FelixPark", "");
+            dao.LoginAs("FelixPark", "");
+            dao.Test();
         }
     }
 }
