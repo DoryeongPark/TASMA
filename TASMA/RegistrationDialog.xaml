@@ -1,0 +1,67 @@
+﻿<Window x:Class="TASMA.RegistrationDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TASMA"
+        mc:Ignorable="d"
+        Title="RegistrationDialog" Height="170.8" Width="300" WindowStyle="None" AllowsTransparency="True">
+    <Window.Resources>
+        <Style x:Key="registrationButtonStyle">
+            <Setter Property="Button.Background" Value="Indigo" />
+            <Setter Property="Button.Foreground" Value="White" />
+            <Setter Property="Button.FontSize" Value="10"/>
+            <Setter Property="Button.Width" Value="200"/>
+            <Setter Property="Button.Height" Value="25" />
+            <Setter Property="Button.FontFamily" Value="Segoe UI" />
+            <Setter Property="Button.Margin" Value="5"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1.5*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="0.5*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="1">
+            <StackPanel VerticalAlignment="Bottom">
+                <Label Content="ID Registration" FontFamily="Segoe UI" FontSize="15" FontWeight="Bold" Foreground="Indigo"/>
+            </StackPanel>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="5.5*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="1">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right">
+                    <Label Content="Username:" FontSize="8" FontWeight="Bold" Height="20"/>
+                    <Label Content="Password:" FontSize="8" FontWeight="Bold" Height="20"/>
+                    <Label Content="Confirm Password:" FontSize="8" FontWeight="Bold" Height="20"/>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Column="2">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left">
+                    <TextBox Name="RegistrationDialog_Username" FontSize="8" FontWeight="Bold" MaxLength="15" Width="115" Height="18" Margin="0,2,0,0"/>
+                    <PasswordBox Name="RegistrationDialog_Password" FontSize="8" FontWeight="Bold" MaxLength="15" Width="115" Height="18" Margin="0,2,0,0"/>
+                    <PasswordBox Name="RegistrationDialog_ConfirmPassword" FontSize="8" FontWeight="Bold" MaxLength="15" Width="115" Height="18" Margin="0,2,0,0"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="2">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center">
+                <Button Name="RegistrationDialog_OK" Content="OK" Style="{StaticResource registrationButtonStyle}" Width="92" Height="18"/>
+                <Button Name="RegistrationDialog_Cancel" Content="Cancel" Style="{StaticResource registrationButtonStyle}" Width="92" Height="18"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

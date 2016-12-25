@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TASMA"
         mc:Ignorable="d"
-        Height="350" Width="525" WindowStyle="None" AllowsTransparency="True">
+        Height="260" Width="250" WindowStyle="None" AllowsTransparency="True" MouseDown="OnMouseDown">
     <Window.Resources>
+        <Image x:Key="loginWindowCloseButton" Source="/Resources/LoginWindow_CloseButton.png" Width="15" Height="15"/>
         <Style x:Key="loginButtonStyle">
             <Setter Property="Button.Background" Value="Indigo" />
             <Setter Property="Button.Foreground" Value="White" />
@@ -16,33 +17,51 @@
             <Setter Property="Button.Margin" Value="5"/>
         </Style>
     </Window.Resources>
-    
-    <Grid Margin="0,0,-0.2,0.4">
-        
-        <Button Name="LoginWindow_Exit" Content="Exit" Width="40" Height="25" Background="Transparent" Margin="468,10,10.4,309" BorderThickness="0" Click="ExitRoutine"/>
 
-        <Grid Width="210" Height="220">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1.5*"/>
-                <RowDefinition Height="1*"/>
-            </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Label Content="TASMA" FontFamily="Segoe UI" FontSize="25" FontWeight="Bold" Foreground="Indigo"/>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="9*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal">
+                <Button x:Name="LoginWindow_Exit" Content="{StaticResource loginWindowCloseButton}" Width="20" Height="20" Background="Transparent" BorderThickness="0" Click="ExitRoutine"/>
             </StackPanel>
-            <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Orientation="Vertical">
-                    <Label Content="User ID" FontSize="10" Width="210"/>
-                        <TextBox Width="200" Name="LoginWindow_ID"/>
-                        <Label Content="Password" FontSize="10" Width="210"/>
-                    <TextBox Width="200" Name="LoginWindow_Password"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid Width="210" Height="220">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1.5*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Label Content="TASMA" FontFamily="Segoe UI" FontSize="25" FontWeight="Bold" Foreground="Indigo"/>
+                </StackPanel>
+                <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Orientation="Vertical">
+                        <Label Content="Username" FontSize="10" Width="210"/>
+                            <TextBox Width="200" Name="LoginWindow_ID"/>
+                            <Label Content="Password" FontSize="10" Width="210"/>
+                        <TextBox Width="200" Name="LoginWindow_Password"/>
+                    </StackPanel>
+                </Grid>
+                <StackPanel Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <Button Style="{StaticResource loginButtonStyle}" Name="LoginWindow_Login" Content="Login" Click="Login"/>
+                
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,8,0,0">
+                    <TextBlock>
+                        <Hyperlink Click="RegisterAdmin" FontSize="10">Create New User</Hyperlink>
+                    </TextBlock>
+                        <TextBlock Margin="5, 0, 5, 0">
+                            <Hyperlink FontSize="10" TextDecorations="{x:Null}" >|</Hyperlink>
+                        </TextBlock>
+                    <TextBlock>
+                        <Hyperlink Click="RegisterAdmin" FontSize="10">Change Password </Hyperlink>
+                    </TextBlock>
+                    </StackPanel>
                 </StackPanel>
             </Grid>
-            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
-                <!--<Button Style="{StaticResource loginButtonStyle}" Name="LoginWindow_Register" Content="Register" Click="RegisterAdmin"/> -->
-                <Button Style="{StaticResource loginButtonStyle}" Name="LoginWindow_Login" Content="Login" Click="Login"/>
-                <!--<Button Style="{StaticResource loginButtonStyle}" Name="LoginWindow_NewPassword" Content="New Password" Click="ChangePassword" FontSize="10"/> -->
-            </StackPanel>
         </Grid>
     </Grid>
 </Window>

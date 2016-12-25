@@ -30,25 +30,29 @@ namespace TASMA
             adminDAO = AdminDAO.GetDAO();
         }
 
+        private void OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
+
         private void ExitRoutine(object sender, EventArgs e)
         {
             Close();
         }
 
-        private void RegisterAdmin(object sender, RoutedEventArgs e)
-        {
-            
-            
-        }
-
         private void Login(object sender, RoutedEventArgs e)
         {
-
+            MessageBox.Show("Login");
         }
 
         private void ChangePassword(object sender, RoutedEventArgs e)
         {
-            
+            MessageBox.Show("ChangePassword");
+        }
+
+        private void RegisterAdmin(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("RegisterAdmin");
         }
     }
 }

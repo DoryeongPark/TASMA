@@ -11,7 +11,7 @@ namespace TASMA
 {
     namespace Database
     {
-        class AdminDAO
+        public class AdminDAO
         {
             private static AdminDAO instance = new AdminDAO();
 
