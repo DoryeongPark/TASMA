@@ -193,7 +193,7 @@ namespace TASMA
             /// <summary>
             /// 현재 선택 상태를 한 단계 뒤로 돌립니다.(학생 -> 반, 반 -> 학년, 학년 -> 초기 상태)
             /// </summary>
-            /// <returns></returns>
+            /// <returns>실행성공여부</returns>
             public bool MovePrevious()
             {
                 if(loginState == false)
@@ -228,7 +228,7 @@ namespace TASMA
             /// 새로운 학년을 생성합니다.
             /// </summary>
             /// <returns>
-            /// 실행 성공 여부
+            /// 실행성공여부
             /// </returns>
             /// <param name="gradeName">학년 이름</param>
             public bool CreateGrade(string gradeName)
@@ -298,7 +298,7 @@ namespace TASMA
             /// 학년을 제거합니다.
             /// </summary>
             /// <param name="gradeName">제거할 학년</param>
-            /// <returns>실행 성공 여부</returns>
+            /// <returns>실행성공여부</returns>
             public bool DeleteGrade(string gradeName)
             {
                 if (loginState == false)
@@ -384,7 +384,7 @@ namespace TASMA
             /// 새로운 반을 생성합니다.
             /// </summary>
             /// <param name="className"></param>
-            /// <returns></returns>
+            /// <returns>실행성공여부</returns>
             public bool CreateClass(string className)
             {
                 if(loginState == false)
@@ -400,7 +400,6 @@ namespace TASMA
                 }
 
                 var connStr = @"Data Source=" + CurrentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
-
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
                 var cmd = new SQLiteCommand(conn);
@@ -412,7 +411,7 @@ namespace TASMA
                 }
                 catch (SQLiteException se)
                 {
-                    MessageBox.Show(se.ErrorCode.ToString());
+                    MessageBox.Show("Error code - " + se.ErrorCode.ToString());
                     return false;
                 }
 
@@ -425,7 +424,7 @@ namespace TASMA
             /// <summary>
             /// 현재 학년의 클래스 목록을 불러옵니다.
             /// </summary>
-            /// <returns></returns>
+            /// <returns>실행성공여부</returns>
             public List<string> GetClassList()
             {
                 if(loginState == false)
@@ -441,7 +440,6 @@ namespace TASMA
                 }
 
                 var connStr = @"Data Source=" + CurrentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
-
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
 
@@ -459,6 +457,45 @@ namespace TASMA
 
                 return result;
             }
+
+            /// <summary>
+            /// 반을 제거합니다. 
+            /// </summary>
+            /// <param name="className">반 이름</param>
+            /// <returns>실행성공여부</returns>
+            public bool DeleteClass(string className)
+            {
+                if(loginState == false)
+                {
+                    MessageBox.Show("You should login first");
+                    return false;
+                }
+
+                if(currentGrade == null)
+                {
+                    MessageBox.Show("You should select grade first");
+                    return false;
+                }
+
+                var connStr = @"Data Source=" + CurrentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+                var cmd = new SQLiteCommand(conn);
+                cmd.CommandText = "DELETE FROM CLASS WHERE CLASS = '" + className + "';";
+
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException se)
+                {
+                    MessageBox.Show("Error code - " + se.ErrorCode.ToString());
+                    return false;
+                }
+
+                conn.Close();
+                return true;
+           }
 
         }
     }
