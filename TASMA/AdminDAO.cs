@@ -189,12 +189,46 @@ namespace TASMA
                     loginState = false;
                 }
             }
+
+            /// <summary>
+            /// 현재 선택 상태를 한 단계 뒤로 돌립니다.(학생 -> 반, 반 -> 학년, 학년 -> 초기 상태)
+            /// </summary>
+            /// <returns></returns>
+            public bool MovePrevious()
+            {
+                if(loginState == false)
+                {
+                    MessageBox.Show("You should login first");
+                    return false;
+                }
+
+                if (currentSnum != -1)
+                {
+                    currentSnum = -1;
+                    MessageBox.Show("Return to student selection display");
+                    return true;
+
+                } else if (currentSnum == -1 && currentClass != null)
+                {
+                    currentClass = null;
+                    MessageBox.Show("Return to class selection display");
+                    return true;
+
+                } else if (currentSnum == -1 && currentClass == null && currentGrade != null)
+                {
+                    currentGrade = null;
+                    MessageBox.Show("Return to grade selection display");
+                    return true;
+                }
+
+                return false;
+            }
             
             /// <summary>
             /// 새로운 학년을 생성합니다.
             /// </summary>
             /// <returns>
-            /// 실행 완료 여부
+            /// 실행 성공 여부
             /// </returns>
             /// <param name="gradeName">학년 이름</param>
             public bool CreateGrade(string gradeName)
@@ -205,7 +239,7 @@ namespace TASMA
                     return false;
                 }
 
-                var connStr = @"Data Source=" + CurrentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
 
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
@@ -219,6 +253,8 @@ namespace TASMA
                     MessageBox.Show(se.ErrorCode.ToString());
                     return false;
                 }
+
+                conn.Close();
 
                 MessageBox.Show("Grade is successfully created");
                 return true;
@@ -238,7 +274,7 @@ namespace TASMA
                     return null;
                 }
 
-                var connStr = @"Data Source=" + CurrentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
 
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
@@ -253,9 +289,16 @@ namespace TASMA
                     result.Add(reader["GRADE"].ToString());
                 }
 
+                conn.Close();
+
                 return result;
             }
 
+            /// <summary>
+            /// 학년을 제거합니다.
+            /// </summary>
+            /// <param name="gradeName">제거할 학년</param>
+            /// <returns>실행 성공 여부</returns>
             public bool DeleteGrade(string gradeName)
             {
                 if (loginState == false)
@@ -264,7 +307,7 @@ namespace TASMA
                     return false;
                 }
 
-                var connStr = @"Data Source=" + CurrentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
                 var cmd = new SQLiteCommand(conn);
@@ -280,7 +323,43 @@ namespace TASMA
                     return false;
                 }
 
+                conn.Close();
+
                 MessageBox.Show("Grade is successfully deleted");
+                return true;
+            }
+
+            /// <summary>
+            /// 학년의 이름을 수정합니다.
+            /// </summary>
+            /// <param name="oldGradeName">수정할 학년</param>
+            /// <param name="newGradeName">수정한 학년</param>
+            /// <returns></returns>
+            public bool UpdateGrade(string oldGradeName, string newGradeName)
+            {
+                if(loginState == false)
+                {
+                    MessageBox.Show("You should login first");
+                    return false;
+                }
+
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+                var cmd = new SQLiteCommand(conn);
+                cmd.CommandText = "UPDATE GRADE SET GRADE = '" + newGradeName +"' WHERE GRADE = '" + oldGradeName + "';";
+
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException se)
+                {
+                    MessageBox.Show("Error code - " + se.ErrorCode.ToString());
+                    return false;
+                }
+
+                conn.Close();
                 return true;
             }
 
@@ -337,6 +416,8 @@ namespace TASMA
                     return false;
                 }
 
+                conn.Close();
+
                 MessageBox.Show("Class is successfully created");
                 return true;
             }
@@ -374,11 +455,11 @@ namespace TASMA
                     result.Add(reader["CLASS"].ToString());
                 }
 
-                return result;
+                conn.Close();
 
+                return result;
             }
 
-             
         }
     }
 }

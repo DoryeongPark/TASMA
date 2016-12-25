@@ -43,7 +43,7 @@ namespace TASMA
             dao.CreateClass("1");
             dao.CreateClass("2");
 
-            dao.DeleteGrade("1");
+            dao.UpdateGrade("1", "5");
         }
     }
 }
