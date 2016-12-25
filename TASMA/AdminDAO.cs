@@ -256,6 +256,34 @@ namespace TASMA
                 return result;
             }
 
+            public bool DeleteGrade(string gradeName)
+            {
+                if (loginState == false)
+                {
+                    MessageBox.Show("You should login first");
+                    return false;
+                }
+
+                var connStr = @"Data Source=" + CurrentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+                var cmd = new SQLiteCommand(conn);
+                cmd.CommandText = "DELETE FROM GRADE WHERE GRADE = '" + gradeName + "';";
+
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException se)
+                {
+                    MessageBox.Show("Error code - " + se.ErrorCode.ToString());
+                    return false;
+                }
+
+                MessageBox.Show("Grade is successfully deleted");
+                return true;
+            }
+
             /// <summary>
             /// 학년을 선택합니다.
             /// </summary>
@@ -349,6 +377,8 @@ namespace TASMA
                 return result;
 
             }
+
+             
         }
     }
 }

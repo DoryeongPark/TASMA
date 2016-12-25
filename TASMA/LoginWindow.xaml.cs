@@ -41,6 +41,9 @@ namespace TASMA
 
             dao.SelectGrade("1");
             dao.CreateClass("1");
+            dao.CreateClass("2");
+
+            dao.DeleteGrade("1");
         }
     }
 }
