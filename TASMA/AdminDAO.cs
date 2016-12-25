@@ -220,7 +220,7 @@ namespace TASMA
                     return false;
                 }
 
-                MessageBox.Show("Created Grade successful");
+                MessageBox.Show("Grade is successfully created");
                 return true;
             }
 
@@ -234,7 +234,7 @@ namespace TASMA
             {
                 if (loginState == false)
                 {
-                    MessageBox.Show("You have to login first");
+                    MessageBox.Show("You should login first");
                     return null;
                 }
 
@@ -256,17 +256,63 @@ namespace TASMA
                 return result;
             }
 
-            
+            /// <summary>
+            /// 학년을 선택합니다.
+            /// </summary>
+            /// <param name="gradeName"></param>
             public void SelectGrade(string gradeName)
             {
+                if(loginState == false)
+                {
+                    MessageBox.Show("You should login first");
+                    return;
+;                }
 
-                currentGrade = gradeName;       
+                currentGrade = gradeName;
+                currentClass = null;
+                currentSnum = -1;       
             }
 
-            
-            
-            
-            
+            /// <summary>
+            /// 새로운 반을 생성합니다.
+            /// </summary>
+            /// <param name="className"></param>
+            /// <returns></returns>
+            public bool CreateClass(string className)
+            {
+                if(loginState == false)
+                {
+                    MessageBox.Show("You should login first");
+                    return false;
+                }
+
+                if(currentGrade == null)
+                {
+                    MessageBox.Show("You should select grade first");
+                    return false;
+                }
+
+                var connStr = @"Data Source=" + CurrentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+                var cmd = new SQLiteCommand(conn);
+                cmd.CommandText = "INSERT INTO CLASS VALUES('" + currentGrade + "', '" + className + "');";
+
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException se)
+                {
+                    MessageBox.Show(se.ErrorCode.ToString());
+                    return false;
+                }
+
+                MessageBox.Show("Class is successfully created");
+                return true;
+            }
+
         }
     }
 }
