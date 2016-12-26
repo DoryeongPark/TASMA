@@ -65,6 +65,69 @@ namespace TASMA
             }
 
             /// <summary>
+            /// 로그인 상태인지 체크합니다.
+            /// </summary>
+            /// <returns>로그인여부</returns>
+            private bool CheckLoginState()
+            {
+                if (loginState == false)
+                {
+                    MessageBox.Show("You should login first");
+                    return false;
+                }
+
+                return true;
+            }
+
+            /// <summary>
+            /// 학년을 선택한 상태인지 체크합니다.
+            /// </summary>
+            /// <returns>선택여부</returns>
+            private bool CheckGradeState()
+            {
+                if (loginState == false)
+                {
+                    MessageBox.Show("You should login first");
+                    return false;
+                }
+
+                if (currentGrade == null)
+                {
+                    MessageBox.Show("You should select grade first");
+                    return false;
+                }
+
+                return true;
+            }
+
+            /// <summary>
+            /// 반을 선택한 상태인지 체크합니다.
+            /// </summary>
+            /// <returns>선택여부</returns>
+            private bool CheckClassState()
+            {
+                if (loginState == false)
+                {
+                    MessageBox.Show("You should login first");
+                    return false;
+                }
+
+                if (currentGrade == null)
+                {
+                    MessageBox.Show("You should select grade first");
+                    return false;
+                }
+
+                if (currentClass == null)
+                {
+                    MessageBox.Show("You should select class first");
+                    return false;
+                }
+
+                return true;
+            }
+
+            /// <summary>
             /// 선생님의 새로운 계정을 등록합니다.
             /// </summary>
             /// <param name="id">등록할 ID</param>
@@ -304,11 +367,8 @@ namespace TASMA
             /// <returns>실행성공여부</returns>
             public bool MovePrevious()
             {
-                if(loginState == false)
-                {
-                    MessageBox.Show("You should login first");
+                if (!CheckLoginState())
                     return false;
-                }
 
                 if (currentSnum != -1)
                 {
@@ -341,11 +401,8 @@ namespace TASMA
             /// <param name="gradeName">학년 이름</param>
             public bool CreateGrade(string gradeName)
             {
-                if(loginState == false)
-                {
-                    MessageBox.Show("You have to login first");
+                if (!CheckLoginState())
                     return false;
-                }
 
                 var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
 
@@ -377,11 +434,8 @@ namespace TASMA
             /// </returns>
             public List<string> GetGradeList()
             {
-                if (loginState == false)
-                {
-                    MessageBox.Show("You should login first");
+                if (!CheckLoginState())
                     return null;
-                }
 
                 var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
 
@@ -411,11 +465,8 @@ namespace TASMA
             /// <returns>실행성공여부</returns>
             public bool DeleteGrade(string gradeName)
             {
-                if (loginState == false)
-                {
-                    MessageBox.Show("You should login first");
+                if (!CheckLoginState())
                     return false;
-                }
 
                 var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
@@ -445,14 +496,11 @@ namespace TASMA
             /// </summary>
             /// <param name="oldGradeName">수정할 학년</param>
             /// <param name="newGradeName">수정한 학년</param>
-            /// <returns></returns>
+            /// <returns>실행성공여부</returns>
             public bool UpdateGrade(string oldGradeName, string newGradeName)
             {
-                if(loginState == false)
-                {
-                    MessageBox.Show("You should login first");
+                if (!CheckLoginState())
                     return false;
-                }
 
                 var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
@@ -478,18 +526,18 @@ namespace TASMA
             /// <summary>
             /// 학년을 선택합니다.
             /// </summary>
-            /// <param name="gradeName"></param>
-            public void SelectGrade(string gradeName)
+            /// <param name="gradeName">선택한 학년 이름</param>
+            /// <returns>실행성공여부</returns>
+            public bool SelectGrade(string gradeName)
             {
-                if(loginState == false)
-                {
-                    MessageBox.Show("You should login first");
-                    return;
-;                }
+                if (!CheckLoginState())
+                    return false;
 
                 currentGrade = gradeName;
                 currentClass = null;
-                currentSnum = -1;       
+                currentSnum = -1;
+
+                return true;       
             }
 
             /// <summary>
@@ -499,19 +547,10 @@ namespace TASMA
             /// <returns>실행성공여부</returns>
             public bool CreateClass(string className)
             {
-                if(loginState == false)
-                {
-                    MessageBox.Show("You should login first");
+                if (!CheckGradeState())
                     return false;
-                }
 
-                if(currentGrade == null)
-                {
-                    MessageBox.Show("You should select grade first");
-                    return false;
-                }
-
-                var connStr = @"Data Source=" + CurrentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
                 var cmd = new SQLiteCommand(conn);
@@ -540,19 +579,10 @@ namespace TASMA
             /// <returns>실행성공여부</returns>
             public List<string> GetClassList()
             {
-                if(loginState == false)
-                {
-                    MessageBox.Show("You should login first");
+                if (!CheckGradeState())
                     return null;
-                }
 
-                if(currentGrade == null)
-                {
-                    MessageBox.Show("You should select grade first");
-                    return null;
-                }
-
-                var connStr = @"Data Source=" + CurrentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
 
@@ -579,19 +609,10 @@ namespace TASMA
             /// <returns>실행성공여부</returns>
             public bool DeleteClass(string className)
             {
-                if(loginState == false)
-                {
-                    MessageBox.Show("You should login first");
+                if (!CheckGradeState())
                     return false;
-                }
 
-                if(currentGrade == null)
-                {
-                    MessageBox.Show("You should select grade first");
-                    return false;
-                }
-
-                var connStr = @"Data Source=" + CurrentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
                 var cmd = new SQLiteCommand(conn);
@@ -620,19 +641,10 @@ namespace TASMA
             /// <returns>실행성공여부</returns>
             public bool UpdateClass(string oldClassName, string newClassName)
             {
-                if(loginState == false)
-                {
-                    MessageBox.Show("You should login first");
+                if (!CheckGradeState())
                     return false;
-                }
 
-                if(currentGrade == null)
-                {
-                    MessageBox.Show("You should select grade first");
-                    return false;
-                }
-
-                var connStr = @"Data Source=" + CurrentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
                 var cmd = new SQLiteCommand(conn);
@@ -660,23 +672,75 @@ namespace TASMA
             /// <returns>실행성공여부</returns>
             public bool SelectClass(string className)
             {
-                if(loginState == false)
-                {
-                    MessageBox.Show("You should login first");
-                    return false;    
-                }
-
-                if(currentGrade == null)
-                {
-                    MessageBox.Show("You should select grade first");
+                if (!CheckGradeState())
                     return false;
-                }
 
                 currentClass = className;
                 currentSnum = -1;
                 return true;
             }
 
+            
+            public bool CreateStudent(int snum) {
+
+                if (!CheckClassState())
+                    return false;
+
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+                var cmd = new SQLiteCommand(conn);
+                cmd.CommandText = "INSERT INTO STUDENT VALUES('" + currentGrade + "', '" + currentClass + "', '" + snum + "');";
+
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException se)
+                {
+                    MessageBox.Show("Error code - " + se.ErrorCode.ToString());
+                    return false;
+                }
+
+                cmd.Dispose();
+                conn.Close();
+
+                return true;
+            }
+            public List<string> GetStudentList() {
+
+                if (!CheckClassState())
+                    return null;
+
+                return null;
+
+            }
+
+            public bool DeleteStudent(int snum) {
+
+                if (!CheckClassState())
+                    return false;
+
+                return false;
+            }
+
+            public bool UpdateStudent(int oldSnum, int newSnum) {
+
+                if (!CheckClassState())
+                    return false;
+
+                return false;
+            }
+
+            public bool SelectStudent(int snum) {
+
+                if (!CheckClassState())
+                    return false;
+                
+                return false;
+            }
+
+            
         }
     }
 }

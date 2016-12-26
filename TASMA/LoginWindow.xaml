@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TASMA"
         mc:Ignorable="d"
-        Height="260" Width="250" WindowStyle="None" AllowsTransparency="True" MouseDown="OnMouseDown">
+        Height="288.8" Width="250" WindowStyle="None" AllowsTransparency="True" MouseDown="OnMouseDown">
     <Window.Resources>
         <Image x:Key="loginWindowCloseButton" Source="/Resources/LoginWindow_CloseButton.png" Width="15" Height="15"/>
         <Style x:Key="loginButtonStyle">
@@ -43,7 +43,7 @@
                         <Label Content="Username" FontSize="10" Width="210"/>
                             <TextBox Width="200" Name="LoginWindow_ID"/>
                             <Label Content="Password" FontSize="10" Width="210"/>
-                        <TextBox Width="200" Name="LoginWindow_Password"/>
+                        <PasswordBox Width="200" Name="LoginWindow_Password"/>
                     </StackPanel>
                 </Grid>
                 <StackPanel Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
