@@ -668,7 +668,7 @@ namespace TASMA
             /// <summary>
             /// 반을 선택합니다.
             /// </summary>
-            /// <param name="className"></param>
+            /// <param name="className">선택할 반</param>
             /// <returns>실행성공여부</returns>
             public bool SelectClass(string className)
             {
@@ -680,7 +680,11 @@ namespace TASMA
                 return true;
             }
 
-            
+            /// <summary>
+            /// 학생번호를 입력합니다.
+            /// </summary>
+            /// <param name="snum">입력할 학생번호</param>
+            /// <returns>실행성공여부</returns>
             public bool CreateStudent(int snum) {
 
                 if (!CheckClassState())
@@ -707,40 +711,112 @@ namespace TASMA
 
                 return true;
             }
+
+            /// <summary>
+            /// 학생번호 리스트 항목을 불러옵니다.
+            /// </summary>
+            /// <returns>실행성공여부</returns>
             public List<string> GetStudentList() {
 
                 if (!CheckClassState())
                     return null;
 
-                return null;
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
 
+                var cmdStr = "SELECT SNUM FROM STUDENT WHERE GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "';";
+                var cmd = new SQLiteCommand(cmdStr, conn);
+                var reader = cmd.ExecuteReader();
+                var result = new List<string>();
+
+                while (reader.Read())
+                {
+                    result.Add(reader["SNUM"].ToString());
+                }
+
+                return result;
             }
 
+            /// <summary>
+            /// 학생번호에 해당하는 학생을 삭제합니다.
+            /// </summary>
+            /// <param name="snum">학생번호</param>
+            /// <returns>실행성공여부</returns>
             public bool DeleteStudent(int snum) {
 
                 if (!CheckClassState())
                     return false;
 
-                return false;
-            }
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+                var cmd = new SQLiteCommand(conn);
+                cmd.CommandText = "DELETE FROM STUDENT WHERE GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "' AND SNUM = '" + snum + "';";
 
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException se)
+                {
+                    MessageBox.Show("Error code - " + se.ErrorCode.ToString());
+                    return false;
+                }
+
+                cmd.Dispose();
+                conn.Close();
+
+                return true;
+            }
+            
+            /// <summary>
+            /// 학생번호를 수정합니다.  
+            /// </summary>
+            /// <param name="oldSnum"></param>
+            /// <param name="newSnum"></param>
+            /// <returns>실행성공여부</returns>
             public bool UpdateStudent(int oldSnum, int newSnum) {
 
                 if (!CheckClassState())
                     return false;
 
-                return false;
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+                var cmd = new SQLiteCommand(conn);
+                cmd.CommandText = "UPDATE SET SNUM = '" + newSnum + "' WHERE GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "' AND SNUM = '" + oldSnum + "';";
+                
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException se)
+                {
+                    MessageBox.Show("Error code - " + se.ErrorCode.ToString());
+                    return false;
+                }
+
+                cmd.Dispose();
+                conn.Close();
+
+                return true;
             }
 
+            /// <summary>
+            /// 학생번호에 해당하는 학생을 선택합니다.
+            /// </summary>
+            /// <param name="snum">선택할 학생의 학생번호</param>
+            /// <returns>실행성공여부</returns>
             public bool SelectStudent(int snum) {
 
                 if (!CheckClassState())
                     return false;
-                
-                return false;
+
+                currentSnum = snum;
+                return true;
             }
 
-            
         }
     }
 }

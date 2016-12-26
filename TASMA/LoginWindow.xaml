@@ -57,7 +57,7 @@
                             <Hyperlink FontSize="10" TextDecorations="{x:Null}" >|</Hyperlink>
                         </TextBlock>
                     <TextBlock>
-                        <Hyperlink Click="RegisterAdmin" FontSize="10">Change Password </Hyperlink>
+                        <Hyperlink Click="ChangePassword" FontSize="10">Change Password </Hyperlink>
                     </TextBlock>
                     </StackPanel>
                 </StackPanel>

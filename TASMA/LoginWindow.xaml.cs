@@ -47,13 +47,24 @@ namespace TASMA
 
         private void ChangePassword(object sender, RoutedEventArgs e)
         {
-            
-            MessageBox.Show("ChangePassword");
+            var cpd = new ChangePasswordDialog();
+            cpd.ShowDialog();
+
+            //if (cpd.IsDetermined)
+            //{
+
+            //}
         }
 
         private void RegisterAdmin(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("RegisterAdmin");
+            var rd = new RegistrationDialog();
+            rd.ShowDialog();
+
+            if (rd.IsDetermined)
+            {
+                adminDAO.RegisterAdmin(rd.UserName, rd.Password);
+            }
         }
     }
 }
