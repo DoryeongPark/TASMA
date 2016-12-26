@@ -85,5 +85,10 @@ namespace TASMA
             isDetermined = false;
             Close();
         }
+
+        private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
     }
 }

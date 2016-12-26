@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TASMA"
         mc:Ignorable="d"
-        Title="RegistrationDialog" Height="170.8" Width="300" WindowStyle="None" AllowsTransparency="True">
+        Title="RegistrationDialog" Height="170" Width="300" WindowStyle="None" AllowsTransparency="True" MouseLeftButtonDown="OnMouseLeftButtonDown">
     <Window.Resources>
         <Style x:Key="registrationButtonStyle">
             <Setter Property="Button.Background" Value="Indigo" />

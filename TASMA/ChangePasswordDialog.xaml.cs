@@ -93,5 +93,9 @@ namespace TASMA
             Close();
         }
 
+        private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
     }
 }
