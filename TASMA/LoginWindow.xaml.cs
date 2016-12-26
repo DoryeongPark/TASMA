@@ -47,13 +47,13 @@ namespace TASMA
 
         private void ChangePassword(object sender, RoutedEventArgs e)
         {
-            var cpd = new ChangePasswordDialog();
+            var cpd = new ChangePasswordDialog(adminDAO);
             cpd.ShowDialog();
 
-            //if (cpd.IsDetermined)
-            //{
-
-            //}
+            if (cpd.IsDetermined)
+            {
+                adminDAO.ChangePassword(cpd.Username, cpd.Password, cpd.NewPassword);
+            }
         }
 
         private void RegisterAdmin(object sender, RoutedEventArgs e)

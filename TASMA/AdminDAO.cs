@@ -65,7 +65,7 @@ namespace TASMA
             }
 
             /// <summary>
-            /// 로그인 상태인지 체크합니다.
+            /// 로그인 상태를 체크합니다.
             /// </summary>
             /// <returns>로그인여부</returns>
             private bool CheckLoginState()
@@ -80,7 +80,7 @@ namespace TASMA
             }
 
             /// <summary>
-            /// 학년을 선택한 상태인지 체크합니다.
+            /// 학년을 선택한 상태를 체크합니다.
             /// </summary>
             /// <returns>선택여부</returns>
             private bool CheckGradeState()
@@ -101,7 +101,7 @@ namespace TASMA
             }
 
             /// <summary>
-            /// 반을 선택한 상태인지 체크합니다.
+            /// 반을 선택한 상태를 체크합니다.
             /// </summary>
             /// <returns>선택여부</returns>
             private bool CheckClassState()
@@ -217,6 +217,44 @@ namespace TASMA
             }
 
             /// <summary>
+            /// 계정의 비밀번호의 매칭여부를 검사합니다.
+            /// </summary>
+            /// <param name="id">선생님 계정</param>
+            /// <param name="password">비밀번호</param>
+            /// <returns>매칭여부</returns>
+            public bool Authenticate(string id, string password)
+            {
+
+                if (!new FileInfo(id + ".db").Exists)
+                {
+                    MessageBox.Show("ID doesn't exist");
+                    return false;
+                }
+
+                var connStr = @"Data Source=" + id + ".db;Password=" + password + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+
+                var cmd = new SQLiteCommand(conn);
+                cmd.CommandText = "UPDATE CHECKPASSWORD SET CHECKPASSWORD = '1' WHERE CHECKPASSWORD = '0'";
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException se)
+                {
+                    //비밀번호 틀렸을 시의 SQLite 에러코드 알아볼 것
+                    conn.Close();
+                    MessageBox.Show("Error code - " + se.ErrorCode.ToString());
+                    return false;
+                }
+
+                conn.Close();
+                return true;
+
+            }
+
+            /// <summary>
             /// 계정의 비밀번호를 바꿉니다.
             /// </summary>
             /// <param name="id">선생님 계정</param>
@@ -250,6 +288,7 @@ namespace TASMA
                 catch (SQLiteException se)
                 {
                     //비밀번호 틀렸을 시의 SQLite 에러코드 알아볼 것
+                    conn.Close();
                     MessageBox.Show("Error code - " + se.ErrorCode.ToString());
                     return false;
                 }
@@ -294,6 +333,7 @@ namespace TASMA
                 catch (SQLiteException se)
                 {
                     //비밀번호 틀렸을 시의 SQLite 에러코드 알아볼 것
+                    conn.Close();
                     MessageBox.Show("Error code - " + se.ErrorCode.ToString());
                     return false;
                 }
@@ -336,6 +376,7 @@ namespace TASMA
                 catch (SQLiteException se)
                 {
                     //비밀번호 틀렸을 시의 SQLite 에러코드 알아볼 것
+                    conn.Close();
                     MessageBox.Show(se.ErrorCode.ToString());
                     return;
                 }
@@ -415,6 +456,7 @@ namespace TASMA
                     cmd.ExecuteNonQuery();
                 }catch(SQLiteException se)
                 {
+                    conn.Close();
                     MessageBox.Show(se.ErrorCode.ToString());
                     return false;
                 }
@@ -480,6 +522,7 @@ namespace TASMA
                 }
                 catch (SQLiteException se)
                 {
+                    conn.Close();
                     MessageBox.Show("Error code - " + se.ErrorCode.ToString());
                     return false;
                 }
@@ -514,6 +557,7 @@ namespace TASMA
                 }
                 catch (SQLiteException se)
                 {
+                    conn.Close();
                     MessageBox.Show("Error code - " + se.ErrorCode.ToString());
                     return false;
                 }
@@ -562,6 +606,7 @@ namespace TASMA
                 }
                 catch (SQLiteException se)
                 {
+                    conn.Close();
                     MessageBox.Show("Error code - " + se.ErrorCode.ToString());
                     return false;
                 }
@@ -624,6 +669,7 @@ namespace TASMA
                 }
                 catch (SQLiteException se)
                 {
+                    conn.Close();
                     MessageBox.Show("Error code - " + se.ErrorCode.ToString());
                     return false;
                 }
@@ -655,6 +701,7 @@ namespace TASMA
                 }
                 catch (SQLiteException se)
                 {
+                    conn.Close();
                     MessageBox.Show("Error code - " + se.ErrorCode.ToString());
                     return false;
                 }
@@ -702,6 +749,7 @@ namespace TASMA
                 }
                 catch (SQLiteException se)
                 {
+                    conn.Close();
                     MessageBox.Show("Error code - " + se.ErrorCode.ToString());
                     return false;
                 }
@@ -760,6 +808,7 @@ namespace TASMA
                 }
                 catch (SQLiteException se)
                 {
+                    conn.Close();
                     MessageBox.Show("Error code - " + se.ErrorCode.ToString());
                     return false;
                 }
@@ -793,6 +842,7 @@ namespace TASMA
                 }
                 catch (SQLiteException se)
                 {
+                    conn.Close();
                     MessageBox.Show("Error code - " + se.ErrorCode.ToString());
                     return false;
                 }

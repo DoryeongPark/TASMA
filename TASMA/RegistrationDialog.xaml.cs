@@ -64,18 +64,6 @@ namespace TASMA
                 return;
             }
 
-            if(password == "")
-            {
-                MessageBox.Show("You should input Password");
-                return;
-            }
-
-            if(confirmPassword == "")
-            {
-                MessageBox.Show("You should input Confirm Password");
-                return;
-            }
-
             if (password != confirmPassword)
             {
                 MessageBox.Show("Passwords are not matching");
