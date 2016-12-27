@@ -23,15 +23,48 @@ namespace TASMA
     {
         private AdminDAO adminDAO;
 
+        private List<StackPanel> columns;
+
         private int columnIndex = 0;
         
         public GradePage(AdminDAO adminDAO)
         {
             InitializeComponent();
-            this.adminDAO = adminDAO;
 
-            var gradeList = adminDAO.GetGradeList();
+            this.adminDAO = adminDAO;
+            columns = new List<StackPanel>();
+            columns.Add(GradePage_Column0);
+            columns.Add(GradePage_Column1);
+            columns.Add(GradePage_Column2);
             
+            var gradeList = adminDAO.GetGradeList();
+
+            var tb1 = new Border();
+            tb1.Width = 150;
+            tb1.Height = 150;
+            tb1.Background = Brushes.Red;
+
+
+            var tb2 = new Border();
+            tb2.Width = 150;
+            tb2.Height = 150;
+            tb2.Background = Brushes.Yellow;
+
+
+            var tb3 = new Border();
+            tb3.Width = 150;
+            tb3.Height = 150;
+            tb3.Background = Brushes.Blue;
+
+            columns[0].Children.Add(tb1);
+            columns[1].Children.Add(tb2);
+            columns[0].Children.Add(tb3);
+            
+
+        }
+
+        public void ResizeContents()
+        {
             
         }
     }

@@ -44,6 +44,7 @@ namespace TASMA
             }
 
             TasmaWindow_Frame.Navigate(new GradePage(adminDAO));
+            
  
         }
 
