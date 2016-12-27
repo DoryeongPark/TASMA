@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Height="290" Width="250" WindowStyle="None" AllowsTransparency="True" MouseDown="OnMouseDown" BorderBrush="Gray" BorderThickness="1">
     <Window.Resources>
-        <Image x:Key="loginWindowCloseButton" Source="/Resources/LoginWindow_CloseButton.png" Width="15" Height="15"/>
+        <Image x:Key="loginWindowCloseButton" Source="/Resources/Tasma_CloseButton.png" Width="15" Height="15"/>
         <Style x:Key="loginButtonStyle">
             <Setter Property="Button.Background" Value="Indigo" />
             <Setter Property="Button.Foreground" Value="White" />

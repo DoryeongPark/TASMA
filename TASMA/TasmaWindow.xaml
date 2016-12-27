@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:TASMA"
         mc:Ignorable="d"
         Title="TasmaWindow" Height="400" Width="600" BorderBrush="Gray" BorderThickness="1" WindowStyle="None" AllowsTransparency="True" MouseLeftButtonDown="OnLeftMouseButtonDown" Closed="OnClosed">
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1.5*"/>
@@ -39,10 +40,17 @@
             </Grid.ColumnDefinitions>
             <Border BorderThickness="0,0,2,0" BorderBrush="DimGray" />
             <Grid Grid.Column="0">
-
+                <StackPanel VerticalAlignment="Top">
+                    <Button HorizontalAlignment="Stretch" Height="40" Content="Sample"/>
+                    <Button HorizontalAlignment="Stretch" Height="40" Content="Sample"/>
+                    <Button HorizontalAlignment="Stretch" Height="40" Content="Sample"/>
+                    <Button HorizontalAlignment="Stretch" Height="40" Content="Sample"/>
+                </StackPanel>
             </Grid>
             <Grid Grid.Column="1">
-
+                <Frame Name="TasmaWindow_PageFrame">
+                    
+                </Frame>
             </Grid>
         </Grid>
     </Grid>
