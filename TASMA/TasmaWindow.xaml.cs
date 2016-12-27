@@ -34,6 +34,16 @@ namespace TASMA
             DragMove();
         }
 
+        private void MinimizeRoutine(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void ExitRoutine(object sender, EventArgs e)
+        {
+            Close();
+        }
+
         private void OnClosed(object sender, EventArgs e)
         {
             Owner.Close();

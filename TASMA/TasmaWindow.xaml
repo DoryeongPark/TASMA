@@ -6,7 +6,10 @@
         xmlns:local="clr-namespace:TASMA"
         mc:Ignorable="d"
         Title="TasmaWindow" Height="400" Width="600" BorderBrush="Gray" BorderThickness="1" WindowStyle="None" AllowsTransparency="True" MouseLeftButtonDown="OnLeftMouseButtonDown" Closed="OnClosed">
-    
+    <Window.Resources>
+        <Image x:Key="tasmaCloseButton" Source="/Resources/Tasma_CloseButton.png" Width="15" Height="15"/>
+        <Image x:Key="tasmaMinimizeButton" Source="/Resources/Tasma_MinimizeButton.png" Width="15" Height="15"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1.5*"/>
@@ -26,19 +29,29 @@
                 </StackPanel>
             </Grid>
             <Grid Grid.Column="1">
-                
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="2*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-
+                        <Button x:Name="LoginWindow_Minimized" Content="{StaticResource tasmaMinimizeButton}" Width="20" Height="20" Background="Transparent" BorderThickness="0" Click="MinimizeRoutine"/>
+                        <Button x:Name="LoginWindow_Exit" Content="{StaticResource tasmaCloseButton}" Width="20" Height="20" Background="Transparent" BorderThickness="0" Click="ExitRoutine"/>
                 </StackPanel>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                        
+                    </StackPanel>
+                </Grid>  
             </Grid>
             
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="8*"/>
             </Grid.ColumnDefinitions>
-            <Border BorderThickness="0,0,2,0" BorderBrush="DimGray" />
             <Grid Grid.Column="0">
                 <StackPanel VerticalAlignment="Top">
                     <Button HorizontalAlignment="Stretch" Height="40" Content="Sample"/>
@@ -47,7 +60,9 @@
                     <Button HorizontalAlignment="Stretch" Height="40" Content="Sample"/>
                 </StackPanel>
             </Grid>
+            
             <Grid Grid.Column="1">
+                <Border BorderThickness="2,0,0,0" BorderBrush="DimGray" />
                 <Frame Name="TasmaWindow_PageFrame">
                     
                 </Frame>

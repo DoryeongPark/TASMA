@@ -63,9 +63,19 @@ namespace TASMA.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap LoginWindow_CloseButton {
+        internal static System.Drawing.Bitmap Tasma_CloseButton {
             get {
-                object obj = ResourceManager.GetObject("LoginWindow_CloseButton", resourceCulture);
+                object obj = ResourceManager.GetObject("Tasma_CloseButton", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap Tasma_MinimizeButton {
+            get {
+                object obj = ResourceManager.GetObject("Tasma_MinimizeButton", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

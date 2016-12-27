@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Height="290" Width="250" WindowStyle="None" AllowsTransparency="True" MouseDown="OnMouseDown" BorderBrush="Gray" BorderThickness="1">
     <Window.Resources>
-        <Image x:Key="loginWindowCloseButton" Source="/Resources/Tasma_CloseButton.png" Width="15" Height="15"/>
+        <Image x:Key="tasmaCloseButton" Source="/Resources/Tasma_CloseButton.png" Width="15" Height="15"/>
+        <Image x:Key="tasmaMinimizeButton" Source="/Resources/Tasma_MinimizeButton.png" Width="15" Height="15"/>
         <Style x:Key="loginButtonStyle">
             <Setter Property="Button.Background" Value="Indigo" />
             <Setter Property="Button.Foreground" Value="White" />
@@ -23,9 +24,10 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="9*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" Margin="0,0,4,0">
             <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal">
-                <Button x:Name="LoginWindow_Exit" Content="{StaticResource loginWindowCloseButton}" Width="20" Height="20" Background="Transparent" BorderThickness="0" Click="ExitRoutine"/>
+                <Button x:Name="LoginWindow_Minimized" Content="{StaticResource tasmaMinimizeButton}" Width="20" Height="20" Background="Transparent" BorderThickness="0" Click="MinimizeRoutine"/>
+                <Button x:Name="LoginWindow_Exit" Content="{StaticResource tasmaCloseButton}" Width="20" Height="20" Background="Transparent" BorderThickness="0" Click="ExitRoutine"/>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
