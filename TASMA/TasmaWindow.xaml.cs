@@ -29,11 +29,14 @@ namespace TASMA
             this.adminDAO = adminDAO;    
         }
 
-        
-
         private void OnLeftMouseButtonDown(object sender, MouseButtonEventArgs e)
         {
             DragMove();
+        }
+
+        private void OnClosed(object sender, EventArgs e)
+        {
+            Owner.Close();
         }
     }
 }

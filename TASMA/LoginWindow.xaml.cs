@@ -42,7 +42,18 @@ namespace TASMA
 
         private void Login(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Login");
+            if(adminDAO.Authenticate(LoginWindow_ID.Text, LoginWindow_Password.Password))
+            {
+                adminDAO.LoginAs(LoginWindow_ID.Text, LoginWindow_Password.Password);                
+            }else
+            {
+                return;
+            }
+
+            Visibility = Visibility.Hidden;
+            var tw = new TasmaWindow(adminDAO);
+            tw.Owner = this;
+            tw.ShowDialog();
         }
 
         private void ChangePassword(object sender, RoutedEventArgs e)
