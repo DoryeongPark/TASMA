@@ -5,8 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TASMA"
         mc:Ignorable="d"
-        Title="TasmaWindow" Height="300" Width="300" BorderBrush="Gray" BorderThickness="1" WindowStyle="None" AllowsTransparency="True" MouseLeftButtonDown="OnLeftMouseButtonDown">
+        Title="TasmaWindow" Height="400" Width="600" BorderBrush="Gray" BorderThickness="1" WindowStyle="None" AllowsTransparency="True" MouseLeftButtonDown="OnLeftMouseButtonDown">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1.5*"/>
+            <RowDefinition Height="8.5*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="8*"/>
+            </Grid.ColumnDefinitions>
+        </Grid>
     </Grid>
 </Window>
