@@ -82,6 +82,9 @@
     <Compile Include="ChangePasswordDialog.xaml.cs">
       <DependentUpon>ChangePasswordDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GradePage.xaml.cs">
+      <DependentUpon>GradePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RegistrationDialog.xaml.cs">
       <DependentUpon>RegistrationDialog.xaml</DependentUpon>
     </Compile>
@@ -89,6 +92,10 @@
       <DependentUpon>TasmaWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="ChangePasswordDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GradePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

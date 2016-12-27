@@ -42,6 +42,8 @@ namespace TASMA
                 btn.MouseLeave += new MouseEventHandler(OnMenuButtonMouseLeave);
                 btn.MouseEnter += new MouseEventHandler(OnMenuButtonMouseEnter);
             }
+
+            TasmaWindow_Frame.Navigate(new GradePage(adminDAO));
  
         }
 
