@@ -287,7 +287,7 @@ namespace TASMA
                 }
                 catch (SQLiteException se)
                 {
-                    //비밀번호 틀렸을 시의 SQLite 에러코드 알아볼 것
+                    //Wrong password - Error code(26)
                     conn.Close();
                     MessageBox.Show("Error code - " + se.ErrorCode.ToString());
                     return false;

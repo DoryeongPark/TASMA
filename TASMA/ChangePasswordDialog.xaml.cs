@@ -16,7 +16,7 @@ using TASMA.Database;
 namespace TASMA
 {
     /// <summary>
-    /// ChangePasswordDialog.xaml에 대한 상호 작용 논리
+    /// 선생님 계정 비밀번호 수정 다이얼로그
     /// </summary>
     public partial class ChangePasswordDialog : Window
     {
@@ -69,7 +69,6 @@ namespace TASMA
                 MessageBox.Show("You should input username");
                 return;
             }
-
 
             if(!adminDAO.Authenticate(username, password))
             {
