@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TASMA"
         mc:Ignorable="d"
-        Height="290" Width="250" WindowStyle="None" AllowsTransparency="True" MouseDown="OnMouseDown" BorderBrush="Gray" BorderThickness="1">
+        Height="290" Width="250" Background="Honeydew" WindowStyle="None" AllowsTransparency="True" MouseDown="OnMouseDown" BorderBrush="Gray" BorderThickness="1">
     <Window.Resources>
         <Image x:Key="tasmaCloseButton" Source="/Resources/Tasma_CloseButton.png" Width="15" Height="15"/>
         <Image x:Key="tasmaMinimizeButton" Source="/Resources/Tasma_MinimizeButton.png" Width="15" Height="15"/>

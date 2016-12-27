@@ -22,11 +22,27 @@ namespace TASMA
     {
         private AdminDAO adminDAO;
 
+        private List<Button> menuButtons;
+
         public TasmaWindow(AdminDAO adminDAO)
         {
             InitializeComponent();
             Style = (Style)FindResource(typeof(Window));
-            this.adminDAO = adminDAO;    
+            this.adminDAO = adminDAO;
+
+            menuButtons = new List<Button>();
+
+            menuButtons.Add(TasmaWindow_Students);
+            menuButtons.Add(TasmaWindow_Score);
+            menuButtons.Add(TasmaWindow_Print);
+            menuButtons.Add(TasmaWindow_Export);
+
+            foreach(var btn in menuButtons)
+            {
+                btn.MouseLeave += new MouseEventHandler(OnMenuButtonMouseLeave);
+                btn.MouseEnter += new MouseEventHandler(OnMenuButtonMouseEnter);
+            }
+ 
         }
 
         private void OnLeftMouseButtonDown(object sender, MouseButtonEventArgs e)
@@ -47,6 +63,20 @@ namespace TASMA
         private void OnClosed(object sender, EventArgs e)
         {
             Owner.Close();
+        }
+
+        private void OnMenuButtonMouseEnter(object sender, MouseEventArgs e)
+        {
+            var button = sender as Button;
+            button.Background = Brushes.Azure;
+            button.Foreground = Brushes.Black;
+        }
+       
+        private void OnMenuButtonMouseLeave(object sender, MouseEventArgs e)
+        {
+            var button = sender as Button;
+            button.Background = Brushes.Indigo;
+            button.Foreground = Brushes.White;
         }
     }
 }

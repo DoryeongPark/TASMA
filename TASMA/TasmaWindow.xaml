@@ -5,17 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TASMA"
         mc:Ignorable="d"
-        Title="TasmaWindow" Height="400" Width="600" BorderBrush="Gray" BorderThickness="1" WindowStyle="None" AllowsTransparency="True" MouseLeftButtonDown="OnLeftMouseButtonDown" Closed="OnClosed">
+        Title="TasmaWindow" Background="Honeydew" Height="400" Width="600" BorderBrush="Gray" BorderThickness="1" WindowStyle="None" AllowsTransparency="True" MouseLeftButtonDown="OnLeftMouseButtonDown" Closed="OnClosed">
     <Window.Resources>
         <Image x:Key="tasmaCloseButton" Source="/Resources/Tasma_CloseButton.png" Width="15" Height="15"/>
         <Image x:Key="tasmaMinimizeButton" Source="/Resources/Tasma_MinimizeButton.png" Width="15" Height="15"/>
+        <Style x:Key="menuButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Indigo" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontWeight" Value="DemiBold" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="5,0,0,0"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1.5*"/>
             <RowDefinition Height="8.5*"/>
         </Grid.RowDefinitions>
-        <Border BorderThickness="0,0,0,2" BorderBrush="DimGray"/>
+        <Border BorderThickness="0,0,0,1" BorderBrush="DimGray"/>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>
@@ -54,15 +66,15 @@
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
                 <StackPanel VerticalAlignment="Top">
-                    <Button HorizontalAlignment="Stretch" Height="40" Content="Sample"/>
-                    <Button HorizontalAlignment="Stretch" Height="40" Content="Sample"/>
-                    <Button HorizontalAlignment="Stretch" Height="40" Content="Sample"/>
-                    <Button HorizontalAlignment="Stretch" Height="40" Content="Sample"/>
+                    <Button Name="TasmaWindow_Students" Style="{StaticResource menuButtonStyle}" Content="Students"/>
+                    <Button Name="TasmaWindow_Score" Style="{StaticResource menuButtonStyle}" Content="Score"/>
+                    <Button Name="TasmaWindow_Print" Style="{StaticResource menuButtonStyle}" Content="Print"/>
+                    <Button Name="TasmaWindow_Export" Style="{StaticResource menuButtonStyle}" Content="Export"/>
                 </StackPanel>
             </Grid>
             
             <Grid Grid.Column="1">
-                <Border BorderThickness="2,0,0,0" BorderBrush="DimGray" />
+                <Border BorderThickness="1,0,0,0" BorderBrush="DimGray" />
                 <Frame Name="TasmaWindow_PageFrame">
                     
                 </Frame>
