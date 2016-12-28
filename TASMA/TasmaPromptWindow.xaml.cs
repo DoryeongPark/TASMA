@@ -41,6 +41,7 @@ namespace TASMA
             TasmaPromptWindow_Title.Text = title;
             TasmaPromptWindow_Message.Text = message;
 
+            TasmaPromptWindow_CloseButton.Click += OnCancelButtonClicked;
             TasmaPromptWindow_OK.Click += OnOKButtonClicked;
             TasmaPromptWindow_Cancel.Click += OnCancelButtonClicked;
         }
