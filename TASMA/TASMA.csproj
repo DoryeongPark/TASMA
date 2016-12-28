@@ -82,10 +82,11 @@
     <Compile Include="ChangePasswordDialog.xaml.cs">
       <DependentUpon>ChangePasswordDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataRectangleManager.cs" />
     <Compile Include="GradePage.xaml.cs">
       <DependentUpon>GradePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GradeRectangle.cs" />
+    <Compile Include="DataRectangle.cs" />
     <Compile Include="RegistrationDialog.xaml.cs">
       <DependentUpon>RegistrationDialog.xaml</DependentUpon>
     </Compile>
