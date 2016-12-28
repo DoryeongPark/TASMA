@@ -132,7 +132,7 @@ namespace TASMA
             /// </summary>
             /// <param name="id">등록할 ID</param>
             /// <param name="password">비밀번호</param>
-            /// <returns>실행성공여부</returns>
+            /// <returns>실행 성공 여부</returns>
             public bool RegisterAdmin(string id, string password)
             {
                 if (loginState == true)
@@ -260,7 +260,7 @@ namespace TASMA
             /// <param name="id">선생님 계정</param>
             /// <param name="oldPassword">이전 비밀번호</param>
             /// <param name="newPassword">새 비밀번호</param>
-            /// <returns>실행성공여부</returns>
+            /// <returns>실행 성공 여부</returns>
             public bool ChangePassword(string id, string oldPassword, string newPassword)
             {
                 if(loginState == true)
@@ -305,7 +305,7 @@ namespace TASMA
             /// </summary>
             /// <param name="id">선생님 계정</param>
             /// <param name="password">계정 비밀번호</param>
-            /// <returns>실행성공여부</returns>
+            /// <returns>실행 성공 여부</returns>
             public bool DeleteAdmin(string id, string password)
             {
                 if (loginState == true)
@@ -405,7 +405,7 @@ namespace TASMA
             /// <summary>
             /// 현재 선택 상태를 한 단계 뒤로 돌립니다.(학생 -> 반, 반 -> 학년, 학년 -> 초기 상태)
             /// </summary>
-            /// <returns>실행성공여부</returns>
+            /// <returns>실행 성공 여부</returns>
             public bool MovePrevious()
             {
                 if (!CheckLoginState())
@@ -437,7 +437,7 @@ namespace TASMA
             /// 새로운 학년을 생성합니다.
             /// </summary>
             /// <returns>
-            /// 실행성공여부
+            /// 실행 성공 여부
             /// </returns>
             /// <param name="gradeName">학년 이름</param>
             public bool CreateGrade(string gradeName)
@@ -504,7 +504,7 @@ namespace TASMA
             /// 학년을 제거합니다.
             /// </summary>
             /// <param name="gradeName">제거할 학년</param>
-            /// <returns>실행성공여부</returns>
+            /// <returns>실행 성공 여부</returns>
             public bool DeleteGrade(string gradeName)
             {
                 if (!CheckLoginState())
@@ -539,7 +539,7 @@ namespace TASMA
             /// </summary>
             /// <param name="oldGradeName">수정할 학년</param>
             /// <param name="newGradeName">수정한 학년</param>
-            /// <returns>실행성공여부</returns>
+            /// <returns>실행 성공 여부</returns>
             public bool UpdateGrade(string oldGradeName, string newGradeName)
             {
                 if (!CheckLoginState())
@@ -571,7 +571,7 @@ namespace TASMA
             /// 학년을 선택합니다.
             /// </summary>
             /// <param name="gradeName">선택한 학년 이름</param>
-            /// <returns>실행성공여부</returns>
+            /// <returns>실행 성공 여부</returns>
             public bool SelectGrade(string gradeName)
             {
                 if (!CheckLoginState())
@@ -588,7 +588,7 @@ namespace TASMA
             /// 새로운 반을 생성합니다.
             /// </summary>
             /// <param name="className"></param>
-            /// <returns>실행성공여부</returns>
+            /// <returns>실행 성공 여부</returns>
             public bool CreateClass(string className)
             {
                 if (!CheckGradeState())
@@ -621,7 +621,7 @@ namespace TASMA
             /// <summary>
             /// 현재 학년의 클래스 목록을 불러옵니다.
             /// </summary>
-            /// <returns>실행성공여부</returns>
+            /// <returns>실행 성공 여부</returns>
             public List<string> GetClassList()
             {
                 if (!CheckGradeState())
@@ -651,7 +651,7 @@ namespace TASMA
             /// 반을 제거합니다. 
             /// </summary>
             /// <param name="className">반 이름</param>
-            /// <returns>실행성공여부</returns>
+            /// <returns>실행 성공 여부</returns>
             public bool DeleteClass(string className)
             {
                 if (!CheckGradeState())
@@ -684,7 +684,7 @@ namespace TASMA
             /// </summary>
             /// <param name="oldClassName">수정할 반 이름</param>
             /// <param name="newClassName">수정한 반 이름</param>
-            /// <returns>실행성공여부</returns>
+            /// <returns>실행 성공 여부</returns>
             public bool UpdateClass(string oldClassName, string newClassName)
             {
                 if (!CheckGradeState())
@@ -716,7 +716,7 @@ namespace TASMA
             /// 반을 선택합니다.
             /// </summary>
             /// <param name="className">선택할 반</param>
-            /// <returns>실행성공여부</returns>
+            /// <returns>실행 성공 여부</returns>
             public bool SelectClass(string className)
             {
                 if (!CheckGradeState())
@@ -731,7 +731,7 @@ namespace TASMA
             /// 학생번호를 입력합니다.
             /// </summary>
             /// <param name="snum">입력할 학생번호</param>
-            /// <returns>실행성공여부</returns>
+            /// <returns>실행 성공 여부</returns>
             public bool CreateStudent(int snum) {
 
                 if (!CheckClassState())
@@ -763,7 +763,7 @@ namespace TASMA
             /// <summary>
             /// 학생번호 리스트 항목을 불러옵니다.
             /// </summary>
-            /// <returns>실행성공여부</returns>
+            /// <returns>실행 성공 여부</returns>
             public List<string> GetStudentList() {
 
                 if (!CheckClassState())
@@ -790,7 +790,7 @@ namespace TASMA
             /// 학생번호에 해당하는 학생을 삭제합니다.
             /// </summary>
             /// <param name="snum">학생번호</param>
-            /// <returns>실행성공여부</returns>
+            /// <returns>실행 성공 여부</returns>
             public bool DeleteStudent(int snum) {
 
                 if (!CheckClassState())
@@ -824,7 +824,7 @@ namespace TASMA
             /// </summary>
             /// <param name="oldSnum"></param>
             /// <param name="newSnum"></param>
-            /// <returns>실행성공여부</returns>
+            /// <returns>실행 성공 여부</returns>
             public bool UpdateStudent(int oldSnum, int newSnum) {
 
                 if (!CheckClassState())
@@ -857,7 +857,7 @@ namespace TASMA
             /// 학생번호에 해당하는 학생을 선택합니다.
             /// </summary>
             /// <param name="snum">선택할 학생의 학생번호</param>
-            /// <returns>실행성공여부</returns>
+            /// <returns>실행 성공 여부</returns>
             public bool SelectStudent(int snum) {
 
                 if (!CheckClassState())
