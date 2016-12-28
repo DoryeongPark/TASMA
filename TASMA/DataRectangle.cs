@@ -32,6 +32,10 @@ namespace TASMA
             public event CheckModificationPossible OnCheckModificationPossible;
             public event EventHandler OnDeleteData;
             
+            /// <summary>
+            /// 데이터 박스를 생성합니다.
+            /// </summary>
+            /// <param name="data">데이터</param>
             public DataRectangle(string data)
             {
                 this.data = data;
@@ -101,6 +105,11 @@ namespace TASMA
                     OnDeleteData?.Invoke(this, e);
             }
 
+            /// <summary>
+            /// 수정 버튼 클릭 시 컴포넌트 위에 텍스트 박스를 생성합니다.
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
             private void OnModifyButtonClicked(object sender, EventArgs e)
             {
                 if (DataRectangleManager.IsModified)

@@ -90,6 +90,9 @@
     <Compile Include="RegistrationDialog.xaml.cs">
       <DependentUpon>RegistrationDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TasmaPromptWindow.xaml.cs">
+      <DependentUpon>TasmaPromptWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TasmaWindow.xaml.cs">
       <DependentUpon>TasmaWindow.xaml</DependentUpon>
     </Compile>
@@ -115,6 +118,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="RegistrationDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TasmaPromptWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

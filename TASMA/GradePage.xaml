@@ -16,7 +16,7 @@
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
                     <Label Content="GRADES" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Segoe UI" FontWeight="Bold" FontSize="18" Foreground="Indigo"/>
-                    <Button Content="ADD" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" Width="30" Height="30"/>
+                    <Button Name="GradePage_AddButton" Content="ADD" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" Width="30" Height="30"/>
                 </Grid>     
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>

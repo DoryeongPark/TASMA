@@ -25,6 +25,8 @@ namespace TASMA
         private AdminDAO adminDAO;
         private List<StackPanel> columns;
         private List<string> gradeList;
+
+        private int columnIndex;
        
         /// <summary>
         /// 현재 학년을 조회하는 페이지를 생성합니다.
@@ -40,6 +42,8 @@ namespace TASMA
             columns.Add(GradePage_Column1);
             columns.Add(GradePage_Column2);
 
+            
+
             Invalidate();
         }
 
@@ -52,7 +56,7 @@ namespace TASMA
             foreach (var column in columns)
                 column.Children.Clear();
                 
-            var columnIndex = 0;
+            columnIndex = 0;
             gradeList = adminDAO.GetGradeList();
 
             foreach (var data in gradeList)
@@ -106,6 +110,11 @@ namespace TASMA
             var dataRect = sender as DataRectangle;
             adminDAO.DeleteGrade(dataRect.Data);
             Invalidate();           
+        }
+
+        private void OnAddData()
+        {
+            //columns[columnIndex].Children.Add()
         }
     }
 }
