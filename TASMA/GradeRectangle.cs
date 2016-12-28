@@ -12,20 +12,45 @@ namespace TASMA
 {
     namespace DataInterfaces
     {
-        class GradeRectangle : Border { 
+        class GradeRectangle : DockPanel { 
 
             private string grade;
+
+            public string Grade
+            {
+                get { return grade;  }
+            }
+
+            public event EventHandler OnDeleteGrade;
+            public event EventHandler OnModifyGrade;
           
             public GradeRectangle(string grade)
             {
                 this.grade = grade;
                 Width = 120;
                 Height = 120;
+                Margin = new Thickness(10);
                 Background = Brushes.Black;
 
+                var btnArea = new DockPanel();
+                btnArea.Width = 120;
+                btnArea.Height = 15;
+                    
+                var deleteBtn = new Button();
+                deleteBtn.Width = 15;
+                deleteBtn.Height = 15;
+                deleteBtn.Click += OnDeleteButtonClicked;
+                
+                var modifyBtn = new Button();
+                modifyBtn.Width = 15;
+                modifyBtn.Height = 15;
+                modifyBtn.Click += OnModifyButtonClicked;
+
+                var blank = new StackPanel();
+                
                 var viewBox = new Viewbox();
-                viewBox.Width = 120;
-                viewBox.Height = 120;
+                viewBox.Width = 15;
+                viewBox.Height = 105;
                 viewBox.HorizontalAlignment = HorizontalAlignment.Center;
                 viewBox.VerticalAlignment = VerticalAlignment.Center;
                 viewBox.Stretch = Stretch.Uniform;
@@ -37,10 +62,33 @@ namespace TASMA
                 textBlock.Foreground = Brushes.Yellow;
                 textBlock.FontWeight = FontWeights.Bold;
                 textBlock.Text = grade;
-               
+
+                btnArea.Children.Add(deleteBtn);
+                btnArea.Children.Add(modifyBtn);
+                btnArea.Children.Add(blank);
+                SetDock(deleteBtn, Dock.Right);
+                SetDock(modifyBtn, Dock.Right);
+                SetDock(blank, Dock.Top);
                 viewBox.Child = textBlock;
-                this.Child = viewBox;
+
+                this.Children.Add(btnArea);
+                this.Children.Add(viewBox);
+
+                SetDock(btnArea, Dock.Top);
+                SetDock(viewBox, Dock.Bottom);
+                
             } 
+
+            private void OnDeleteButtonClicked(object sender, EventArgs e)
+            {
+                OnDeleteGrade?.Invoke(this, e);
+            }
+
+            private void OnModifyButtonClicked(object sender, EventArgs e)
+            {
+                OnModifyGrade?.Invoke(this, e);
+            }
+
         }
     }
 }

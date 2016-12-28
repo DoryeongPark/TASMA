@@ -40,12 +40,14 @@ namespace TASMA
             
             var gradeList = adminDAO.GetGradeList();
 
-            columns[0].Children.Add(new GradeRectangle(gradeList[0]));
+            var testRect = new GradeRectangle(gradeList[0]);
+            testRect.OnDeleteGrade += (sender, e) => { MessageBox.Show("Delete - " + (sender as GradeRectangle).Grade); };
+            columns[0].Children.Add(testRect);
             columns[1].Children.Add(new GradeRectangle(gradeList[1]));
             columns[0].Children.Add(new GradeRectangle(gradeList[2]));
-            columns[2].Children.Add(new GradeRectangle("ABCDEFGALKDJFLSEIJFlseijsleifjseji"));
-
-
+            
+            
+            
         }
 
         public void ResizeContents()
