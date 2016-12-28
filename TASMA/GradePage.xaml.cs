@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TASMA.Database;
+using TASMA.DataInterfaces;
 
 namespace TASMA
 {
@@ -39,27 +40,11 @@ namespace TASMA
             
             var gradeList = adminDAO.GetGradeList();
 
-            var tb1 = new Border();
-            tb1.Width = 150;
-            tb1.Height = 150;
-            tb1.Background = Brushes.Red;
+            columns[0].Children.Add(new GradeRectangle(gradeList[0]));
+            columns[1].Children.Add(new GradeRectangle(gradeList[1]));
+            columns[0].Children.Add(new GradeRectangle(gradeList[2]));
+            columns[2].Children.Add(new GradeRectangle("ABCDEFGALKDJFLSEIJFlseijsleifjseji"));
 
-
-            var tb2 = new Border();
-            tb2.Width = 150;
-            tb2.Height = 150;
-            tb2.Background = Brushes.Yellow;
-
-
-            var tb3 = new Border();
-            tb3.Width = 150;
-            tb3.Height = 150;
-            tb3.Background = Brushes.Blue;
-
-            columns[0].Children.Add(tb1);
-            columns[1].Children.Add(tb2);
-            columns[0].Children.Add(tb3);
-            
 
         }
 
