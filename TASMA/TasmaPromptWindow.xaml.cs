@@ -34,7 +34,6 @@ namespace TASMA
             get { return input; }
         }
 
-
         public TasmaPromptWindow(string title, string message)
         {
             InitializeComponent();

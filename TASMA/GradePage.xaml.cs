@@ -67,6 +67,7 @@ namespace TASMA
                 dataRect.OnCheckDuplication += OnCheckDuplication;
                 dataRect.OnModificationComplete += OnModificationComplete;
                 dataRect.OnDeleteData += OnDeleteData;
+                dataRect.MouseLeftButtonUp += OnClickGrade;
 
                 //데이터 박스 추가
                 columns[columnIndex].Children.Add(dataRect);
@@ -135,6 +136,14 @@ namespace TASMA
                     return;
                 }
             }
+        }
+
+        private void OnClickGrade(object sender, RoutedEventArgs e)
+        {
+            if (!DataRectangleManager.IsModified)
+                return;
+
+            MessageBox.Show((sender as DataRectangle).Data);
         }
     }
 }
