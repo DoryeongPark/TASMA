@@ -30,8 +30,8 @@
         <Border BorderThickness="0,0,0,1" BorderBrush="DimGray"/>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="7*"/>
+                <ColumnDefinition Width="3.5*"/>
+                <ColumnDefinition Width="6.5*"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
                 

@@ -21,12 +21,6 @@ namespace TASMA
                 get { return isModified; }
                 set { isModified = value; }
             }
-
-            public static List<string> GradeList
-            {
-                get { return gradeList;  }
-                set { gradeList = value; }
-            }
         }
     }
 }
