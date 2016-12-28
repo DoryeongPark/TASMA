@@ -29,7 +29,7 @@ namespace TASMA
             public delegate bool CheckModificationPossible(string newData);
 
             public event NotifyModification OnModificationComplete;
-            public event CheckModificationPossible OnCheckModificationPossible;
+            public event CheckModificationPossible OnCheckDuplication;
             public event EventHandler OnDeleteData;
             
             /// <summary>
@@ -133,7 +133,7 @@ namespace TASMA
                 textBox.LostKeyboardFocus += (s, ea) =>
                 {
                     
-                    if(!OnCheckModificationPossible.Invoke(textBox.Text))
+                    if(OnCheckDuplication.Invoke(textBox.Text))
                     {
                         MessageBox.Show("Grade already exists");
                         return;

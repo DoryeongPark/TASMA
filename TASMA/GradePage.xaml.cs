@@ -42,7 +42,7 @@ namespace TASMA
             columns.Add(GradePage_Column1);
             columns.Add(GradePage_Column2);
 
-            
+            GradePage_AddButton.Click += OnAddButtonClicked;
 
             Invalidate();
         }
@@ -64,7 +64,7 @@ namespace TASMA
                 var dataRect = new DataRectangle(data);
 
                 //이벤트 등록
-                dataRect.OnCheckModificationPossible += OnCheckModificationPossible;
+                dataRect.OnCheckDuplication += OnCheckDuplication;
                 dataRect.OnModificationComplete += OnModificationComplete;
                 dataRect.OnDeleteData += OnDeleteData;
 
@@ -76,21 +76,21 @@ namespace TASMA
         }
 
         /// <summary>
-        /// 변경할 데이터가 다른 데이터와 중복되는지 확인합니다. 
+        /// 변경할 학년 데이터가 다른 데이터와 중복되는지 확인합니다. 
         /// </summary>
         /// <param name="newData">변경할 데이터</param>
-        /// <returns>변경 가능 여부</returns>
-        private bool OnCheckModificationPossible(string newData)
+        /// <returns>중복 여부</returns>
+        private bool OnCheckDuplication(string newData)
         {
             foreach (var str in gradeList)
                 if (str == newData)
-                    return false;
+                    return true;
                    
-            return true;
+            return false;
         }
 
         /// <summary>
-        /// 데이터를 변경하고 인터페이스에 반영합니다.
+        /// 학년 데이터를 변경하고 페이지에 반영합니다.
         /// </summary>
         /// <param name="oldData"></param>
         /// <param name="newData"></param>
@@ -101,7 +101,7 @@ namespace TASMA
         }
 
         /// <summary>
-        /// 데이터를 지우고 인터페이스에 반영합니다.
+        /// 학년 데이터를 지우고 페이지에 반영합니다.
         /// </summary>
         /// <param name="sender">데이터 박스 객체</param>
         /// <param name="e">NULL</param>
@@ -112,9 +112,29 @@ namespace TASMA
             Invalidate();           
         }
 
-        private void OnAddData()
+        /// <summary>
+        /// 학년 데이터를 추가하고 페이지에 반영합니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnAddButtonClicked(object sender, RoutedEventArgs e)
         {
-            //columns[columnIndex].Children.Add()
+            var promptWindow = new TasmaPromptWindow("Create grade", "Please input grade name");
+            promptWindow.ShowDialog();
+
+            if (promptWindow.IsDetermined)
+            {
+                var newGrade = promptWindow.Input;
+                if (!OnCheckDuplication(newGrade))
+                {
+                    adminDAO.CreateGrade(newGrade);
+                    Invalidate();
+                }else
+                {
+                    MessageBox.Show("Grade already exists");
+                    return;
+                }
+            }
         }
     }
 }
