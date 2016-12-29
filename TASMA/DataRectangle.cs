@@ -128,11 +128,18 @@ namespace TASMA
                 textBox.FontSize = 15;
                 textBox.FontFamily = new FontFamily("Segoe UI");
                 textBox.SelectedText = data;
+                textBox.SelectAll();
 
-                //이벤트 - 텍스트박스가 포커스를 잃어버렸을 시 현재의 객체 참조를 보내고 알려준다.
-                textBox.LostKeyboardFocus += (s, ea) =>
+                //이벤트 - 텍스트박스가 포커스를 잃어버리면 현재의 객체 참조를 보내고 알려준다.
+                textBox.LostFocus += (s, ea) =>
                 {
-                    
+                    if (textBox.Text == data)
+                    {
+                        textArea.Children.Remove((TextBox)s);
+                        DataRectangleManager.IsModified = true;
+                        return;
+                    }
+
                     if(OnCheckDuplication.Invoke(textBox.Text))
                     {
                         MessageBox.Show("Grade already exists");
