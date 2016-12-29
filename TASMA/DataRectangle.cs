@@ -42,7 +42,7 @@ namespace TASMA
                 Width = 120;
                 Height = 120;
                 Margin = new Thickness(10);
-                Background = Brushes.Indigo;
+                Background = Brushes.Indigo; //Background
 
                 var btnArea = new DockPanel();
                 btnArea.Width = 120;
@@ -78,8 +78,8 @@ namespace TASMA
                 //데이터 이름
                 textBlock = new TextBlock();
                 textBlock.FontFamily = new FontFamily("Segoe UI");
-                textBlock.FontSize = 15;
-                textBlock.Foreground = Brushes.Yellow;
+                textBlock.FontSize = 20;
+                textBlock.Foreground = Brushes.Honeydew; //Font Color
                 textBlock.FontWeight = FontWeights.Bold;
                 textBlock.Text = data;
 

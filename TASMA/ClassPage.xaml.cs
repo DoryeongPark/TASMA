@@ -25,20 +25,23 @@ namespace TASMA
         private AdminDAO adminDAO;
         private List<StackPanel> columns;
         private List<string> classList;
-
+        
         private int columnIndex;
 
         public ClassPage(AdminDAO adminDAO)
         {
             InitializeComponent();
-            
+
             this.adminDAO = adminDAO;
+
+            ClassPage_Class.Content = "GRADE " + adminDAO.CurrentGrade + " - CLASSES";
 
             columns = new List<StackPanel>();
             columns.Add(ClassPage_Column0);
             columns.Add(ClassPage_Column1);
             columns.Add(ClassPage_Column2);
 
+            ClassPage_PreviousButton.Click += OnPreviousButtonClicked;
             ClassPage_AddButton.Click += OnAddButtonClicked;
 
             Invalidate();
@@ -82,7 +85,7 @@ namespace TASMA
         /// <returns>중복 여부</returns>
         private bool OnCheckDuplication(string newData)
         {
-            foreach(var data in classList)
+            foreach (var data in classList)
                 if (data == newData)
                     return true;
 
@@ -109,7 +112,7 @@ namespace TASMA
 
             var classSelected = (sender as DataRectangle).Data;
             adminDAO.SelectClass(classSelected);
-            NavigationService nav = NavigationService.GetNavigationService(this);
+            var nav = NavigationService.GetNavigationService(this);
             //nav.Navigate(new StudentPage(adminDAO));
         }
 
@@ -132,6 +135,16 @@ namespace TASMA
                     return;
                 }
             }
-        }     
+        }
+
+        private void OnPreviousButtonClicked(object sender, RoutedEventArgs e)
+        {
+            if (!DataRectangleManager.IsModified)
+                return;
+
+            adminDAO.MovePrevious();
+            var nav = NavigationService.GetNavigationService(this);
+            nav.Navigate(new GradePage(adminDAO));
+        }
     }
 }
