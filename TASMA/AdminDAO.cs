@@ -208,6 +208,18 @@ namespace TASMA
                                 + ");";
                 cmd.ExecuteNonQuery();
 
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS EVALUATIONITEM("
+                                + "GRADE STRING NOT NULL, "
+                                + "CLASS STRING NOT NULL, "
+                                + "SUBJECT STRING NOT NULL, "
+                                + "EVALUATION STRING NOT NULL, "
+                                + "PRIMARY KEY(GRADE, CLASS, SUBJECT, EVALUATION), "
+                                + "FOREIGN KEY(GRADE, CLASS, SUBJECT) REFERENCES SUBJECT(GRADE, CLASS, SUBJECT) "
+                                + "ON DELETE CASCADE "
+                                + "ON UPDATE CASCADE "
+                                + ");";
+                cmd.ExecuteNonQuery();
+
                 cmd.CommandText = "CREATE TABLE IF NOT EXISTS CHECKPASSWORD("
                                 + "CHECKPASSWORD STRING NOT NULL, "
                                 + "PRIMARY KEY(CHECKPASSWORD) "
