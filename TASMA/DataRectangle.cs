@@ -42,7 +42,7 @@ namespace TASMA
                 Width = 120;
                 Height = 120;
                 Margin = new Thickness(10);
-                Background = Brushes.Black;
+                Background = Brushes.Indigo;
 
                 var btnArea = new DockPanel();
                 btnArea.Width = 120;
@@ -60,12 +60,12 @@ namespace TASMA
 
                 var blank = new StackPanel();
 
+                //텍스트 박스가 디스플레이 되는 영역
                 textArea = new Grid();
                 textArea.Width = 120;
                 textArea.Height = 105;
                 textArea.HorizontalAlignment = HorizontalAlignment.Center;
                 textArea.VerticalAlignment = VerticalAlignment.Center;
-                textArea.Background = Brushes.Brown;
                 
                 var viewBox = new Viewbox();
                 viewBox.Width = 120;
@@ -75,6 +75,7 @@ namespace TASMA
                 viewBox.Stretch = Stretch.Uniform;
                 viewBox.StretchDirection = StretchDirection.DownOnly;
 
+                //데이터 이름
                 textBlock = new TextBlock();
                 textBlock.FontFamily = new FontFamily("Segoe UI");
                 textBlock.FontSize = 15;
@@ -99,6 +100,11 @@ namespace TASMA
                 
             } 
 
+            /// <summary>
+            /// 삭제 버튼 클릭 시 연결된 델리게이트를 호출합니다.
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
             private void OnDeleteButtonClicked(object sender, EventArgs e)
             {
                 if(DataRectangleManager.IsModified)
@@ -124,15 +130,16 @@ namespace TASMA
                 textBox.MaxLength = 15;
                 textBox.HorizontalContentAlignment = HorizontalAlignment.Center;
                 textBox.Background = this.Background;
-                textBox.Foreground = Brushes.White;
-                textBox.FontSize = 15;
+                textBox.Foreground = Brushes.Honeydew;
+                textBox.FontSize = 20;
                 textBox.FontFamily = new FontFamily("Segoe UI");
                 textBox.SelectedText = data;
                 textBox.SelectAll();
 
-                //이벤트 - 텍스트박스가 포커스를 잃어버리면 현재의 객체 참조를 보내고 알려준다.
+                //이벤트 등록 - 텍스트박스가 포커스를 잃어버리면 현재의 객체 참조를 보내고 알려준다.
                 textBox.LostFocus += (s, ea) =>
                 {
+                    //수정하지 않았을 시 동작
                     if (textBox.Text == data)
                     {
                         textArea.Children.Remove((TextBox)s);
@@ -140,9 +147,10 @@ namespace TASMA
                         return;
                     }
 
+                    //아이템 중복 여부 체크
                     if(OnCheckDuplication.Invoke(textBox.Text))
                     {
-                        MessageBox.Show("Grade already exists");
+                        MessageBox.Show("Data already exists");
                         return;
                     }
 
