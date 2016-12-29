@@ -18,7 +18,7 @@ using TASMA.DataInterfaces;
 namespace TASMA
 {
     /// <summary>
-    /// Grade 리스트
+    /// Grade 
     /// </summary>
     public partial class GradePage : Page
     {
@@ -138,12 +138,20 @@ namespace TASMA
             }
         }
 
+        /// <summary>
+        /// 학년을 선택하여 반 페이지로 넘어갑니다.
+        /// </summary>
+        /// <param name="sender">DataRectangle 객체</param>
+        /// <param name="e"></param>
         private void OnClickGrade(object sender, RoutedEventArgs e)
         {
             if (!DataRectangleManager.IsModified)
                 return;
 
-            MessageBox.Show((sender as DataRectangle).Data);
+            var gradeSelected = (sender as DataRectangle).Data;
+            adminDAO.SelectGrade(gradeSelected);
+            NavigationService nav = NavigationService.GetNavigationService(this);
+            nav.Navigate(new ClassPage(adminDAO));
         }
     }
 }

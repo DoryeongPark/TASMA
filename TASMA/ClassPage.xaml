@@ -16,7 +16,7 @@
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
                     <Button Name="ClassPage_PreviousButton" Content="BACK" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="30" Height="30" />
-                    <Label Name="ClassPage_Grade" Content="GRADE" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Segoe UI" FontWeight="Bold" FontSize="18" Foreground="Indigo"/>
+                    <Label Name="ClassPage_Grade" Content="CLASS" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Segoe UI" FontWeight="Bold" FontSize="18" Foreground="Indigo"/>
                     <Button Name="ClassPage_AddButton" Content="ADD" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" Width="30" Height="30"/>
                 </Grid>
                 <Grid Grid.Row="1">

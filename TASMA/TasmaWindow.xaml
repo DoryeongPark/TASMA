@@ -75,7 +75,7 @@
             
             <Grid Grid.Column="1">
                 <Border BorderThickness="1,0,0,0" BorderBrush="DimGray" />
-                <Frame Name="TasmaWindow_Frame">
+                <Frame Name="TasmaWindow_Frame" NavigationUIVisibility="Hidden">
                 </Frame>
             </Grid>
         </Grid>
