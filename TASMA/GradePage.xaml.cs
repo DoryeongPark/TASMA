@@ -48,7 +48,7 @@ namespace TASMA
         }
 
         /// <summary>
-        /// 데이터베이스의 상태를 페이지에 반영합니다
+        /// 데이터베이스의 상태를 페이지에 반영합니다.
         /// </summary>
         private void Invalidate()
         {

@@ -113,7 +113,7 @@ namespace TASMA
             var classSelected = (sender as DataRectangle).Data;
             adminDAO.SelectClass(classSelected);
             var nav = NavigationService.GetNavigationService(this);
-            //nav.Navigate(new StudentPage(adminDAO));
+            nav.Navigate(new StudentPage(adminDAO));
         }
 
         private void OnAddButtonClicked(object sender, RoutedEventArgs e)

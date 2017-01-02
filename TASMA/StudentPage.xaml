@@ -1,0 +1,30 @@
+﻿<Page x:Class="TASMA.StudentPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TASMA"
+      mc:Ignorable="d" 
+      Title="ClassPage" Background="White"
+      HorizontalAlignment="Stretch" VerticalAlignment="Stretch" d:DesignWidth="500" d:DesignHeight="350" Loaded="OnLoad">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            
+        </Grid>
+        <Grid Grid.Row="1">
+            <DataGrid AutoGenerateColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="StudentDataTable" >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="No." Binding="{Binding Path=SNUM}" CanUserResize="False"/>
+                    <DataGridTextColumn Header="Student Name" Binding="{Binding Path=SNAME}" CanUserResize="False"/>
+                    <DataGridTextColumn Header="Sex" Binding="{Binding Path=SEX}" CanUserResize="False"/>
+                    <DataGridTextColumn Header="Phone" Binding="{Binding Path=PNUM}" CanUserResize="False"/>
+                    <DataGridTextColumn Header="Address" Binding="{Binding Path=ADDRESS}" Width="*" CanUserResize="False"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</Page>
