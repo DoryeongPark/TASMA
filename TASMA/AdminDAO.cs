@@ -883,6 +883,10 @@ namespace TASMA
                 return true;
             }
 
+            /// <summary>
+            /// 현재 선택된 반의 학생 데이터 테이블을 가져옵니다.
+            /// </summary>
+            /// <returns>학생 데이터 테이블</returns>
             public DataTable GetStudentDataTable()
             {
                 if (!CheckClassState())
@@ -904,6 +908,10 @@ namespace TASMA
                 return dataTable;
             }
 
+            /// <summary>
+            /// 현재 수정된 반의 학생 데이터 테이블을 반영합니다.
+            /// </summary>
+            /// <param name="dataTable">반영되는 학생 데이터 테이블</param>
             public void UpdateStudentDataTable(DataTable dataTable)
             {
                 if (!CheckClassState())
