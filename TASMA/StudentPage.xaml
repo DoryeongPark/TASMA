@@ -5,8 +5,11 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:TASMA"
       mc:Ignorable="d" 
-      Title="ClassPage" Background="White"
+      Title="StudentPage" Background="White"
       HorizontalAlignment="Stretch" VerticalAlignment="Stretch" d:DesignWidth="500" d:DesignHeight="350" Loaded="OnLoad">
+    <Page.Resources>
+       
+    </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="45"/>
@@ -20,7 +23,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="No." Binding="{Binding Path=SNUM}" CanUserResize="False"/>
                     <DataGridTextColumn Header="Student Name" Binding="{Binding Path=SNAME}" CanUserResize="False"/>
-                    <DataGridTextColumn Header="Sex" Binding="{Binding Path=SEX}" CanUserResize="False"/>
+                    <DataGridComboBoxColumn Header="Sex" SelectedValueBinding="{Binding Path=SEX}"  CanUserResize="False" />
                     <DataGridTextColumn Header="Phone" Binding="{Binding Path=PNUM}" CanUserResize="False"/>
                     <DataGridTextColumn Header="Address" Binding="{Binding Path=ADDRESS}" Width="*" CanUserResize="False"/>
                 </DataGrid.Columns>
