@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,8 @@ namespace TASMA
     {
         private AdminDAO adminDAO;
 
+        private DataTable dataTable;
+
         public StudentPage(AdminDAO adminDAO)
         {
             InitializeComponent();
@@ -31,7 +34,8 @@ namespace TASMA
 
         private void OnLoad(object sender, RoutedEventArgs e)
         {
-
+            dataTable = adminDAO.GetStudentDataTable();
+            StudentDataTable.ItemsSource = dataTable.AsDataView();
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data.SQLite;
 using System.Windows;
 using System.IO;
+using System.Data;
 
 namespace TASMA
 {
@@ -804,7 +805,7 @@ namespace TASMA
             /// <summary>
             /// 학생번호에 해당하는 학생을 삭제합니다.
             /// </summary>
-            /// <param name="snum">학생번호</param>
+            /// <param name="snum">학생 번호</param>
             /// <returns>실행 성공 여부</returns>
             public bool DeleteStudent(int snum) {
 
@@ -881,6 +882,49 @@ namespace TASMA
                 currentSnum = snum;
                 return true;
             }
+
+            public DataTable GetStudentDataTable()
+            {
+                if (!CheckClassState())
+                    return null;
+
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+
+                var cmdStr = "SELECT * FROM STUDENT WHERE GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "';";
+                var cmd = new SQLiteCommand(cmdStr, conn);
+                var reader = cmd.ExecuteReader();
+
+                var dataTable = new DataTable();
+                dataTable.Load(reader);
+                
+                conn.Close();
+
+                return dataTable;
+            }
+
+            public void UpdateStudentDataTable(DataTable dataTable)
+            {
+                if (!CheckClassState())
+                    return;
+
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+
+                var cmdStr = "SELECT * FROM STUDENT WHERE GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "';";
+                var cmd = new SQLiteCommand(cmdStr, conn);
+                var adapter = new SQLiteDataAdapter(cmd);
+
+                SQLiteCommandBuilder builder = new SQLiteCommandBuilder(adapter);
+
+                adapter.UpdateCommand = builder.GetUpdateCommand();
+                adapter.Update(dataTable);
+
+                conn.Close();
+            }
+            
         }
 
     }
