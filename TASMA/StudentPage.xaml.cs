@@ -27,6 +27,8 @@ namespace TASMA
         private AdminDAO adminDAO;
 
         private DataTable dataTable;
+
+        private bool isEditing = false;
         
         public StudentPage(AdminDAO adminDAO)
         {
@@ -46,7 +48,7 @@ namespace TASMA
 
             StudentDataTable.PreviewKeyDown += OnPreviewKeyDown;
             StudentDataTable.CellEditEnding += OnCellEditEnding;
-
+        
             StudentDataTable.ItemsSource = dataTable.AsDataView();
         }
 
@@ -67,21 +69,79 @@ namespace TASMA
                 valueEdited = textBox.Text;
             }
 
-            //ColumnIndex = 0 정수로 변경
+            if (columnIndex == 0)
+            {
+                //Exception - 번호 외 다른 입력
+                try
+                {
+                    var studentNumberEdited = long.Parse(valueEdited);
+
+                    for (int i = 0; i < dataTable.Rows.Count; ++i)
+                    {
+                        var studentNumber = (long)dataTable.Rows[i][2];
+                        if (studentNumberEdited == studentNumber)
+                        {
+                            MessageBox.Show("Student numbers are duplicated");
+                            textBox.Text = GetAvailableStudentNumber().ToString();
+                            return;
+                        }
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("You should input number");
+                    textBox.Text = GetAvailableStudentNumber().ToString();
+                    return;
+                }
+            }
                 
         }
 
-
-
         /// <summary>
-        /// 새 학생 데이터를 만듭니다.
+        /// 데이터 조작에 대한 키보드 처리
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            dataTable.Rows.Add(new object[] { adminDAO.CurrentClass, adminDAO.CurrentGrade, GetAvailableStudentNumber(), "New Student", "M", null, null });
-            StudentDataTable.ItemsSource = dataTable.AsDataView();
+            if (e.Key == Key.Down)
+            {
+                dataTable.Rows.Add(
+                    new object[] { adminDAO.CurrentClass, adminDAO.CurrentGrade, GetAvailableStudentNumber(), "New Student", "M", null, null });
+                StudentDataTable.ItemsSource = dataTable.AsDataView();
+                StudentDataTable.CurrentCell = new DataGridCellInfo(StudentDataTable.Items[StudentDataTable.Items.Count - 1], StudentDataTable.Columns[3]);
+                StudentDataTable.BeginEdit();
+                ReflectDataTable();
+            }
+
+            if (e.Key == Key.Up)
+            {
+                var selectedIndex = StudentDataTable.SelectedIndex;
+                if (selectedIndex == -1)
+                    return;
+ 
+                var drv = (DataRowView)StudentDataTable.SelectedItem;
+                var selectedStudentNumber = (long)drv["SNUM"];
+                var selectedStudentName = drv["SNAME"];
+
+                var messageBoxResult = MessageBox.Show("Are you sure delete student? - " + selectedStudentName, "Delete Student", MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.No)
+                    return;
+                 
+                for (int i = dataTable.Rows.Count - 1; i >= 0; i--)
+                {
+                    var dr = dataTable.Rows[i];
+                    var studentNumber = (long)dr["SNUM"];
+
+                    if (studentNumber == selectedStudentNumber)
+                        dr.Delete();                                            
+                }
+
+                StudentDataTable.ItemsSource = dataTable.AsDataView();
+                ReflectDataTable();
+               
+            }
+
         }
 
 
@@ -96,10 +156,10 @@ namespace TASMA
             for (int i = 0; i < dataTable.Rows.Count; ++i)
             {
                 var studentNumber = (long)dataTable.Rows[i][2];
-                if(studentNumber != numberAllocated)
+                if (studentNumber != numberAllocated)
                 {
                     return numberAllocated;
-                }else
+                } else
                 {
                     ++numberAllocated;
                 }
@@ -108,7 +168,13 @@ namespace TASMA
             return numberAllocated;
         }
 
-        
+        /// <summary>
+        /// 현재 데이터 테이블의 상태를 실제 데이터베이스에 반영합니다.
+        /// </summary>
+        private void ReflectDataTable()
+        {
+            adminDAO.UpdateStudentDataTable(dataTable);
+        }
         
     }
 }

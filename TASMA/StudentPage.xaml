@@ -19,7 +19,7 @@
             
         </Grid>
         <Grid Grid.Row="1">
-            <DataGrid AutoGenerateColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="StudentDataTable" >
+            <DataGrid AutoGenerateColumns="False" CanUserResizeRows="False" CanUserDeleteRows="False" CanUserAddRows="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="StudentDataTable" >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="No." Binding="{Binding Path=SNUM}" CanUserResize="False"/>
                     <DataGridTextColumn Header="Student Name" Binding="{Binding Path=SNAME}" CanUserResize="False"/>
