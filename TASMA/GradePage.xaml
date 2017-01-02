@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:TASMA"
       mc:Ignorable="d" 
-      Title="GradePage" Background="HoneyDew" 
+      Title="GradePage" Background="White" 
       HorizontalAlignment="Stretch" VerticalAlignment="Stretch" d:DesignWidth="500" d:DesignHeight="350">
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto">

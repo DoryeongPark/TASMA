@@ -42,8 +42,12 @@ namespace TASMA
                 Width = 120;
                 Height = 120;
                 Margin = new Thickness(10);
-                Background = Brushes.Indigo; //Background
-
+                Background = Brushes.Honeydew; //Background
+               
+                var layout = new DockPanel();
+                layout.Width = 120;
+                layout.Height = 120;
+              
                 var btnArea = new DockPanel();
                 btnArea.Width = 120;
                 btnArea.Height = 15;
@@ -79,7 +83,7 @@ namespace TASMA
                 textBlock = new TextBlock();
                 textBlock.FontFamily = new FontFamily("Segoe UI");
                 textBlock.FontSize = 20;
-                textBlock.Foreground = Brushes.Honeydew; //Font Color
+                textBlock.Foreground = Brushes.Indigo; //Font Color
                 textBlock.FontWeight = FontWeights.Bold;
                 textBlock.Text = data;
 
@@ -97,6 +101,7 @@ namespace TASMA
 
                 SetDock(btnArea, Dock.Top);
                 SetDock(textArea, Dock.Bottom);
+
                 
             } 
 
