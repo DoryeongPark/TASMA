@@ -68,7 +68,7 @@ namespace TASMA
             /// <summary>
             /// 로그인 상태를 체크합니다.
             /// </summary>
-            /// <returns>로그인여부</returns>
+            /// <returns>로그인 여부</returns>
             private bool CheckLoginState()
             {
                 if (loginState == false)
@@ -83,7 +83,7 @@ namespace TASMA
             /// <summary>
             /// 학년을 선택한 상태를 체크합니다.
             /// </summary>
-            /// <returns>선택여부</returns>
+            /// <returns>선택 여부</returns>
             private bool CheckGradeState()
             {
                 if (loginState == false)
@@ -104,7 +104,7 @@ namespace TASMA
             /// <summary>
             /// 반을 선택한 상태를 체크합니다.
             /// </summary>
-            /// <returns>선택여부</returns>
+            /// <returns>선택 여부</returns>
             private bool CheckClassState()
             {
                 if (loginState == false)
@@ -198,6 +198,17 @@ namespace TASMA
                                 + ");";
                 cmd.ExecuteNonQuery();
 
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS SCORE("
+                                + "GRADE STRING NOT NULL, "
+                                + "CLASS STRING NOT NULL, "
+                                + "SNUM INTEGER NOT NULL, "
+                                + "PRIMARY KEY(GRADE, CLASS, SNUM), "
+                                + "FOREIGN KEY(GRADE, CLASS, SNUM) REFERENCES STUDENT(GRADE, CLASS, SNUM) "
+                                + "ON DELETE CASCADE "
+                                + "ON UPDATE CASCADE "
+                                + ");";
+                cmd.ExecuteNonQuery();
+
                 cmd.CommandText = "CREATE TABLE IF NOT EXISTS SUBJECT("
                                 + "GRADE STRING NOT NULL, "
                                 + "CLASS STRING NOT NULL, "
@@ -233,11 +244,11 @@ namespace TASMA
             }
 
             /// <summary>
-            /// 계정의 비밀번호의 매칭여부를 검사합니다.
+            /// 계정의 비밀번호의 매칭 여부를 검사합니다.
             /// </summary>
             /// <param name="id">선생님 계정</param>
             /// <param name="password">비밀번호</param>
-            /// <returns>매칭여부</returns>
+            /// <returns>매칭 여부</returns>
             public bool Authenticate(string id, string password)
             {
 
