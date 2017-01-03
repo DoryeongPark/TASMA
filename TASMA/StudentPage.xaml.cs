@@ -27,17 +27,25 @@ namespace TASMA
         private AdminDAO adminDAO;
 
         private DataTable dataTable;
-
-        private bool isEditing = false;
         
         public StudentPage(AdminDAO adminDAO)
         {
             InitializeComponent();
             this.adminDAO = adminDAO;
+
+            StudentPage_PreviousButton.Click += OnPreviousButtonClicked;
+        }
+
+        private void OnPreviousButtonClicked(object sender, RoutedEventArgs e)
+        {
+            adminDAO.MovePrevious();
+            var nav = NavigationService.GetNavigationService(this);
+            nav.Navigate(new ClassPage(adminDAO));
         }
 
         private void OnLoad(object sender, RoutedEventArgs e)
         {
+            StudentPage_Class.Content = "GRADE " + adminDAO.CurrentGrade + " - CLASS " + adminDAO.CurrentClass;
             dataTable = adminDAO.GetStudentDataTable();
             dataTable.AcceptChanges();
 
@@ -52,7 +60,7 @@ namespace TASMA
         
             StudentDataTable.ItemsSource = dataTable.AsDataView();
 
-            if(StudentDataTable.Items.Count == 0)
+            if(dataTable.Rows.Count == 0)
             {
                 dataTable.Rows.Add(
                     new object[] { adminDAO.CurrentGrade, adminDAO.CurrentClass, GetAvailableStudentNumber(), "New Student", "M", null, null });
@@ -88,6 +96,9 @@ namespace TASMA
 
                     for (int i = 0; i < dataTable.Rows.Count; ++i)
                     {
+                        if (i == rowIndex)
+                            continue;
+
                         var studentNumber = (long)dataTable.Rows[i][2];
                         if (studentNumberEdited == studentNumber)
                         {
@@ -107,7 +118,7 @@ namespace TASMA
                 }
             }else //수정한 데이터가 학생 번호가 아닐 경우
             {
-                dataTable.Rows[rowIndex][columnIndex + 2] = textBox.Text;
+                dataTable.Rows[rowIndex][columnIndex + 2] = valueEdited;
             }
 
             ReflectDataTable();                

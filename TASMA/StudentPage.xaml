@@ -22,7 +22,9 @@
             <RowDefinition Height="0.5*" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            
+            <Button Name="StudentPage_PreviousButton" Content="BACK" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="30" Height="30" />
+            <Label Name="StudentPage_Class" Content="STUDENTS" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Segoe UI" FontWeight="Bold" FontSize="18" Foreground="Indigo"/>
+            <Button Name="StudentPage_SortButton" Content="Sort" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" Width="30" Height="30" />
         </Grid>
         <Grid Grid.Row="1">
             <DataGrid AutoGenerateColumns="False" CanUserResizeRows="False" CanUserDeleteRows="False" CanUserAddRows="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="StudentDataTable" >
