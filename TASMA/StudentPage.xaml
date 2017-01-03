@@ -44,7 +44,7 @@
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource guideTextStyle}">
-                    Create Student: N
+                    Create Student: Ctrl + ↓
                 </TextBlock>
             </Grid>
             <Grid Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -54,7 +54,7 @@
             </Grid>
             <Grid Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource guideTextStyle}">
-                    Delete Student: D
+                    Delete Student: Ctrl + ↑
                 </TextBlock>
             </Grid>
         </Grid>

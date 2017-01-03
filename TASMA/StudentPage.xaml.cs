@@ -121,7 +121,7 @@ namespace TASMA
         private void OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
             //학생 데이터 삽입
-            if (e.Key == Key.N)
+            if (e.Key == Key.Down && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
                 dataTable.Rows.Add(
                     new object[] { adminDAO.CurrentGrade, adminDAO.CurrentClass, GetAvailableStudentNumber(), "New Student", "M", null, null });
@@ -132,7 +132,7 @@ namespace TASMA
             }
 
             //학생 데이터 삭제
-            if (e.Key == Key.D)
+            if (e.Key == Key.Up && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
                 var selectedIndex = StudentDataTable.SelectedIndex;
                 if (selectedIndex == -1)
