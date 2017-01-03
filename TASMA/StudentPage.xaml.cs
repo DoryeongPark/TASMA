@@ -114,13 +114,14 @@ namespace TASMA
         }
 
         /// <summary>
-        /// 데이터 조작에 대한 키보드 처리
+        /// 키보드 입력에 대한 로직 처리
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Down)
+            //학생 데이터 삽입
+            if (e.Key == Key.N)
             {
                 dataTable.Rows.Add(
                     new object[] { adminDAO.CurrentGrade, adminDAO.CurrentClass, GetAvailableStudentNumber(), "New Student", "M", null, null });
@@ -130,7 +131,8 @@ namespace TASMA
                 ReflectDataTable();
             }
 
-            if (e.Key == Key.Up)
+            //학생 데이터 삭제
+            if (e.Key == Key.D)
             {
                 var selectedIndex = StudentDataTable.SelectedIndex;
                 if (selectedIndex == -1)
