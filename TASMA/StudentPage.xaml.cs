@@ -39,6 +39,7 @@ namespace TASMA
         private void OnLoad(object sender, RoutedEventArgs e)
         {
             dataTable = adminDAO.GetStudentDataTable();
+            dataTable.AcceptChanges();
 
             var comboBoxColumn = StudentDataTable.Columns[2] as DataGridComboBoxColumn;
             var items = new ArrayList();
@@ -50,6 +51,13 @@ namespace TASMA
             StudentDataTable.CellEditEnding += OnCellEditEnding;
         
             StudentDataTable.ItemsSource = dataTable.AsDataView();
+
+            if(StudentDataTable.Items.Count == 0)
+            {
+                dataTable.Rows.Add(
+                    new object[] { adminDAO.CurrentGrade, adminDAO.CurrentClass, GetAvailableStudentNumber(), "New Student", "M", null, null });
+                StudentDataTable.ItemsSource = dataTable.AsDataView();
+            }
         }
 
         private void OnCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
@@ -57,8 +65,9 @@ namespace TASMA
             string valueEdited = "";
 
             var textBox = e.EditingElement as TextBox;
+            var rowIndex = e.Row.GetIndex();
             var columnIndex = e.Column.DisplayIndex;
-
+            
             if (textBox == null)
             {
                 var comboBox = e.EditingElement as ComboBox;
@@ -69,6 +78,7 @@ namespace TASMA
                 valueEdited = textBox.Text;
             }
 
+            //수정한 데이터가 학생 번호인 경우
             if (columnIndex == 0)
             {
                 //Exception - 번호 외 다른 입력
@@ -86,6 +96,8 @@ namespace TASMA
                             return;
                         }
                     }
+                    dataTable.Rows[rowIndex][columnIndex + 2] = studentNumberEdited;
+
                 }
                 catch
                 {
@@ -93,8 +105,12 @@ namespace TASMA
                     textBox.Text = GetAvailableStudentNumber().ToString();
                     return;
                 }
+            }else //수정한 데이터가 학생 번호가 아닐 경우
+            {
+                dataTable.Rows[rowIndex][columnIndex + 2] = textBox.Text;
             }
-                
+
+            ReflectDataTable();                
         }
 
         /// <summary>
@@ -107,7 +123,7 @@ namespace TASMA
             if (e.Key == Key.Down)
             {
                 dataTable.Rows.Add(
-                    new object[] { adminDAO.CurrentClass, adminDAO.CurrentGrade, GetAvailableStudentNumber(), "New Student", "M", null, null });
+                    new object[] { adminDAO.CurrentGrade, adminDAO.CurrentClass, GetAvailableStudentNumber(), "New Student", "M", null, null });
                 StudentDataTable.ItemsSource = dataTable.AsDataView();
                 StudentDataTable.CurrentCell = new DataGridCellInfo(StudentDataTable.Items[StudentDataTable.Items.Count - 1], StudentDataTable.Columns[3]);
                 StudentDataTable.BeginEdit();
