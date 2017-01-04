@@ -1076,7 +1076,7 @@ namespace TASMA
                 {
                     cmd.CommandText = "DELETE FROM SUBJECT WHERE SUBJECT = '" + subjectName + "';";
                     cmd.ExecuteNonQuery();
-                    cmd.CommandText = "DROP TABLE " + subjectName;
+                    cmd.CommandText = "DROP TABLE " + subjectName + ";";
                     cmd.ExecuteNonQuery();
                 }
                 catch (SQLiteException se)
@@ -1131,6 +1131,78 @@ namespace TASMA
             /// <returns>실행 성공 여부</returns>
             public bool UpdateEvaluation(string subjectName, string oldEvaluationName, string newEvaluationName)
             {
+                var evaluationList = GetEvaluationList(subjectName);
+
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+                var cmd = new SQLiteCommand(conn);
+
+                //바뀔 Evaluation name의 인덱스
+                int indexChanged = -1;
+
+                try
+                {
+                    cmd.CommandText = "UPDATE EVALUATION SET EVALUATION = '" + newEvaluationName + "' WHERE SUBJECT = '" + subjectName + "' AND EVALUATION = '" + oldEvaluationName + "';";
+                    cmd.ExecuteNonQuery();
+
+                    var cmdStr = "";
+                    cmdStr += "BEGIN TRANSACTION; ";
+                    cmdStr += "ALTER TABLE " + subjectName + " RENAME TO TEMP; ";
+                    cmdStr += "CREATE TABLE " + subjectName + "(";
+                    cmdStr += "GRADE STRING NOT NULL, ";
+                    cmdStr += "CLASS STRING NOT NULL, ";
+                    cmdStr += "SNUM INTEGER NOT NULL, ";
+                    for (int i = 0; i < evaluationList.Count; ++i)
+                    {
+                        if (evaluationList[i] == oldEvaluationName)
+                        {
+                            indexChanged = i;
+                            evaluationList[i] = newEvaluationName;
+                            cmdStr += newEvaluationName + " INTEGER, ";
+                        }
+                        else
+                            cmdStr += evaluationList[i] + " INTEGER, ";
+                    }
+                    cmdStr += "PRIMARY KEY(GRADE, CLASS, SNUM), ";
+                    cmdStr += "FOREIGN KEY(GRADE, CLASS, SNUM) REFERENCES STUDENT(GRADE, CLASS, SNUM) ";
+                    cmdStr += "ON DELETE CASCADE ";
+                    cmdStr += "ON UPDATE CASCADE ";
+                    cmdStr += "); ";
+                    cmdStr += "INSERT INTO " + subjectName + "(";
+                    cmdStr += "GRADE, CLASS, SNUM, ";
+                    for (int i = 0; i < evaluationList.Count; ++i)
+                    {
+                        if (i != evaluationList.Count - 1)
+                            cmdStr += evaluationList[i] + ", ";
+                        else
+                            cmdStr += evaluationList[i] + ") ";
+
+                        if (i == indexChanged)
+                            evaluationList[i] = oldEvaluationName;
+                    }
+                    cmdStr += "SELECT ";
+                    cmdStr += "GRADE, CLASS, SNUM, ";
+                    for (int i = 0; i < evaluationList.Count; ++i)
+                    {
+                        if (i != evaluationList.Count - 1)
+                            cmdStr += evaluationList[i] + ", ";
+                        else
+                            cmdStr += evaluationList[i] + " ";
+                    }
+                    cmdStr += "FROM TEMP; ";
+                    cmdStr += "DROP TABLE TEMP; ";
+                    cmdStr += "COMMIT; ";
+                    cmd.CommandText = cmdStr;
+                    cmd.ExecuteNonQuery();   
+                }catch(SQLiteException se)
+                {
+                    MessageBox.Show(se.Message);
+                    return false;
+                }
+                cmd.Dispose();
+                conn.Close();
+
                 return true;
             }
 
@@ -1170,7 +1242,29 @@ namespace TASMA
                 return true;
             }
          
+            /// <summary>
+            /// 과목의 평가 항목 리스트를 반환합니다.
+            /// </summary>
+            /// <param name="subjectName">과목</param>
+            /// <returns>평가 항목 리스트</returns>
+            public List<string> GetEvaluationList(string subjectName)
+            {
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
 
+                var cmdStr = "SELECT EVALUATION FROM EVALUATION WHERE SUBJECT = '" + subjectName + "';";
+                var cmd = new SQLiteCommand(cmdStr, conn);
+                var reader = cmd.ExecuteReader();
+                var result = new List<string>();
+
+                while (reader.Read())
+                {
+                    result.Add(reader["EVALUATION"].ToString());
+                }
+
+                return result;
+            }
 
         }
     }
