@@ -71,6 +71,11 @@ namespace TASMA
             SetClickedStyle(menuBtn);
         }
 
+        /// <summary>
+        /// 메뉴 버튼 클릭 이벤트 루틴을 수행합니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnClickMenuButton(object sender, RoutedEventArgs e)
         {
             adminDAO.ReturnToInitialLoginState();
@@ -101,33 +106,62 @@ namespace TASMA
                 return; //Error
         }
 
+        /// <summary>
+        /// 버튼 클릭 스타일을 적용합니다.
+        /// </summary>
+        /// <param name="btn">스타일을 적용할 버튼</param>
         private void SetClickedStyle(Button btn)
         {
             btn.Foreground = Brushes.Black;
             btn.Background = Brushes.Azure;
         }
 
+        /// <summary>
+        /// 버튼을 클릭하지 않은 스타일을 적용합니다.
+        /// </summary>
+        /// <param name="btn">스타일을 적용할 버튼</param>
         private void SetUnClickedStyle(Button btn)
         {
             btn.Foreground = Brushes.White;
             btn.Background = Brushes.Indigo;
         }
 
+        /// <summary>
+        /// 창 끌기 이벤트를 추가합니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnLeftMouseButtonDown(object sender, MouseButtonEventArgs e)
         {
             DragMove();
         }
 
+        /// <summary>
+        /// 창 최소화 이벤트를 추가합니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MinimizeRoutine(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
         }
 
-        private void ExitRoutine(object sender, EventArgs e)
+        /// <summary>
+        /// 로그아웃 루틴을 수행합니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnLogoutButtonClicked(object sender, EventArgs e)
         {
+            adminDAO.Logout();
             Close();
         }
 
+        /// <summary>
+        /// 프로그램 종료 루틴을 수행합니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnClosed(object sender, EventArgs e)
         {
             Owner.Close();

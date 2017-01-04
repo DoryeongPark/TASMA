@@ -48,7 +48,7 @@
                 <Grid Grid.Row="0">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                         <Button x:Name="LoginWindow_Minimized" Content="{StaticResource tasmaMinimizeButton}" Width="20" Height="20" Background="Transparent" BorderThickness="0" Click="MinimizeRoutine"/>
-                        <Button x:Name="LoginWindow_Exit" Content="{StaticResource tasmaCloseButton}" Width="20" Height="20" Background="Transparent" BorderThickness="0" Click="ExitRoutine"/>
+                        <Button x:Name="LoginWindow_Exit" Content="{StaticResource tasmaCloseButton}" Width="20" Height="20" Background="Transparent" BorderThickness="0" Click="OnLogoutButtonClicked"/>
                 </StackPanel>
                 </Grid>
                 <Grid Grid.Row="1">
