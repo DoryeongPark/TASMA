@@ -1288,6 +1288,23 @@ namespace TASMA
             /// <returns>실행 성공 여부</returns>
             public bool RegisterClassOnSubject(string subjectName, string gradeName, string className)
             {
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+                var cmd = new SQLiteCommand(conn);
+
+                try
+                {
+                    cmd.CommandText = "INSERT INTO CLASSSUBJECT(SUBJECT, GRADE, CLASS) VALUES('" + subjectName +"', '" + gradeName + "', '" + className + "');";
+                    cmd.ExecuteNonQuery();
+                }catch(SQLiteException se)
+                {
+                    MessageBox.Show(se.Message);
+                    return false;
+                }
+
+                cmd.Dispose();
+                conn.Close();
                 return true;
             }
 
@@ -1300,6 +1317,24 @@ namespace TASMA
             /// <returns>실행 성공 여부</returns>
             public bool UnRegisterClassOnSubject(string subjectName, string gradeName, string className)
             {
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+                var cmd = new SQLiteCommand(conn);
+
+                try
+                {
+                    cmd.CommandText = "DELETE FROM CLASSSUBJECT WHERE SUBJECT = '" + subjectName + "' AND GRADE = '" + gradeName + "' AND CLASS = '" + className + "';";
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException se)
+                {
+                    MessageBox.Show(se.Message);
+                    return false;
+                }
+
+                cmd.Dispose();
+                conn.Close();
                 return true;
             }
          
