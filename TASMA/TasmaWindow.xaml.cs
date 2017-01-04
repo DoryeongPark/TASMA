@@ -49,6 +49,9 @@ namespace TASMA
 
             OnClickMenuButton(TasmaWindow_Student, null);
 
+            
+
+
         }
 
         private void OnMouseLeave(object sender, MouseEventArgs e)

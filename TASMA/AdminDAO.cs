@@ -1035,8 +1035,28 @@ namespace TASMA
             /// <param name="oldSubjectName">수정할 과목 이름</param>
             /// <param name="newSubjectName">수정한 과목 이름</param>
             /// <returns>실행 성공 여부</returns>
-            public bool UpdateSubject(string oldSubjectName,  string newSubjectName)
+            public bool UpdateSubject(string oldSubjectName, string newSubjectName)
             {
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+                var cmd = new SQLiteCommand(conn);
+
+                try
+                {
+                    cmd.CommandText = "UPDATE SUBJECT SET SUBJECT = '" + newSubjectName + "' WHERE SUBJECT = '" + oldSubjectName + "';";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "ALTER TABLE " + oldSubjectName + " RENAME TO " + newSubjectName + ";";
+                    cmd.ExecuteNonQuery();
+                }catch(SQLiteException se)
+                {
+                    MessageBox.Show(se.Message);
+                    return false;
+                }
+
+                cmd.Dispose();
+                conn.Close();
+
                 return true;
             }
 
@@ -1047,6 +1067,27 @@ namespace TASMA
             /// <returns>실행 성공 여부</returns>
             public bool DeleteSubject(string subjectName)
             {
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+                var cmd = new SQLiteCommand(conn);
+                               
+                try
+                {
+                    cmd.CommandText = "DELETE FROM SUBJECT WHERE SUBJECT = '" + subjectName + "';";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "DROP TABLE " + subjectName;
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException se)
+                {
+                    MessageBox.Show(se.Message);
+                    return false;
+                }
+
+                cmd.Dispose();
+                conn.Close();
+
                 return true;
             }
 
@@ -1058,6 +1099,25 @@ namespace TASMA
             /// <returns>실행 성공 여부</returns>
             public bool CreateEvaluation(string subjectName, string evaluationName)
             {
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+                var cmd = new SQLiteCommand(conn);
+
+                try
+                {
+                    cmd.CommandText = "INSERT INTO EVALUATION VALUES('" + subjectName + "', '" + evaluationName + "');";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "ALTER TABLE " + subjectName + " ADD COLUMN " + evaluationName + " INTEGER;";
+                    cmd.ExecuteNonQuery();
+                }catch(SQLiteException se)
+                {
+                    MessageBox.Show(se.Message);
+                    return false;
+                }
+
+                cmd.Dispose();
+                conn.Close();
                 return true;
             }
 
