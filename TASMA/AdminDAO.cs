@@ -129,6 +129,17 @@ namespace TASMA
             }
 
             /// <summary>
+            /// Data Access Object를 로그인 초기 상태로 되돌립니다.
+            /// </summary>
+            public void ReturnToInitialLoginState()
+            {
+                //현재 선택된 학년, 반, 학생 번호 초기화
+                currentGrade = null;
+                currentClass = null;
+                currentSnum = -1;
+            }
+
+            /// <summary>
             /// 선생님의 새로운 계정을 등록합니다.
             /// </summary>
             /// <param name="id">등록할 ID</param>

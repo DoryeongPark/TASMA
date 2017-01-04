@@ -24,6 +24,8 @@ namespace TASMA
 
         private List<Button> menuButtons;
 
+        private Button btnClicked;
+
         public TasmaWindow(AdminDAO adminDAO)
         {
             InitializeComponent();
@@ -40,18 +42,75 @@ namespace TASMA
 
             foreach(var btn in menuButtons)
             {
-                btn.MouseLeave += new MouseEventHandler(OnMenuButtonMouseLeave);
-                btn.MouseEnter += new MouseEventHandler(OnMenuButtonMouseEnter);
-                btn.Click += OnClickMenu;
+                btn.MouseEnter += OnMouseEnter;
+                btn.MouseLeave += OnMouseLeave;
+                btn.Click += OnClickMenuButton;
             }
 
-            TasmaWindow_Frame.Navigate(new GradePage(adminDAO));
-           
+            OnClickMenuButton(TasmaWindow_Student, null);
+
         }
 
-        private void OnClickMenu(object sender, RoutedEventArgs e)
+        private void OnMouseLeave(object sender, MouseEventArgs e)
         {
-            throw new NotImplementedException();
+            var menuBtn = sender as Button;
+
+            if (menuBtn.Equals(btnClicked))
+                return;
+
+            SetUnClickedStyle(menuBtn);
+        }
+
+        private void OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            var menuBtn = sender as Button;
+
+            if (menuBtn.Equals(btnClicked))
+                return;
+
+            SetClickedStyle(menuBtn);
+        }
+
+        private void OnClickMenuButton(object sender, RoutedEventArgs e)
+        {
+            adminDAO.ReturnToInitialLoginState();
+
+            var menuBtn = sender as Button;
+            btnClicked = menuBtn;
+            
+            for(int i = 0; i < menuButtons.Count; ++i)
+            {
+                if (btnClicked.Equals(menuButtons[i]))
+                    SetClickedStyle(menuButtons[i]);
+                else
+                    SetUnClickedStyle(menuButtons[i]);
+            }
+            
+            //Event for each buttons
+            if (menuBtn.Equals(TasmaWindow_Student))
+                TasmaWindow_Frame.Navigate(new GradePage(adminDAO));
+            else if (menuBtn.Equals(TasmaWindow_Subject))
+                return;
+            else if (menuBtn.Equals(TasmaWindow_Score))
+                return;
+            else if (menuBtn.Equals(TasmaWindow_Print))
+                return;
+            else if (menuBtn.Equals(TasmaWindow_Export))
+                return;
+            else
+                return; //Error
+        }
+
+        private void SetClickedStyle(Button btn)
+        {
+            btn.Foreground = Brushes.Black;
+            btn.Background = Brushes.Azure;
+        }
+
+        private void SetUnClickedStyle(Button btn)
+        {
+            btn.Foreground = Brushes.White;
+            btn.Background = Brushes.Indigo;
         }
 
         private void OnLeftMouseButtonDown(object sender, MouseButtonEventArgs e)
@@ -74,18 +133,6 @@ namespace TASMA
             Owner.Close();
         }
 
-        private void OnMenuButtonMouseEnter(object sender, MouseEventArgs e)
-        {
-            var button = sender as Button;
-            button.Background = Brushes.Azure;
-            button.Foreground = Brushes.Black;
-        }
-       
-        private void OnMenuButtonMouseLeave(object sender, MouseEventArgs e)
-        {
-            var button = sender as Button;
-            button.Background = Brushes.Indigo;
-            button.Foreground = Brushes.White;
-        }
+                
     }
 }
