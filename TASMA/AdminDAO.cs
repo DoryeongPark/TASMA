@@ -973,6 +973,11 @@ namespace TASMA
                 conn.Close();
             }
 
+            /// <summary>
+            /// 과목을 생성합니다.
+            /// </summary>
+            /// <param name="subjectName">과목 이름</param>
+            /// <returns>실행 성공 여부</returns>
             public bool CreateSubject(string subjectName)
             {
                 var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
@@ -1013,33 +1018,87 @@ namespace TASMA
                 return true;
             }
 
+            /// <summary>
+            /// 과목 이름을 수정합니다. 
+            /// </summary>
+            /// <param name="oldSubjectName">수정할 과목 이름</param>
+            /// <param name="newSubjectName">수정한 과목 이름</param>
+            /// <returns>실행 성공 여부</returns>
             public bool UpdateSubject(string oldSubjectName,  string newSubjectName)
             {
                 return true;
             }
 
+            /// <summary>
+            /// 과목을 제거합니다.
+            /// </summary>
+            /// <param name="subjectName">제거할 과목 이름</param>
+            /// <returns>실행 성공 여부</returns>
             public bool DeleteSubject(string subjectName)
             {
                 return true;
             }
 
+            /// <summary>
+            /// 과목에 평가 항목을 추가합니다.
+            /// </summary>
+            /// <param name="subjectName">평가 항목을 추가할 과목</param>
+            /// <param name="evaluationName">추가할 평가 항목</param>
+            /// <returns>실행 성공 여부</returns>
             public bool CreateEvaluation(string subjectName, string evaluationName)
             {
                 return true;
             }
 
 
+            /// <summary>
+            /// 과목의 평가 항목 이름을 수정합니다.
+            /// </summary>
+            /// <param name="subjectName">평가 항목을 수정할 과목</param>
+            /// <param name="oldEvaluationName">수정할 평가 항목</param>
+            /// <param name="newEvaluationName">수정한 평가 항목</param>
+            /// <returns>실행 성공 여부</returns>
             public bool UpdateEvaluation(string subjectName, string oldEvaluationName, string newEvaluationName)
             {
                 return true;
             }
 
+            /// <summary>
+            /// 과목의 평가 항목을 삭제합니다.
+            /// </summary>
+            /// <param name="subjectName">평가 항목을 삭제할 과목</param>
+            /// <param name="evaluationName">삭제할 항목</param>
+            /// <returns>실행 성공 여부</returns>
             public bool DeleteEvaluation(string subjectName, string evaluationName)
             {
                 return true;
             }
 
             
+            /// <summary>
+            /// 과목에 반을 등록합니다.
+            /// </summary>
+            /// <param name="subjectName">과목</param>
+            /// <param name="gradeName">등록할 반의 학년</param>
+            /// <param name="className">등록할 반</param>
+            /// <returns>실행 성공 여부</returns>
+            public bool RegisterClassOnSubject(string subjectName, string gradeName, string className)
+            {
+                return true;
+            }
+
+            /// <summary>
+            /// 과목에 반을 등록 해제합니다.
+            /// </summary>
+            /// <param name="subjectName">과목</param>
+            /// <param name="gradeName">등록 해제할 반의 학년</param>
+            /// <param name="className">등록 해제할 반</param>
+            /// <returns>실행 성공 여부</returns>
+            public bool UnRegisterClassOnSubject(string subjectName, string gradeName, string className)
+            {
+                return true;
+            }
+         
 
 
         }

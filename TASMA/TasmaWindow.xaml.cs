@@ -42,12 +42,16 @@ namespace TASMA
             {
                 btn.MouseLeave += new MouseEventHandler(OnMenuButtonMouseLeave);
                 btn.MouseEnter += new MouseEventHandler(OnMenuButtonMouseEnter);
+                btn.Click += OnClickMenu;
             }
-
-            adminDAO.CreateSubject("MATH");
 
             TasmaWindow_Frame.Navigate(new GradePage(adminDAO));
            
+        }
+
+        private void OnClickMenu(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void OnLeftMouseButtonDown(object sender, MouseButtonEventArgs e)
