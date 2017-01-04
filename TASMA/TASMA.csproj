@@ -97,6 +97,9 @@
       <DependentUpon>StudentPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="StudentTableOption.cs" />
+    <Compile Include="SubjectPage.xaml.cs">
+      <DependentUpon>SubjectPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TasmaPromptWindow.xaml.cs">
       <DependentUpon>TasmaPromptWindow.xaml</DependentUpon>
     </Compile>
@@ -133,6 +136,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="StudentPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SubjectPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

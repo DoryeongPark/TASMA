@@ -92,12 +92,12 @@ namespace TASMA
                 else
                     SetUnClickedStyle(menuButtons[i]);
             }
-            
+
             //Event for each buttons
             if (menuBtn.Equals(TasmaWindow_Student))
                 TasmaWindow_Frame.Navigate(new GradePage(adminDAO));
             else if (menuBtn.Equals(TasmaWindow_Subject))
-                return;
+                TasmaWindow_Frame.Navigate(new SubjectPage(adminDAO));
             else if (menuBtn.Equals(TasmaWindow_Score))
                 return;
             else if (menuBtn.Equals(TasmaWindow_Print))
