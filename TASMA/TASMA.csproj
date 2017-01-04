@@ -96,6 +96,7 @@
     <Compile Include="StudentPage.xaml.cs">
       <DependentUpon>StudentPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StudentTableOption.cs" />
     <Compile Include="TasmaPromptWindow.xaml.cs">
       <DependentUpon>TasmaPromptWindow.xaml</DependentUpon>
     </Compile>

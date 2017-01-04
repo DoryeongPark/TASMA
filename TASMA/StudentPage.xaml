@@ -14,12 +14,13 @@
             <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="Foreground" Value="DimGray" />
         </Style>
+       
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="45"/>
             <RowDefinition Height="5*"/>
-            <RowDefinition Height="0.5*" />
+            <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Button Name="StudentPage_PreviousButton" Content="BACK" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="30" Height="30" />
@@ -27,14 +28,28 @@
             <Button Name="StudentPage_SortButton" Content="Sort" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" Width="30" Height="30" />
         </Grid>
         <Grid Grid.Row="1">
-            <DataGrid AutoGenerateColumns="False" CanUserResizeRows="False" CanUserDeleteRows="False" CanUserAddRows="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="StudentDataTable" >
+            <DataGrid HeadersVisibility="Column" FontFamily="Segoe UI" FontSize="10" Foreground="Gray" AutoGenerateColumns="False" CanUserResizeRows="False" CanUserDeleteRows="False" CanUserAddRows="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="StudentDataTable">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="No." Binding="{Binding Path=SNUM}" CanUserResize="False"/>
-                    <DataGridTextColumn Header="Student Name" Binding="{Binding Path=SNAME}" CanUserResize="False"/>
-                    <DataGridComboBoxColumn Header="Sex" SelectedValueBinding="{Binding Path=SEX}"  CanUserResize="False" />
-                    <DataGridTextColumn Header="Phone" Binding="{Binding Path=PNUM}" CanUserResize="False"/>
-                    <DataGridTextColumn Header="Address" Binding="{Binding Path=ADDRESS}" Width="*" CanUserResize="False"/>
+                    <DataGridTextColumn Width="1*" Header="No." Binding="{Binding Path=SNUM}" CanUserResize="False"/>
+                    <DataGridTextColumn Width="4*" Header="Student Name" Binding="{Binding Path=SNAME}" CanUserResize="False"/>
+                    <DataGridComboBoxColumn Width="1*" Header="Sex" SelectedValueBinding="{Binding Path=SEX}"  CanUserResize="False" />
+                    <DataGridTextColumn Width="2.5*" Header="Phone" Binding="{Binding Path=PNUM}" CanUserResize="False"/>
+                    <DataGridTextColumn Width="7*" Header="Address" Binding="{Binding Path=ADDRESS}" CanUserResize="False"/>
                 </DataGrid.Columns>
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="{x:Type DataGridColumnHeader}">
+                        <Setter Property="FontWeight"  Value="SemiBold" />
+                        <Setter Property="BorderBrush" Value="Black"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="Height" Value="25" />
+                        <Setter Property="HorizontalAlignment" Value="Stretch" />
+                        <Setter Property="VerticalAlignment" Value="Stretch" />
+                        <Setter Property="FontSize" Value="10" />
+                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        <Setter Property="Background" Value="MidnightBlue" />
+                        <Setter Property="Foreground" Value="WhiteSmoke" />
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
             </DataGrid>
         </Grid>
         
@@ -46,17 +61,17 @@
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource guideTextStyle}">
-                    Create Student: Ctrl + ↓
+                    <TextBlock Foreground="Indigo">Create Student:</TextBlock> Ctrl + ↓
                 </TextBlock>
             </Grid>
             <Grid Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource guideTextStyle}">
-                    Move Cursor Next: Tab                    
+                    <TextBlock Foreground="Indigo">Move Cursor Next:</TextBlock> Tab                    
                 </TextBlock>
             </Grid>
             <Grid Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource guideTextStyle}">
-                    Delete Student: Ctrl + ↑
+                    <TextBlock Foreground="Indigo">Delete Student:</TextBlock> Ctrl + ↑
                 </TextBlock>
             </Grid>
         </Grid>

@@ -198,17 +198,6 @@ namespace TASMA
                                 + ");";
                 cmd.ExecuteNonQuery();
 
-                cmd.CommandText = "CREATE TABLE IF NOT EXISTS SCORE("
-                                + "GRADE STRING NOT NULL, "
-                                + "CLASS STRING NOT NULL, "
-                                + "SNUM INTEGER NOT NULL, "
-                                + "PRIMARY KEY(GRADE, CLASS, SNUM), "
-                                + "FOREIGN KEY(GRADE, CLASS, SNUM) REFERENCES STUDENT(GRADE, CLASS, SNUM) "
-                                + "ON DELETE CASCADE "
-                                + "ON UPDATE CASCADE "
-                                + ");";
-                cmd.ExecuteNonQuery();
-
                 cmd.CommandText = "CREATE TABLE IF NOT EXISTS SUBJECT("
                                 + "GRADE STRING NOT NULL, "
                                 + "CLASS STRING NOT NULL, "
@@ -849,8 +838,8 @@ namespace TASMA
             /// <summary>
             /// 학생번호를 수정합니다.  
             /// </summary>
-            /// <param name="oldSnum"></param>
-            /// <param name="newSnum"></param>
+            /// <param name="oldSnum">수정할 학생번호</param>
+            /// <param name="newSnum">수정한 학생번호</param>
             /// <returns>실행 성공 여부</returns>
             public bool UpdateStudent(int oldSnum, int newSnum) {
 
@@ -861,7 +850,7 @@ namespace TASMA
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
                 var cmd = new SQLiteCommand(conn);
-                cmd.CommandText = "UPDATE SET SNUM = '" + newSnum + "' WHERE GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "' AND SNUM = '" + oldSnum + "';";
+                cmd.CommandText = "UPDATE STUDENT SET SNUM = '" + newSnum + "' WHERE GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "' AND SNUM = '" + oldSnum + "';";
                 
                 try
                 {
@@ -870,7 +859,7 @@ namespace TASMA
                 catch (SQLiteException se)
                 {
                     conn.Close();
-                    MessageBox.Show("Error code - " + se.ErrorCode.ToString());
+                    MessageBox.Show(se.Message);
                     return false;
                 }
 
@@ -898,16 +887,29 @@ namespace TASMA
             /// 현재 선택된 반의 학생 데이터 테이블을 가져옵니다.
             /// </summary>
             /// <returns>학생 데이터 테이블</returns>
-            public DataTable GetStudentDataTable()
+            public DataTable GetStudentDataTable(StudentTableOption option)
             {
                 if (!CheckClassState())
                     return null;
+
+                var optionStr = "";
+
+                if (option == StudentTableOption.AscByNumber)
+                    optionStr = " ORDER BY SNUM ASC;";
+                else if (option == StudentTableOption.DescByNumber)
+                    optionStr = " ORDER BY SNUM DESC;";
+                else if (option == StudentTableOption.AscByName)
+                    optionStr = " ORDER BY SNAME ASC;";
+                else if (option == StudentTableOption.DescByName)
+                    optionStr = " ORDER BY SNAME DESC;";
+                else
+                    optionStr = ";";
 
                 var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
 
-                var cmdStr = "SELECT * FROM STUDENT WHERE GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "';";
+                var cmdStr = "SELECT * FROM STUDENT WHERE GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "'" + optionStr;
                 var cmd = new SQLiteCommand(cmdStr, conn);
                 var reader = cmd.ExecuteReader();
 
@@ -943,7 +945,26 @@ namespace TASMA
 
                 conn.Close();
             }
-            
+
+            /// <summary>
+            /// 현재 반의 데이터 테이블의 내용을 모두 삭제합니다.
+            /// </summary>
+            public void ClearStudentDataTable()
+            {
+                if (!CheckClassState())
+                    return;
+
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+
+                var cmd = new SQLiteCommand(conn);
+                cmd.CommandText = "DELETE FROM STUDENT WHERE GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "';";
+                cmd.ExecuteNonQuery();
+
+                cmd.Dispose();
+                conn.Close();
+            }
         }
 
     }

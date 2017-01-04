@@ -32,7 +32,8 @@ namespace TASMA
 
             menuButtons = new List<Button>();
 
-            menuButtons.Add(TasmaWindow_Students);
+            menuButtons.Add(TasmaWindow_Student);
+            menuButtons.Add(TasmaWindow_Subject);
             menuButtons.Add(TasmaWindow_Score);
             menuButtons.Add(TasmaWindow_Print);
             menuButtons.Add(TasmaWindow_Export);

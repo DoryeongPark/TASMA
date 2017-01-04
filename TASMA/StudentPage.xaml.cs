@@ -20,7 +20,7 @@ using TASMA.Database;
 namespace TASMA
 {
     /// <summary>
-    /// StudentPage.xaml에 대한 상호 작용 논리
+    /// 학생에 대한 페이지
     /// </summary>
     public partial class StudentPage : Page
     {
@@ -34,6 +34,37 @@ namespace TASMA
             this.adminDAO = adminDAO;
 
             StudentPage_PreviousButton.Click += OnPreviousButtonClicked;
+            StudentPage_SortButton.Click += OnSortButtonClicked;
+        }
+
+        /// <summary>
+        /// 학생 테이블을 이름으로 오름차순 정렬한 뒤 새 학생 번호를 부여합니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnSortButtonClicked(object sender, RoutedEventArgs e)
+        {
+            var messageBoxResult = MessageBox.Show("Are you sure execute auto number allocation?","Auto number allocation", MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.No)
+                return;
+
+            dataTable = adminDAO.GetStudentDataTable(StudentTableOption.AscByName);
+
+            int tempSnum = 0;
+
+            for (int i = 0; i < dataTable.Rows.Count; ++i)
+                adminDAO.UpdateStudent(((int)(long)dataTable.Rows[i][2]), --tempSnum);
+            
+            dataTable = adminDAO.GetStudentDataTable(StudentTableOption.DescByNumber);
+           
+            int newSnum = 0;
+
+            for (int i = 0; i < dataTable.Rows.Count; ++i)
+                adminDAO.UpdateStudent(((int)(long)dataTable.Rows[i][2]), ++newSnum);
+
+            dataTable = adminDAO.GetStudentDataTable(StudentTableOption.AscByNumber);
+            
+            StudentDataTable.ItemsSource = dataTable.AsDataView();
         }
 
         private void OnPreviousButtonClicked(object sender, RoutedEventArgs e)
@@ -46,7 +77,7 @@ namespace TASMA
         private void OnLoad(object sender, RoutedEventArgs e)
         {
             StudentPage_Class.Content = "GRADE " + adminDAO.CurrentGrade + " - CLASS " + adminDAO.CurrentClass;
-            dataTable = adminDAO.GetStudentDataTable();
+            dataTable = adminDAO.GetStudentDataTable(StudentTableOption.AscByNumber);
             dataTable.AcceptChanges();
 
             var comboBoxColumn = StudentDataTable.Columns[2] as DataGridComboBoxColumn;
@@ -68,6 +99,11 @@ namespace TASMA
             }
         }
 
+        /// <summary>
+        /// 셀 편집이 끝났을 때 호출되는 로직입니다. 데이터 유효성을 검사한 뒤 실제 데이터베이스에 반영합니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             string valueEdited = "";
@@ -103,7 +139,7 @@ namespace TASMA
                         if (studentNumberEdited == studentNumber)
                         {
                             MessageBox.Show("Student numbers are duplicated");
-                            textBox.Text = GetAvailableStudentNumber().ToString();
+                            textBox.Text = dataTable.Rows[rowIndex][2].ToString();
                             return;
                         }
                     }

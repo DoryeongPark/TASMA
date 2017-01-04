@@ -14,7 +14,6 @@ namespace TASMA
         static class DataRectangleManager
         {
             private static bool isModified = true;
-            private static List<string> gradeList;
             
             public static bool IsModified
             {
