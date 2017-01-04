@@ -1337,7 +1337,30 @@ namespace TASMA
                 conn.Close();
                 return true;
             }
-         
+
+            /// <summary>
+            /// 과목 리스트를 반환합니다.
+            /// </summary>
+            /// <returns>과목 리스트</returns>
+            public List<string> GetSubjectList()
+            {
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+
+                var cmdStr = "SELECT SUBJECT FROM SUBJECT;";
+                var cmd = new SQLiteCommand(cmdStr, conn);
+                var reader = cmd.ExecuteReader();
+                var result = new List<string>();
+
+                while (reader.Read())
+                {
+                    result.Add(reader["SUBJECT"].ToString());
+                }
+
+                return result;
+            }
+
             /// <summary>
             /// 과목의 평가 항목 리스트를 반환합니다.
             /// </summary>
@@ -1360,6 +1383,54 @@ namespace TASMA
                 }
 
                 return result;
+            }
+
+            /// <summary>
+            /// 반에 등록된 과목 리스트를 반환합니다.
+            /// </summary>
+            /// <param name="gradeName">학년</param>
+            /// <param name="className">반</param>
+            /// <returns>등록된 과목 리스트</returns>
+            public List<string> GetClassSubjects(string gradeName, string className)
+            {
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+
+                var cmdStr = "SELECT SUBJECT FROM CLASSSUBJECT WHERE GRADE = '" + gradeName + "' AND CLASS = '" + className + "';";
+                var cmd = new SQLiteCommand(cmdStr, conn);
+                var reader = cmd.ExecuteReader();
+                var result = new List<string>();
+
+                while (reader.Read())
+                {
+                    result.Add(reader["SUBJECT"].ToString());
+                }
+
+                return result;
+            }
+            
+            /// <summary>
+            /// 과목에 등록된 반 데이터 테이블을 반환합니다.
+            /// </summary>
+            /// <param name="subjectName">과목</param>
+            /// <returns>등록된 반 데이터 테이블</returns>
+            public DataTable GetSubjectClasses(string subjectName)
+            {
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+
+                var cmdStr = "SELECT * FROM CLASSSUBJECT WHERE SUBJECT = '" + subjectName + "';";
+                var cmd = new SQLiteCommand(cmdStr, conn);
+                var reader = cmd.ExecuteReader();
+
+                var dataTable = new DataTable();
+                dataTable.Load(reader);
+
+                conn.Close();
+
+                return dataTable;
             }
 
         }
