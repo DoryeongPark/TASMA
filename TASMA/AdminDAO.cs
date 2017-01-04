@@ -1214,6 +1214,67 @@ namespace TASMA
             /// <returns>실행 성공 여부</returns>
             public bool DeleteEvaluation(string subjectName, string evaluationName)
             {
+                var evaluationList = GetEvaluationList(subjectName);
+                evaluationList.Remove(evaluationName);            
+                
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+                var cmd = new SQLiteCommand(conn);
+
+                try
+                {
+                    cmd.CommandText = "DELETE FROM EVALUATION WHERE SUBJECT = '" + subjectName + "' AND EVALUATION = '" + evaluationName + "';";
+                    cmd.ExecuteNonQuery();
+
+                    var cmdStr = "";
+                    cmdStr += "BEGIN TRANSACTION; ";
+                    cmdStr += "ALTER TABLE " + subjectName + " RENAME TO TEMP; ";
+                    cmdStr += "CREATE TABLE " + subjectName + "(";
+                    cmdStr += "GRADE STRING NOT NULL, ";
+                    cmdStr += "CLASS STRING NOT NULL, ";
+                    cmdStr += "SNUM INTEGER NOT NULL, ";
+                    for (int i = 0; i < evaluationList.Count; ++i)
+                        cmdStr += evaluationList[i] + " INTEGER, ";    
+          
+                    cmdStr += "PRIMARY KEY(GRADE, CLASS, SNUM), ";
+                    cmdStr += "FOREIGN KEY(GRADE, CLASS, SNUM) REFERENCES STUDENT(GRADE, CLASS, SNUM) ";
+                    cmdStr += "ON DELETE CASCADE ";
+                    cmdStr += "ON UPDATE CASCADE ";
+                    cmdStr += "); ";
+                    cmdStr += "INSERT INTO " + subjectName + "(";
+                    cmdStr += "GRADE, CLASS, SNUM, ";
+                    for (int i = 0; i < evaluationList.Count; ++i)
+                    {
+                        if (i != evaluationList.Count - 1)
+                            cmdStr += evaluationList[i] + ", ";
+                        else
+                            cmdStr += evaluationList[i] + ") ";
+
+                    }
+                    cmdStr += "SELECT ";
+                    cmdStr += "GRADE, CLASS, SNUM, ";
+                    for (int i = 0; i < evaluationList.Count; ++i)
+                    {
+                        if (i != evaluationList.Count - 1)
+                            cmdStr += evaluationList[i] + ", ";
+                        else
+                            cmdStr += evaluationList[i] + " ";
+                    }
+                    cmdStr += "FROM TEMP; ";
+                    cmdStr += "DROP TABLE TEMP; ";
+                    cmdStr += "COMMIT; ";
+                    cmd.CommandText = cmdStr;
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException se)
+                {
+                    MessageBox.Show(se.Message);
+                    return false;
+                }
+                cmd.Dispose();
+                conn.Close();
+
                 return true;
             }
 

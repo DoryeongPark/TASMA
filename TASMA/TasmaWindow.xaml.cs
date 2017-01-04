@@ -50,7 +50,7 @@ namespace TASMA
             OnClickMenuButton(TasmaWindow_Student, null);
 
             //DB TEST
-            
+            adminDAO.DeleteEvaluation("MATH", "Test");
 
         }
 
