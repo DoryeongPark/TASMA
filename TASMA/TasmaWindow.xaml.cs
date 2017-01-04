@@ -44,9 +44,10 @@ namespace TASMA
                 btn.MouseEnter += new MouseEventHandler(OnMenuButtonMouseEnter);
             }
 
+            adminDAO.CreateSubject("MATH");
+
             TasmaWindow_Frame.Navigate(new GradePage(adminDAO));
-            
- 
+           
         }
 
         private void OnLeftMouseButtonDown(object sender, MouseButtonEventArgs e)

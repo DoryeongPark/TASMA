@@ -199,28 +199,35 @@ namespace TASMA
                 cmd.ExecuteNonQuery();
 
                 cmd.CommandText = "CREATE TABLE IF NOT EXISTS SUBJECT("
+                                + "SUBJECT STRING NOT NULL, "
+                                + "PRIMARY KEY(SUBJECT) "
+                                + ");";
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS EVALUATION("
+                                + "SUBJECT STRING NOT NULL, "
+                                + "EVALUATION STRING NOT NULL, "
+                                + "PRIMARY KEY(SUBJECT, EVALUATION), "
+                                + "FOREIGN KEY(SUBJECT) REFERENCES SUBJECT(SUBJECT) "
+                                + "ON DELETE CASCADE "
+                                + "ON UPDATE CASCADE "
+                                + ");";
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS CLASSSUBJECT("
                                 + "GRADE STRING NOT NULL, "
                                 + "CLASS STRING NOT NULL, "
                                 + "SUBJECT STRING NOT NULL, "
                                 + "PRIMARY KEY(GRADE, CLASS, SUBJECT), "
                                 + "FOREIGN KEY(GRADE, CLASS) REFERENCES CLASS(GRADE, CLASS) "
+                                + "ON DELETE CASCADE " 
+                                + "ON UPDATE CASCADE, " 
+                                + "FOREIGN KEY(SUBJECT) REFERENCES SUBJECT(SUBJECT) "
                                 + "ON DELETE CASCADE "
                                 + "ON UPDATE CASCADE "
                                 + ");";
                 cmd.ExecuteNonQuery();
-
-                cmd.CommandText = "CREATE TABLE IF NOT EXISTS EVALUATIONITEM("
-                                + "GRADE STRING NOT NULL, "
-                                + "CLASS STRING NOT NULL, "
-                                + "SUBJECT STRING NOT NULL, "
-                                + "EVALUATION STRING NOT NULL, "
-                                + "PRIMARY KEY(GRADE, CLASS, SUBJECT, EVALUATION), "
-                                + "FOREIGN KEY(GRADE, CLASS, SUBJECT) REFERENCES SUBJECT(GRADE, CLASS, SUBJECT) "
-                                + "ON DELETE CASCADE "
-                                + "ON UPDATE CASCADE "
-                                + ");";
-                cmd.ExecuteNonQuery();
-
+                
                 cmd.CommandText = "CREATE TABLE IF NOT EXISTS CHECKPASSWORD("
                                 + "CHECKPASSWORD STRING NOT NULL, "
                                 + "PRIMARY KEY(CHECKPASSWORD) "
@@ -965,7 +972,76 @@ namespace TASMA
                 cmd.Dispose();
                 conn.Close();
             }
-        }
 
+            public bool CreateSubject(string subjectName)
+            {
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+                var cmd = new SQLiteCommand(conn);
+
+                try
+                {
+                    cmd.CommandText = "INSERT INTO SUBJECT VALUES('" + subjectName + "');";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "INSERT INTO EVALUATION VALUES('" + subjectName + "', " + "'Midterm');";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "INSERT INTO EVALUATION VALUES('" + subjectName + "', " + "'Final');";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "CREATE TABLE IF NOT EXISTS "+ subjectName +"("
+                                    + "GRADE STRING NOT NULL, "
+                                    + "CLASS STRING NOT NULL, "
+                                    + "SNUM INTEGER NOT NULL, "
+                                    + "Midterm INTEGER NOT NULL, "
+                                    + "Final INTEGER NOT NULL, "
+                                    + "PRIMARY KEY(GRADE, CLASS, SNUM), "
+                                    + "FOREIGN KEY(GRADE, CLASS, SNUM) REFERENCES STUDENT(GRADE, CLASS, SNUM) "
+                                    + "ON DELETE CASCADE "
+                                    + "ON UPDATE CASCADE "
+                                    + ");";
+                    cmd.ExecuteNonQuery();
+                }
+                catch(SQLiteException se)
+                {
+                    MessageBox.Show(se.Message);
+                    return false;
+                }
+               
+                cmd.Dispose();
+                conn.Close();
+
+                return true;
+            }
+
+            public bool UpdateSubject(string oldSubjectName,  string newSubjectName)
+            {
+                return true;
+            }
+
+            public bool DeleteSubject(string subjectName)
+            {
+                return true;
+            }
+
+            public bool CreateEvaluation(string subjectName, string evaluationName)
+            {
+                return true;
+            }
+
+
+            public bool UpdateEvaluation(string subjectName, string oldEvaluationName, string newEvaluationName)
+            {
+                return true;
+            }
+
+            public bool DeleteEvaluation(string subjectName, string evaluationName)
+            {
+                return true;
+            }
+
+            
+
+
+        }
     }
 }
