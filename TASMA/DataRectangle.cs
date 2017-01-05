@@ -40,13 +40,13 @@ namespace TASMA
             {
                 this.data = data;
                 Width = 120;
-                Height = 120;
+                Height = 60;
                 Margin = new Thickness(10);
                 Background = Brushes.Honeydew; //Background
                
                 var layout = new DockPanel();
                 layout.Width = 120;
-                layout.Height = 120;
+                layout.Height = 50;
               
                 var btnArea = new DockPanel();
                 btnArea.Width = 120;
@@ -67,13 +67,13 @@ namespace TASMA
                 //텍스트 박스가 디스플레이 되는 영역
                 textArea = new Grid();
                 textArea.Width = 120;
-                textArea.Height = 105;
+                textArea.Height = 35;
                 textArea.HorizontalAlignment = HorizontalAlignment.Center;
                 textArea.VerticalAlignment = VerticalAlignment.Center;
                 
                 var viewBox = new Viewbox();
                 viewBox.Width = 120;
-                viewBox.Height = 105;
+                viewBox.Height = 35;
                 viewBox.HorizontalAlignment = HorizontalAlignment.Center;
                 viewBox.VerticalAlignment = VerticalAlignment.Center;
                 viewBox.Stretch = Stretch.Uniform;
@@ -82,7 +82,7 @@ namespace TASMA
                 //데이터 이름
                 textBlock = new TextBlock();
                 textBlock.FontFamily = new FontFamily("Segoe UI");
-                textBlock.FontSize = 20;
+                textBlock.FontSize = 15;
                 textBlock.Foreground = Brushes.Indigo; //Font Color
                 textBlock.FontWeight = FontWeights.Bold;
                 textBlock.Text = data;
@@ -135,9 +135,10 @@ namespace TASMA
                 textBox.MaxLength = 15;
                 textBox.HorizontalContentAlignment = HorizontalAlignment.Center;
                 textBox.Background = this.Background;
-                textBox.Foreground = Brushes.Honeydew;
-                textBox.FontSize = 20;
+                textBox.Foreground = Brushes.Indigo;
+                textBox.FontSize = 15;
                 textBox.FontFamily = new FontFamily("Segoe UI");
+                textBox.FontWeight = FontWeights.SemiBold;
                 textBox.SelectedText = data;
                 textBox.SelectAll();
 

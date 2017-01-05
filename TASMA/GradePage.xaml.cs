@@ -31,7 +31,7 @@ namespace TASMA
         /// <summary>
         /// 현재 학년을 조회하는 페이지를 생성합니다.
         /// </summary>
-        /// <param name="adminDAO"></param>
+        /// <param name="adminDAO">Data Access Object</param>
         public GradePage(AdminDAO adminDAO)
         {
             InitializeComponent();
@@ -84,7 +84,7 @@ namespace TASMA
         private bool OnCheckDuplication(string newData)
         {
             foreach (var str in gradeList)
-                if (str == newData)
+                if (str.ToUpper() == newData.ToUpper())
                     return true;
                    
             return false;

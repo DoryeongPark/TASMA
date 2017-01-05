@@ -85,7 +85,7 @@ namespace TASMA
         private bool OnCheckDuplication(string newData)
         {
             foreach (var data in classList)
-                if (data == newData)
+                if (data.ToUpper() == newData.ToUpper())
                     return true;
 
             return false;
