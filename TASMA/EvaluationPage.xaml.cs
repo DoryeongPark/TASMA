@@ -49,7 +49,7 @@ namespace TASMA
                 {
                     Name = grade,
                     Type = SubjectTreeViewItemType.Grade,
-                    Checked = false,
+                    IsChecked = false,
                     Children = null,
                     Parent = null
                 };
@@ -73,7 +73,7 @@ namespace TASMA
                     {
                         Name = classData,
                         Type = SubjectTreeViewItemType.Class,
-                        Checked = isRegistered,
+                        IsChecked = isRegistered,
                         Children = null,
                         Parent = gradeItem
                     };
@@ -87,43 +87,6 @@ namespace TASMA
                 adminDAO.MovePrevious();
             }  
 
-
-            //subjectTreeViewItems = new ObservableCollection<SubjectTreeViewItem>()
-            //{
-            //    new SubjectTreeViewItem(){Name="Item1", Checked=true,
-            //      Children = new ObservableCollection<SubjectTreeViewItem>()
-            //      {
-            //            new SubjectTreeViewItem(){Name="SubItem11", Checked=false},
-            //            new SubjectTreeViewItem(){Name="SubItem12", Checked=false},
-            //            new SubjectTreeViewItem(){Name="SubItem13", Checked=false}
-            //      }
-            //    },
-            //    new SubjectTreeViewItem(){Name="Item2", Checked=true,
-            //        Children = new ObservableCollection<SubjectTreeViewItem>()
-            //        {
-            //            new SubjectTreeViewItem(){Name="SubItem21", Checked=true},
-            //            new SubjectTreeViewItem(){Name="SubItem22", Checked=true},
-            //            new SubjectTreeViewItem(){Name="SubItem23", Checked=true}
-            //        }
-            //    },
-            //    new SubjectTreeViewItem(){Name="Item3", Checked=true,
-            //          Children = new ObservableCollection<SubjectTreeViewItem>()
-            //          {
-            //            new SubjectTreeViewItem(){Name="SubItem31", Checked=false},
-            //            new SubjectTreeViewItem(){Name="SubItem32", Checked=false},
-            //            new SubjectTreeViewItem(){Name="SubItem33", Checked=false}
-            //          }
-            //    },
-            //    new SubjectTreeViewItem(){Name="Item4", Checked=true,
-            //        Children = new ObservableCollection<SubjectTreeViewItem>()
-            //        {
-            //            new SubjectTreeViewItem(){Name="SubItem41", Checked=false},
-            //            new SubjectTreeViewItem(){Name="SubItem42", Checked=false},
-            //            new SubjectTreeViewItem(){Name="SubItem43", Checked=false}
-            //        }
-            //    }
-            //};
-
             InitializeComponent();
             
             this.DataContext = subjectTreeViewItems;
@@ -136,30 +99,49 @@ namespace TASMA
 
             if(item.Type == SubjectTreeViewItemType.Grade)
             {
-                if (item.Checked)
+                if (item.IsChecked)
                 {
                     foreach (var classItem in item.Children)
                     {
-                        classItem.Checked = item.Checked;
+                        classItem.IsChecked = item.IsChecked;
+                    }
+                }else
+                {
+                    var areChildrenChecked = true;
+
+                    foreach (var child in item.Children)
+                    {
+                        if (!child.IsChecked)
+                        {
+                            areChildrenChecked = false;
+                            break;
+                        }
+                    }
+
+                    if (areChildrenChecked)
+                    {
+                        foreach(var classItem in item.Children)
+                        {
+                            classItem.IsChecked = false;
+                        }
                     }
                 }
             }else
             {
-                if (item.Parent != null)
-                    MessageBox.Show(item.Parent.Name);
+                if (item.IsChecked)
+                {
+
+                }else
+                {
+                    if (item.Parent != null && item.Parent.IsChecked)
+                    {
+                        item.Parent.IsChecked = false;
+                    } 
+                }
             }
-                
         }
 
-        public void OnClickCheckBox(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
-        public void OnCheckBoxLoaded(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
 
     }
 }

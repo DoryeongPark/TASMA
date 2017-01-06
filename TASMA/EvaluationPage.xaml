@@ -17,7 +17,7 @@
             </TreeView.ItemContainerStyle>
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                    <CheckBox IsChecked="{Binding Checked}" Click="OnClickCheckBox" Loaded="OnCheckBoxLoaded">
+                    <CheckBox IsChecked="{Binding Checked}">
                         <TextBlock Text="{Binding Name}"></TextBlock>
                     </CheckBox>
                 </HierarchicalDataTemplate>

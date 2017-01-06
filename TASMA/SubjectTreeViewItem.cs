@@ -32,10 +32,10 @@ namespace TASMA
                 set { type = value; OnPropertyChanged("Type"); }
             }
 
-            public bool Checked
+            public bool IsChecked
             {
                 get { return isChecked; }
-                set { isChecked = value; OnPropertyChanged("Checked"); }
+                set { isChecked = value; OnPropertyChanged("IsChecked"); }
             }
 
             public SubjectTreeViewItem Parent
