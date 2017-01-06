@@ -10,7 +10,7 @@ namespace TASMA
 {
     namespace Model
     {
-        class SubjectTreeViewItem : INotifyPropertyChanged
+        public class SubjectTreeViewItem : INotifyPropertyChanged
         {
             private string name;
             private SubjectTreeViewItemType type;

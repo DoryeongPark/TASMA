@@ -7,7 +7,7 @@
       mc:Ignorable="d" 
       Title="EvaluationPage"
        HorizontalAlignment="Stretch" VerticalAlignment="Stretch" d:DesignWidth="500" d:DesignHeight="350" Background="White">
-
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="45"/>
@@ -23,7 +23,7 @@
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0">
-                <TreeView Margin="15" ItemsSource="{Binding}">
+                <TreeView Margin="15" ItemsSource="{Binding SubjectTreeViewItems}">
                     <TreeView.ItemContainerStyle>
                         <Style TargetType="TreeViewItem">
                             <Setter Property="IsExpanded" Value="True"></Setter>
@@ -39,6 +39,18 @@
                 </TreeView>
             </Grid>
             <Grid Grid.Column="1">
+                <ListBox Margin="15" ItemsSource="{Binding}">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
                 
             </Grid>
         </Grid>

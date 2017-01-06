@@ -28,13 +28,17 @@ namespace TASMA
 
         private string subjectName;
 
-        ObservableCollection<SubjectTreeViewItem> subjectTreeViewItems
+        private ObservableCollection<SubjectTreeViewItem> subjectTreeViewItems;
+
+        public ObservableCollection<SubjectTreeViewItem> SubjectTreeViewItems
         {
-            get; set;
+            get { return subjectTreeViewItems; }
+            set { subjectTreeViewItems = value; }
         }
        
         public EvaluationPage(AdminDAO adminDAO, string subjectName)
         {
+            
             this.adminDAO = adminDAO;
             this.subjectName = subjectName;
 
@@ -85,12 +89,10 @@ namespace TASMA
 
                 subjectTreeViewItems.Add(gradeItem);
                 adminDAO.MovePrevious();
-            }  
+            }
 
+            DataContext = this;
             InitializeComponent();
-            
-            this.DataContext = subjectTreeViewItems;
-                
         }
 
         private void OnSubjectTreeViewItemPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -141,7 +143,9 @@ namespace TASMA
             }
         }
 
-        
+
+
+       
 
     }
 }
