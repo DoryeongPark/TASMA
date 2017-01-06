@@ -75,7 +75,7 @@ namespace TASMA
 
             var subjectSelected = (sender as DataRectangle).Data;
             NavigationService nav = NavigationService.GetNavigationService(this);
-            //nav.Navigate(new EvaluationPage(adminDAO, subjectSelected));
+            nav.Navigate(new EvaluationPage(adminDAO, subjectSelected));
         }
 
         private void OnDeleteData(object sender, EventArgs e)

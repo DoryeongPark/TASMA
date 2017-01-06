@@ -85,7 +85,11 @@
     <Compile Include="ClassPage.xaml.cs">
       <DependentUpon>ClassPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SubjectTreeViewItem.cs" />
     <Compile Include="DataRectangleManager.cs" />
+    <Compile Include="EvaluationPage.xaml.cs">
+      <DependentUpon>EvaluationPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GradePage.xaml.cs">
       <DependentUpon>GradePage.xaml</DependentUpon>
     </Compile>
@@ -100,6 +104,7 @@
     <Compile Include="SubjectPage.xaml.cs">
       <DependentUpon>SubjectPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SubjectTreeViewItemType.cs" />
     <Compile Include="TasmaPromptWindow.xaml.cs">
       <DependentUpon>TasmaPromptWindow.xaml</DependentUpon>
     </Compile>
@@ -111,6 +116,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ClassPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EvaluationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
