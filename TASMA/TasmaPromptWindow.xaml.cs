@@ -45,7 +45,6 @@ namespace TASMA
             InitializeComponent();
             InitialRoutine(title, message);
             TasmaPromptWindow_TextBox.Text = defaultInput;
-            TasmaPromptWindow_TextBox.SelectAll();
         }
 
         private void InitialRoutine(string title, string message)
@@ -75,6 +74,12 @@ namespace TASMA
         {
             this.Top = Application.Current.Windows[1].Top + Application.Current.Windows[1].Height / 2 - Height / 2;
             this.Left = Application.Current.Windows[1].Left + Application.Current.Windows[1].Width / 2 - Width / 2;
+
+            if (TasmaPromptWindow_TextBox.Text.Length != 0)
+            {
+                TasmaPromptWindow_TextBox.Focus();
+                TasmaPromptWindow_TextBox.Select(0, TasmaPromptWindow_TextBox.Text.Length);
+            }
         }
 
         private void OnLeftMouseButtonDown(object sender, MouseButtonEventArgs e)

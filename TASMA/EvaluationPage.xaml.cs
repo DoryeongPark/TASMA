@@ -222,7 +222,7 @@ namespace TASMA
             if (selectedListBoxItem == null)
                 return;
 
-            var dialog = new TasmaPromptWindow("Modify evaluation", "Input evaluation name");
+            var dialog = new TasmaPromptWindow("Modify evaluation", "Input evaluation name", selectedListBoxItem.Name);
             dialog.ShowDialog();
 
             if (dialog.IsDetermined)
