@@ -149,12 +149,6 @@ namespace TASMA
             nav.Navigating += OnClosing;
         }
 
-
-        private void OnEvaluationListBoxItemPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-
-        }
-
         /// <summary>
         /// TreeViewItem의 클릭 이벤트 루틴을 실행합니다.
         /// </summary>
@@ -364,7 +358,12 @@ namespace TASMA
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-       
+
+        private void OnEvaluationListBoxItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+
+        }
+
     }
 }
 
