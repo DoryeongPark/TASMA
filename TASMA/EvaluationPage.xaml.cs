@@ -188,12 +188,29 @@ namespace TASMA
                 }
             }
         }
-       
-        private void OnDeleteListBoxItem(object sender, RoutedEventArgs e)
+
+        private void OnAddListBoxItem(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(selectedListBoxItem.Name);
+            var dialog = new TasmaPromptWindow("Add evaluation", "Input evaluation name");
+            dialog.ShowDialog();
+
+            if (dialog.IsDetermined)
+                selectedListBoxItem.Name = dialog.Input;
         }
 
+        private void OnModifyListBoxItem(object sender, RoutedEventArgs e)
+        {
+            var dialog = new TasmaPromptWindow("Modify evaluation", "Input evaluation name");
+            dialog.ShowDialog();
+
+            if (dialog.IsDetermined)
+                selectedListBoxItem.Name = dialog.Input;   
+        }
+
+        private void OnDeleteListBoxItem(object sender, RoutedEventArgs e)
+        {
+            evaluationListBoxItems.Remove(selectedListBoxItem);
+        }
 
         protected void OnPropertyChanged(string propertyName)
         {

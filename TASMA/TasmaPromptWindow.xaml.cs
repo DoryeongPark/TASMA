@@ -57,6 +57,16 @@ namespace TASMA
             isDetermined = false;
             Close();
         }
+        
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            this.Top = Application.Current.Windows[1].Top + 100;
+            this.Left = Application.Current.Windows[1].Left + 100;
+        }
 
+        private void OnLeftMouseButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
     }
 }
