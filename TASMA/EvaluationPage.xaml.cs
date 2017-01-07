@@ -197,7 +197,7 @@ namespace TASMA
         /// <param name="e"></param>
         private void OnAddListBoxItem(object sender, RoutedEventArgs e)
         {
-            var dialog = new TasmaPromptWindow("Add evaluation", "Input evaluation name");
+            var dialog = new TasmaPromptMessageBox("Add evaluation", "Input evaluation name");
             dialog.ShowDialog();
 
             if (dialog.IsDetermined)
@@ -222,7 +222,7 @@ namespace TASMA
             if (selectedListBoxItem == null)
                 return;
 
-            var dialog = new TasmaPromptWindow("Modify evaluation", "Input evaluation name", selectedListBoxItem.Name);
+            var dialog = new TasmaPromptMessageBox("Modify evaluation", "Input evaluation name", selectedListBoxItem.Name);
             dialog.ShowDialog();
 
             if (dialog.IsDetermined)

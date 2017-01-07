@@ -103,7 +103,7 @@ namespace TASMA
 
         private void OnAddButtonClicked(object sender, RoutedEventArgs e)
         {
-            var promptWindow = new TasmaPromptWindow("Create subject", "Please input subject name");
+            var promptWindow = new TasmaPromptMessageBox("Create subject", "Please input subject name");
             promptWindow.ShowDialog();
 
             if (promptWindow.IsDetermined)

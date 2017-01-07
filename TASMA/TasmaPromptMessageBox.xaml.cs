@@ -15,9 +15,9 @@ namespace TASMA
 
 {
     /// <summary>
-    /// Tasma 디자인 프롬프트 창
+    /// Tasma 디자인의 프롬프트 박스
     /// </summary>
-    public partial class TasmaPromptWindow : Window
+    public partial class TasmaPromptMessageBox : Window
     {
         private bool isDetermined = false;
         
@@ -34,13 +34,13 @@ namespace TASMA
             get { return input; }
         }
 
-        public TasmaPromptWindow(string title, string message)
+        public TasmaPromptMessageBox(string title, string message)
         {
             InitializeComponent();
             InitialRoutine(title, message);
         }
 
-        public TasmaPromptWindow(string title, string message, string defaultInput)
+        public TasmaPromptMessageBox(string title, string message, string defaultInput)
         {
             InitializeComponent();
             InitialRoutine(title, message);

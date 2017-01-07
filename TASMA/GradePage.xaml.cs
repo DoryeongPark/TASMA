@@ -120,7 +120,7 @@ namespace TASMA
         /// <param name="e"></param>
         private void OnAddButtonClicked(object sender, RoutedEventArgs e)
         {
-            var promptWindow = new TasmaPromptWindow("Create grade", "Please input grade name");
+            var promptWindow = new TasmaPromptMessageBox("Create grade", "Please input grade name");
             promptWindow.ShowDialog();
 
             if (promptWindow.IsDetermined)

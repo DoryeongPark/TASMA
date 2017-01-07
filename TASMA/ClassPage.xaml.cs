@@ -117,7 +117,7 @@ namespace TASMA
 
         private void OnAddButtonClicked(object sender, RoutedEventArgs e)
         {
-            var promptWindow = new TasmaPromptWindow("Create class", "Please input class name");
+            var promptWindow = new TasmaPromptMessageBox("Create class", "Please input class name");
             promptWindow.ShowDialog();
 
             if (promptWindow.IsDetermined)
