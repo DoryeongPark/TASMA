@@ -94,7 +94,7 @@ namespace TASMA
             //Event for each buttons
             if (menuBtn.Equals(TasmaWindow_Student))
                 TasmaWindow_Frame.Navigate(new GradePage(adminDAO));
-            else if (menuBtn.Equals(TasmaWindow_Subject))
+            else if (menuBtn.Equals(TasmaWindow_Subject)) 
                 TasmaWindow_Frame.Navigate(new SubjectPage(adminDAO));
             else if (menuBtn.Equals(TasmaWindow_Score))
                 return;

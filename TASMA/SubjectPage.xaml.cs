@@ -74,6 +74,7 @@ namespace TASMA
                 return;
 
             var subjectSelected = (sender as DataRectangle).Data;
+
             NavigationService nav = NavigationService.GetNavigationService(this);
             nav.Navigate(new EvaluationPage(adminDAO, subjectSelected));
         }

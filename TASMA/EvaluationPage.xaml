@@ -16,6 +16,16 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row ="0">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Name="EvaluationPage_Subject" Foreground="Indigo" FontSize="18" FontWeight="Bold" FontFamily="Segoe UI"></Label>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8,0,8,0">
+                <Button Width="30" Height="30" Click="OnSaveButtonClicked"/>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="8,0,8,0">
+                <Button Width="30" Height="30" />
+            </StackPanel>
+            
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>

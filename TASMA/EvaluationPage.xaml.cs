@@ -53,7 +53,6 @@ namespace TASMA
 
         public EvaluationPage(AdminDAO adminDAO, string subjectName)
         {
-            
             this.adminDAO = adminDAO;
             this.subjectName = subjectName;
 
@@ -134,6 +133,8 @@ namespace TASMA
 
             DataContext = this;
             InitializeComponent();
+
+            EvaluationPage_Subject.Content = subjectName;
         }
 
         private void OnEvaluationListBoxItemPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -217,5 +218,9 @@ namespace TASMA
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));   
         }
 
+        private void OnSaveButtonClicked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
