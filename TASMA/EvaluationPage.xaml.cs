@@ -341,9 +341,10 @@ namespace TASMA
         /// <param name="e"></param>
         private void OnClosing(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Do you want to save changes?",
-                                "Save Confirmation",
-                                MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            var dialog = new TasmaConfirmationMessageBox("Save confirmation", "Do you want to save changes?");
+            dialog.ShowDialog();
+
+            if (dialog.Yes)
             {
                 SaveRoutine();
             }
