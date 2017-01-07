@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ using TASMA.Model;
 namespace TASMA
 {
     /// <summary>
-    /// EvaluationPage.xaml에 대한 상호 작용 논리
+    /// 과목에 반과 평가항목을 등록하는 페이지 입니다.
     /// </summary>
     public partial class EvaluationPage : Page, INotifyPropertyChanged
     {
@@ -50,13 +51,17 @@ namespace TASMA
             set { selectedListBoxItem = value;  OnPropertyChanged("SelectedListBoxItem"); }
         }
 
-
+        /// <summary>
+        /// 현재 데이터베이스의 상태를 컨트롤에 반영합니다.
+        /// </summary>
+        /// <param name="adminDAO">Data Access Object</param>
+        /// <param name="subjectName">현재 과목</param>
         public EvaluationPage(AdminDAO adminDAO, string subjectName)
         {
             this.adminDAO = adminDAO;
             this.subjectName = subjectName;
 
-            //트리뷰 데이터 로드(Model View 역할)
+            //트리 뷰 데이터 로드(ViewModel)
             subjectTreeViewItems = new ObservableCollection<SubjectTreeViewItem>();
             var gradeList = adminDAO.GetGradeList();
            
@@ -104,7 +109,7 @@ namespace TASMA
             }
 
             
-            //리스트박스 데이터 로드(ModelView 역할)
+            //리스트박스 데이터 로드(ViewModel)
             var evaluationList = adminDAO.GetEvaluationList(subjectName);
             evaluationListBoxItems = new ObservableCollection<EvaluationListBoxItem>();
 
@@ -142,45 +147,40 @@ namespace TASMA
             
         }
 
+        /// <summary>
+        /// TreeViewItem의 클릭 이벤트 루틴을 실행합니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnSubjectTreeViewItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var item = sender as SubjectTreeViewItem;
 
             if(item.Type == SubjectTreeViewItemType.Grade)
             {
+                //Grade에 체크 - 하위 Class들을 모두 체크 상태로 전환합니다.
                 if (item.IsChecked)
                 {
                     foreach (var classItem in item.Children)
                     {
                         classItem.IsChecked = item.IsChecked;
                     }
-                }else
+                }else//Grade에 체크 해제 - 하위 클래스들이 모두 체크 상태인 경우 모두 체크 해제 상태로 전환합니다.
                 {
-                    var areChildrenChecked = true;
-
                     foreach (var child in item.Children)
                     {
-                        if (!child.IsChecked)
-                        {
-                            areChildrenChecked = false;
+                        if (!child.IsChecked)    
                             break;
-                        }
                     }
 
-                    if (areChildrenChecked)
+                    foreach(var classItem in item.Children)
                     {
-                        foreach(var classItem in item.Children)
-                        {
-                            classItem.IsChecked = false;
-                        }
-                    }
+                        classItem.IsChecked = false;
+                    }   
                 }
             }else
             {
-                if (item.IsChecked)
-                {
-
-                }else
+                if (!item.IsChecked)//Class에 체크 해제 - 상위 Grade가 체크 상태일 시 체크 해제 상태로 전환합니다.
                 {
                     if (item.Parent != null && item.Parent.IsChecked)
                     {
@@ -190,37 +190,162 @@ namespace TASMA
             }
         }
 
+        /// <summary>
+        /// 평가 항목을 리스트에 추가합니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnAddListBoxItem(object sender, RoutedEventArgs e)
         {
             var dialog = new TasmaPromptWindow("Add evaluation", "Input evaluation name");
             dialog.ShowDialog();
 
             if (dialog.IsDetermined)
-                selectedListBoxItem.Name = dialog.Input;
+            {
+                //Check Duplication
+                foreach (var evaluationItem in evaluationListBoxItems)      
+                    if (evaluationItem.Name.ToUpper() == dialog.Input.ToUpper()) {
+                        MessageBox.Show("Evaluations are duplicated");
+                        return;
+                    }
+                evaluationListBoxItems.Add(new EvaluationListBoxItem { Name = dialog.Input });
+            }
         }
 
+        /// <summary>
+        /// 선택한 평가 항목을 수정하고 데이터베이스에 반영합니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnModifyListBoxItem(object sender, RoutedEventArgs e)
         {
+            if (selectedListBoxItem == null)
+                return;
+
             var dialog = new TasmaPromptWindow("Modify evaluation", "Input evaluation name");
             dialog.ShowDialog();
 
             if (dialog.IsDetermined)
-                selectedListBoxItem.Name = dialog.Input;   
+            {
+                //Check Duplication
+                foreach (var evaluationItem in evaluationListBoxItems)      
+                    if (evaluationItem.Name.ToUpper() == dialog.Input.ToUpper())
+                    {
+                        MessageBox.Show("Evaluations are duplicated");
+                        return;
+                    }
+
+                adminDAO.UpdateEvaluation(subjectName, selectedListBoxItem.Name, dialog.Input);
+                selectedListBoxItem.Name = dialog.Input;
+            }   
         }
 
+        /// <summary>
+        /// 선택한 평가 항목을 리스트에서 지웁니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnDeleteListBoxItem(object sender, RoutedEventArgs e)
         {
-            evaluationListBoxItems.Remove(selectedListBoxItem);
+            if (selectedListBoxItem == null)
+                return;
+
+            if (MessageBox.Show("Are you sure delete evaluation - " + selectedListBoxItem.Name,
+                                "Delete evaluation",
+                                MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                evaluationListBoxItems.Remove(selectedListBoxItem);
+            }
+        }
+
+        /// <summary>
+        /// 현재 ViewModel의 상태를 데이터베이스에 반영합니다.
+        /// </summary>
+        private void SaveRoutine()
+        {
+            var currentClasses = adminDAO.GetSubjectClasses(subjectName);
+            var currentEvaluations = adminDAO.GetEvaluationList(subjectName);
+
+            var newEvaluations = new List<string>();
+            foreach (var evaluationItem in evaluationListBoxItems)
+                newEvaluations.Add(evaluationItem.Name);        
+        
+            //반 등록 - 현재 데이터베이스에 ViewModel 상태 반영
+            foreach(var gradeItem in subjectTreeViewItems)
+            {
+                var gradeName = gradeItem.Name;
+                foreach(var classItem in gradeItem.Children)
+                {
+                    var className = classItem.Name;
+                    var contains = currentClasses.AsEnumerable().Any(row => gradeName == row.Field<string>("Grade")) &&
+                                        currentClasses.AsEnumerable().Any(row => className == row.Field<string>("Class"));
+
+                    if (classItem.IsChecked)
+                    {
+                        if (!contains)//현재 테이블에 존재하지 않지만 체크가 되어 있는 반 -> 삽입
+                        {
+                            adminDAO.RegisterClassOnSubject(subjectName, gradeName, className);
+                        }
+
+                    }else
+                    {
+                        if (contains)//현재 테이블에 존재하지만 체크가 되어 있지 않는 반 -> 삭제
+                        {
+                            adminDAO.UnRegisterClassOnSubject(subjectName, gradeName, className);
+                        }
+                    }
+                }
+            }
+
+            //평가 항목 등록 - 현재 데이터베이스에 ViewModel 상태 반영
+            foreach(var newEvaluation in newEvaluations)
+            {
+                //현재 리스트에 존재하지 않지만, 새 리스트에 포함 -> 추가
+                if (!currentEvaluations.Contains(newEvaluation))
+                {
+                    adminDAO.CreateEvaluation(subjectName, newEvaluation);
+                }
+            }
+            foreach(var currentEvaluation in currentEvaluations)
+            {
+                //현재 리스트에 존재하지만, 새 리스트에 포함되지 않음 -> 삭제
+                if (!newEvaluations.Contains(currentEvaluation))
+                {
+                    adminDAO.DeleteEvaluation(subjectName, currentEvaluation);
+                }
+            }
+
+        }
+
+        /// <summary>
+        /// 이전 페이지로 이동합니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnPreviousButtonClicked(object sender, RoutedEventArgs e)
+        {
+            var nav = NavigationService.GetNavigationService(this);
+            nav.Navigate(new GradePage(adminDAO));
+        }
+
+        /// <summary>
+        /// 현재 페이지를 빠져나가기 전에 호출되는 루틴입니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnClosing(object sender, RoutedEventArgs e)
+        {
+            if(MessageBox.Show("Do you want to save changes?", 
+                                "Save Confirmation", 
+                                MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                SaveRoutine();
+            }
         }
 
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));   
-        }
-
-        private void OnSaveButtonClicked(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

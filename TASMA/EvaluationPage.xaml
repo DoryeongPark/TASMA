@@ -7,7 +7,7 @@
       mc:Ignorable="d" 
       Title="EvaluationPage"
        HorizontalAlignment="Stretch" VerticalAlignment="Stretch" d:DesignWidth="500" d:DesignHeight="350" Background="White"
-      >
+      Unloaded="OnClosing">
     
     <Grid>
         <Grid.RowDefinitions>
@@ -20,10 +20,10 @@
                 <Label Name="EvaluationPage_Subject" Foreground="Indigo" FontSize="18" FontWeight="Bold" FontFamily="Segoe UI"></Label>
             </StackPanel>
             <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8,0,8,0">
-                <Button Width="30" Height="30" Click="OnSaveButtonClicked"/>
+                <Button Width="30" Height="30" Click="OnPreviousButtonClicked"/>
             </StackPanel>
             <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="8,0,8,0">
-                <Button Width="30" Height="30" />
+                
             </StackPanel>
             
         </Grid>
