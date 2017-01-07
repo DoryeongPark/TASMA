@@ -37,6 +37,19 @@ namespace TASMA
         public TasmaPromptWindow(string title, string message)
         {
             InitializeComponent();
+            InitialRoutine(title, message);
+        }
+
+        public TasmaPromptWindow(string title, string message, string defaultInput)
+        {
+            InitializeComponent();
+            InitialRoutine(title, message);
+            TasmaPromptWindow_TextBox.Text = defaultInput;
+            TasmaPromptWindow_TextBox.SelectAll();
+        }
+
+        private void InitialRoutine(string title, string message)
+        {
             TasmaPromptWindow_Title.Text = title;
             TasmaPromptWindow_Message.Text = message;
 
