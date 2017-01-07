@@ -85,6 +85,7 @@
     <Compile Include="ClassPage.xaml.cs">
       <DependentUpon>ClassPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EvaluationListBoxItem.cs" />
     <Compile Include="SubjectTreeViewItem.cs" />
     <Compile Include="DataRectangleManager.cs" />
     <Compile Include="EvaluationPage.xaml.cs">

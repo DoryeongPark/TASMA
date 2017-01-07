@@ -22,26 +22,42 @@ namespace TASMA
     /// <summary>
     /// EvaluationPage.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class EvaluationPage : Page
+    public partial class EvaluationPage : Page, INotifyPropertyChanged
     {
         private AdminDAO adminDAO;
-
         private string subjectName;
 
-        private ObservableCollection<SubjectTreeViewItem> subjectTreeViewItems;
+        public event PropertyChangedEventHandler PropertyChanged;
 
+        private ObservableCollection<SubjectTreeViewItem> subjectTreeViewItems;
         public ObservableCollection<SubjectTreeViewItem> SubjectTreeViewItems
         {
             get { return subjectTreeViewItems; }
-            set { subjectTreeViewItems = value; }
+            set { subjectTreeViewItems = value;  OnPropertyChanged("SubjectTreeViewItems"); }
         }
-       
+
+        private ObservableCollection<EvaluationListBoxItem> evaluationListBoxItems;
+        public ObservableCollection<EvaluationListBoxItem> EvaluationListBoxItems
+        {
+            get { return evaluationListBoxItems; }
+            set { evaluationListBoxItems = value; OnPropertyChanged("EvaluationListBoxItems"); }
+        }
+
+        private EvaluationListBoxItem selectedListBoxItem;
+        public EvaluationListBoxItem SelectedListBoxItem
+        {
+            get { return selectedListBoxItem; }
+            set { selectedListBoxItem = value;  OnPropertyChanged("SelectedListBoxItem"); }
+        }
+
+
         public EvaluationPage(AdminDAO adminDAO, string subjectName)
         {
             
             this.adminDAO = adminDAO;
             this.subjectName = subjectName;
 
+            //트리뷰 데이터 로드(Model View 역할)
             subjectTreeViewItems = new ObservableCollection<SubjectTreeViewItem>();
             var gradeList = adminDAO.GetGradeList();
            
@@ -57,8 +73,6 @@ namespace TASMA
                     Children = null,
                     Parent = null
                 };
-
-                gradeItem.PropertyChanged += OnSubjectTreeViewItemPropertyChanged;
 
                 var classList = adminDAO.GetClassList();
                 var classItems = new ObservableCollection<SubjectTreeViewItem>();
@@ -81,7 +95,6 @@ namespace TASMA
                         Children = null,
                         Parent = gradeItem
                     };
-                    classItem.PropertyChanged += OnSubjectTreeViewItemPropertyChanged;
                     classItems.Add(classItem);
 
                     gradeItem.Children = classItems;
@@ -91,8 +104,41 @@ namespace TASMA
                 adminDAO.MovePrevious();
             }
 
+            
+            //리스트박스 데이터 로드(ModelView 역할)
+            var evaluationList = adminDAO.GetEvaluationList(subjectName);
+            evaluationListBoxItems = new ObservableCollection<EvaluationListBoxItem>();
+
+            foreach (var evaluationData in evaluationList)
+            {
+                var evaluationItem = new EvaluationListBoxItem()
+                {
+                    Name = evaluationData
+                };
+                evaluationListBoxItems.Add(evaluationItem);
+            }
+
+            foreach(var gradeItem in subjectTreeViewItems)
+            {
+                gradeItem.PropertyChanged += OnSubjectTreeViewItemPropertyChanged;
+                foreach(var classItem in gradeItem.Children)
+                {
+                    classItem.PropertyChanged += OnSubjectTreeViewItemPropertyChanged;
+                }
+            }
+
+            foreach(var evaluationItem in evaluationListBoxItems)
+            {
+                evaluationItem.PropertyChanged += OnEvaluationListBoxItemPropertyChanged;         
+            }
+
             DataContext = this;
             InitializeComponent();
+        }
+
+        private void OnEvaluationListBoxItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            
         }
 
         private void OnSubjectTreeViewItemPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -142,10 +188,17 @@ namespace TASMA
                 }
             }
         }
-
-
-
        
+        private void OnDeleteListBoxItem(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(selectedListBoxItem.Name);
+        }
+
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));   
+        }
 
     }
 }

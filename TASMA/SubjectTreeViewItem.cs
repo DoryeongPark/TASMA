@@ -41,7 +41,7 @@ namespace TASMA
             public SubjectTreeViewItem Parent
             {
                 get { return parent; }
-                set { parent = value; }
+                set { parent = value; OnPropertyChanged("Parent"); }
             }
             
             public ObservableCollection<SubjectTreeViewItem> Children

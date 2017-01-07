@@ -6,7 +6,8 @@
       xmlns:local="clr-namespace:TASMA"
       mc:Ignorable="d" 
       Title="EvaluationPage"
-       HorizontalAlignment="Stretch" VerticalAlignment="Stretch" d:DesignWidth="500" d:DesignHeight="350" Background="White">
+       HorizontalAlignment="Stretch" VerticalAlignment="Stretch" d:DesignWidth="500" d:DesignHeight="350" Background="White"
+      >
     
     <Grid>
         <Grid.RowDefinitions>
@@ -22,36 +23,62 @@
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="0">
-                <TreeView Margin="15" ItemsSource="{Binding SubjectTreeViewItems}">
-                    <TreeView.ItemContainerStyle>
-                        <Style TargetType="TreeViewItem">
-                            <Setter Property="IsExpanded" Value="True"></Setter>
-                        </Style>
-                    </TreeView.ItemContainerStyle>
-                    <TreeView.ItemTemplate>
-                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                            <CheckBox IsChecked="{Binding Checked}">
-                                <TextBlock Text="{Binding Name}"></TextBlock>
-                            </CheckBox>
-                        </HierarchicalDataTemplate>
-                    </TreeView.ItemTemplate>
-                </TreeView>
+            <Grid Grid.Column="0" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="10*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="8,0,8,0">
+                        <TextBlock FontSize="14" Foreground="Indigo" FontFamily="Segoe UI" FontWeight="SemiBold">Class</TextBlock>
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <TreeView Margin="8" ItemsSource="{Binding SubjectTreeViewItems}">
+                        <TreeView.ItemContainerStyle>
+                            <Style TargetType="TreeViewItem">
+                                <Setter Property="IsExpanded" Value="True"></Setter>
+                            </Style>
+                        </TreeView.ItemContainerStyle>
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                <CheckBox IsChecked="{Binding IsChecked}">
+                                    <TextBlock Text="{Binding Name}"></TextBlock>
+                                </CheckBox>
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
+                </Grid>
             </Grid>
             <Grid Grid.Column="1">
-                <ListBox Margin="15" ItemsSource="{Binding}">
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem">
-                            
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-                
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="10*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="8,0,8,0">
+                        <Button Width="15" Height="15" VerticalAlignment="Bottom" Margin="2,0,0,0"/>
+                        <Button Width="15" Height="15" VerticalAlignment="Bottom" Margin="2,0,0,0"/>
+                        <Button Width="15" Height="15" VerticalAlignment="Bottom" Margin="2,0,0,0" Click="OnDeleteListBoxItem"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="8,0,8,0">
+                        <TextBlock FontSize="14" Foreground="Indigo" FontFamily="Segoe UI" FontWeight="SemiBold">Evaluation</TextBlock>
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <ListBox Margin="8" ItemsSource="{Binding EvaluationListBoxItems}" SelectedItem="{Binding SelectedListBoxItem, Mode=TwoWay}">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"></TextBlock>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
             </Grid>
         </Grid>
         
