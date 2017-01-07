@@ -106,8 +106,11 @@
       <DependentUpon>SubjectPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="SubjectTreeViewItemType.cs" />
-    <Compile Include="TasmaPromptWindow.xaml.cs">
-      <DependentUpon>TasmaPromptWindow.xaml</DependentUpon>
+    <Compile Include="TasmaConfirmationMessageBox.xaml.cs">
+      <DependentUpon>TasmaConfirmationMessageBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TasmaPromptMessageBox.xaml.cs">
+      <DependentUpon>TasmaPromptMessageBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="TasmaWindow.xaml.cs">
       <DependentUpon>TasmaWindow.xaml</DependentUpon>
@@ -153,7 +156,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TasmaPromptWindow.xaml">
+    <Page Include="TasmaConfirmationMessageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TasmaPromptMessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

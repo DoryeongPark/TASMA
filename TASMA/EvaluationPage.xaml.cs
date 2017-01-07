@@ -34,7 +34,7 @@ namespace TASMA
         public ObservableCollection<SubjectTreeViewItem> SubjectTreeViewItems
         {
             get { return subjectTreeViewItems; }
-            set { subjectTreeViewItems = value;  OnPropertyChanged("SubjectTreeViewItems"); }
+            set { subjectTreeViewItems = value; OnPropertyChanged("SubjectTreeViewItems"); }
         }
 
         private ObservableCollection<EvaluationListBoxItem> evaluationListBoxItems;
@@ -48,7 +48,7 @@ namespace TASMA
         public EvaluationListBoxItem SelectedListBoxItem
         {
             get { return selectedListBoxItem; }
-            set { selectedListBoxItem = value;  OnPropertyChanged("SelectedListBoxItem"); }
+            set { selectedListBoxItem = value; OnPropertyChanged("SelectedListBoxItem"); }
         }
 
         /// <summary>
@@ -64,8 +64,8 @@ namespace TASMA
             //트리 뷰 데이터 로드(ViewModel)
             subjectTreeViewItems = new ObservableCollection<SubjectTreeViewItem>();
             var gradeList = adminDAO.GetGradeList();
-           
-            foreach(var grade in gradeList)
+
+            foreach (var grade in gradeList)
             {
                 adminDAO.SelectGrade(grade);
 
@@ -80,13 +80,14 @@ namespace TASMA
 
                 var classList = adminDAO.GetClassList();
                 var classItems = new ObservableCollection<SubjectTreeViewItem>();
-               
-                foreach(var classData in classList)
+
+                foreach (var classData in classList)
                 {
                     var isRegistered = false;
                     var subjectList = adminDAO.GetClassSubjects(grade, classData);
                     foreach (var subjectData in subjectList)
-                        if (subjectData == subjectName) {
+                        if (subjectData == subjectName)
+                        {
                             isRegistered = true;
                             break;
                         }
@@ -108,7 +109,7 @@ namespace TASMA
                 adminDAO.MovePrevious();
             }
 
-            
+
             //리스트박스 데이터 로드(ViewModel)
             var evaluationList = adminDAO.GetEvaluationList(subjectName);
             evaluationListBoxItems = new ObservableCollection<EvaluationListBoxItem>();
@@ -122,18 +123,18 @@ namespace TASMA
                 evaluationListBoxItems.Add(evaluationItem);
             }
 
-            foreach(var gradeItem in subjectTreeViewItems)
+            foreach (var gradeItem in subjectTreeViewItems)
             {
                 gradeItem.PropertyChanged += OnSubjectTreeViewItemPropertyChanged;
-                foreach(var classItem in gradeItem.Children)
+                foreach (var classItem in gradeItem.Children)
                 {
                     classItem.PropertyChanged += OnSubjectTreeViewItemPropertyChanged;
                 }
             }
 
-            foreach(var evaluationItem in evaluationListBoxItems)
+            foreach (var evaluationItem in evaluationListBoxItems)
             {
-                evaluationItem.PropertyChanged += OnEvaluationListBoxItemPropertyChanged;         
+                evaluationItem.PropertyChanged += OnEvaluationListBoxItemPropertyChanged;
             }
 
             DataContext = this;
@@ -144,7 +145,7 @@ namespace TASMA
 
         private void OnEvaluationListBoxItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            
+
         }
 
         /// <summary>
@@ -156,7 +157,7 @@ namespace TASMA
         {
             var item = sender as SubjectTreeViewItem;
 
-            if(item.Type == SubjectTreeViewItemType.Grade)
+            if (item.Type == SubjectTreeViewItemType.Grade)
             {
                 //Grade에 체크 - 하위 Class들을 모두 체크 상태로 전환합니다.
                 if (item.IsChecked)
@@ -165,27 +166,29 @@ namespace TASMA
                     {
                         classItem.IsChecked = item.IsChecked;
                     }
-                }else//Grade에 체크 해제 - 하위 클래스들이 모두 체크 상태인 경우 모두 체크 해제 상태로 전환합니다.
+                }
+                else//Grade에 체크 해제 - 하위 클래스들이 모두 체크 상태인 경우 모두 체크 해제 상태로 전환합니다.
                 {
                     foreach (var child in item.Children)
                     {
-                        if (!child.IsChecked)    
+                        if (!child.IsChecked)
                             break;
                     }
 
-                    foreach(var classItem in item.Children)
+                    foreach (var classItem in item.Children)
                     {
                         classItem.IsChecked = false;
-                    }   
+                    }
                 }
-            }else
+            }
+            else
             {
                 if (!item.IsChecked)//Class에 체크 해제 - 상위 Grade가 체크 상태일 시 체크 해제 상태로 전환합니다.
                 {
                     if (item.Parent != null && item.Parent.IsChecked)
                     {
                         item.Parent.IsChecked = false;
-                    } 
+                    }
                 }
             }
         }
@@ -203,8 +206,9 @@ namespace TASMA
             if (dialog.IsDetermined)
             {
                 //Check Duplication
-                foreach (var evaluationItem in evaluationListBoxItems)      
-                    if (evaluationItem.Name.ToUpper() == dialog.Input.ToUpper()) {
+                foreach (var evaluationItem in evaluationListBoxItems)
+                    if (evaluationItem.Name.ToUpper() == dialog.Input.ToUpper())
+                    {
                         MessageBox.Show("Evaluations are duplicated");
                         return;
                     }
@@ -228,7 +232,7 @@ namespace TASMA
             if (dialog.IsDetermined)
             {
                 //Check Duplication
-                foreach (var evaluationItem in evaluationListBoxItems)      
+                foreach (var evaluationItem in evaluationListBoxItems)
                     if (evaluationItem.Name.ToUpper() == dialog.Input.ToUpper())
                     {
                         MessageBox.Show("Evaluations are duplicated");
@@ -237,7 +241,7 @@ namespace TASMA
 
                 adminDAO.UpdateEvaluation(subjectName, selectedListBoxItem.Name, dialog.Input);
                 selectedListBoxItem.Name = dialog.Input;
-            }   
+            }
         }
 
         /// <summary>
@@ -250,13 +254,14 @@ namespace TASMA
             if (selectedListBoxItem == null)
                 return;
 
-            if (MessageBox.Show("Are you sure delete evaluation - " + selectedListBoxItem.Name,
-                                "Delete evaluation",
-                                MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-            {
+            var dialog = new TasmaConfirmationMessageBox("Delete evaluation", "Are you sure delete evaluation? - " + selectedListBoxItem.Name);
+            dialog.ShowDialog();
+
+            if (dialog.Yes)
                 evaluationListBoxItems.Remove(selectedListBoxItem);
-            }
         }
+
+
 
         /// <summary>
         /// 현재 ViewModel의 상태를 데이터베이스에 반영합니다.
@@ -268,13 +273,13 @@ namespace TASMA
 
             var newEvaluations = new List<string>();
             foreach (var evaluationItem in evaluationListBoxItems)
-                newEvaluations.Add(evaluationItem.Name);        
-        
+                newEvaluations.Add(evaluationItem.Name);
+
             //반 등록 - 현재 데이터베이스에 ViewModel 상태 반영
-            foreach(var gradeItem in subjectTreeViewItems)
+            foreach (var gradeItem in subjectTreeViewItems)
             {
                 var gradeName = gradeItem.Name;
-                foreach(var classItem in gradeItem.Children)
+                foreach (var classItem in gradeItem.Children)
                 {
                     var className = classItem.Name;
                     var contains = currentClasses.AsEnumerable().Any(row => gradeName == row.Field<string>("Grade")) &&
@@ -287,7 +292,8 @@ namespace TASMA
                             adminDAO.RegisterClassOnSubject(subjectName, gradeName, className);
                         }
 
-                    }else
+                    }
+                    else
                     {
                         if (contains)//현재 테이블에 존재하지만 체크가 되어 있지 않는 반 -> 삭제
                         {
@@ -298,7 +304,7 @@ namespace TASMA
             }
 
             //평가 항목 등록 - 현재 데이터베이스에 ViewModel 상태 반영
-            foreach(var newEvaluation in newEvaluations)
+            foreach (var newEvaluation in newEvaluations)
             {
                 //현재 리스트에 존재하지 않지만, 새 리스트에 포함 -> 추가
                 if (!currentEvaluations.Contains(newEvaluation))
@@ -306,7 +312,7 @@ namespace TASMA
                     adminDAO.CreateEvaluation(subjectName, newEvaluation);
                 }
             }
-            foreach(var currentEvaluation in currentEvaluations)
+            foreach (var currentEvaluation in currentEvaluations)
             {
                 //현재 리스트에 존재하지만, 새 리스트에 포함되지 않음 -> 삭제
                 if (!newEvaluations.Contains(currentEvaluation))
@@ -335,8 +341,8 @@ namespace TASMA
         /// <param name="e"></param>
         private void OnClosing(object sender, RoutedEventArgs e)
         {
-            if(MessageBox.Show("Do you want to save changes?", 
-                                "Save Confirmation", 
+            if (MessageBox.Show("Do you want to save changes?",
+                                "Save Confirmation",
                                 MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 SaveRoutine();
@@ -345,7 +351,9 @@ namespace TASMA
 
         protected void OnPropertyChanged(string propertyName)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));   
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
+
+
