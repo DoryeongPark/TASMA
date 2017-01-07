@@ -332,7 +332,7 @@ namespace TASMA
         private void OnPreviousButtonClicked(object sender, RoutedEventArgs e)
         {
             var nav = NavigationService.GetNavigationService(this);
-            nav.Navigate(new GradePage(adminDAO));
+            nav.Navigate(new SubjectPage(adminDAO));
         }
 
         /// <summary>
