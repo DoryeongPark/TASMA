@@ -143,6 +143,13 @@ namespace TASMA
             EvaluationPage_Subject.Content = subjectName;
         }
 
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var nav = NavigationService.GetNavigationService(this);
+            nav.Navigating += OnClosing;
+        }
+
+
         private void OnEvaluationListBoxItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
 
@@ -339,7 +346,7 @@ namespace TASMA
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnClosing(object sender, RoutedEventArgs e)
+        private void OnClosing(object sender, NavigatingCancelEventArgs e)
         {
             var dialog = new TasmaConfirmationMessageBox("Save confirmation", "Do you want to save changes?");
             dialog.ShowDialog();
@@ -348,12 +355,16 @@ namespace TASMA
             {
                 SaveRoutine();
             }
+
+            var nav = NavigationService.GetNavigationService(this);
+            nav.Navigating -= OnClosing;
         }
 
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+       
     }
 }
 
