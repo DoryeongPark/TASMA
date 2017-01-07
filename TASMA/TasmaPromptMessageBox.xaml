@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TASMA"
         mc:Ignorable="d"
-        Height="100" Width="150" AllowsTransparency="True" WindowStyle="None" Background="Honeydew" BorderBrush="DimGray" BorderThickness="1" Loaded="OnLoaded" MouseLeftButtonDown="OnLeftMouseButtonDown">
+        Height="100" Width="200" AllowsTransparency="True" WindowStyle="None" Background="Honeydew" BorderBrush="DimGray" BorderThickness="1" Loaded="OnLoaded" MouseLeftButtonDown="OnLeftMouseButtonDown">
     <Window.Resources>
         <Image x:Key="tasmaCloseButton" Source="/Resources/Tasma_CloseButton.png" Width="15" Height="15"/>
         <Style x:Key="promptButtonStyle">
@@ -33,7 +33,7 @@
         <Grid Grid.Row="1">
             <StackPanel VerticalAlignment="Center">
                 <TextBlock Name="TasmaPromptWindow_Message" FontWeight="Bold" FontSize="9" Text="Please input data" Margin="8,0,0,5"/>
-                <TextBox Name="TasmaPromptWindow_TextBox" MaxLength="15" Width="130" Height="15" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="10" />
+                <TextBox Name="TasmaPromptWindow_TextBox" MaxLength="15" Width="180" Height="15" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="10" />
             </StackPanel>
          </Grid>
         <Grid Grid.Row="2">
