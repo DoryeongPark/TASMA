@@ -60,8 +60,8 @@ namespace TASMA
         
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            this.Top = Application.Current.Windows[1].Top + Application.Current.Windows[1].Height / 2;
-            this.Left = Application.Current.Windows[1].Left + Application.Current.Windows[1].Width / 2;
+            this.Top = Application.Current.Windows[1].Top + Application.Current.Windows[1].Height / 2 - Height / 2;
+            this.Left = Application.Current.Windows[1].Left + Application.Current.Windows[1].Width / 2 - Width / 2;
         }
 
         private void OnLeftMouseButtonDown(object sender, MouseButtonEventArgs e)
