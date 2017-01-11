@@ -15,7 +15,7 @@ namespace TASMA
             public string SubjectName
             {
                 get { return subjectName; }
-                set { value = subjectName; OnPropertyChanged("SubjectName"); }
+                set { subjectName = value; OnPropertyChanged("SubjectName"); }
             }
             public event PropertyChangedEventHandler PropertyChanged;
 

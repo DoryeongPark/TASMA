@@ -86,6 +86,7 @@ namespace TASMA
 
         private void OnGradeItemClicked(object sender, MouseButtonEventArgs e)
         {
+            adminDAO.ReturnToInitialLoginState();
             classListBoxItems.Clear();
             subjectListBoxItems.Clear();
 
