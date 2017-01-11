@@ -28,6 +28,7 @@ namespace TASMA
             InitializeComponent();
             Style = (Style)FindResource(typeof(Window));
             adminDAO = AdminDAO.GetDAO();
+            LoginWindow_ID.Focus();
         }
 
         private void OnMouseDown(object sender, MouseButtonEventArgs e)
