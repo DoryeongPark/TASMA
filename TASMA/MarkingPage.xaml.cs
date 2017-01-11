@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -84,8 +85,11 @@ namespace TASMA
             InitializeComponent();
         }
 
-        private void OnGradeItemClicked(object sender, MouseButtonEventArgs e)
+        private void OnGradeItemClicked(object sender, SelectionChangedEventArgs e)
         {
+            if (selectedGradeItem == null)
+                return;
+
             adminDAO.ReturnToInitialLoginState();
             classListBoxItems.Clear();
             subjectListBoxItems.Clear();
@@ -98,8 +102,11 @@ namespace TASMA
             }          
         }
 
-        private void OnClassItemClicked(object sender, MouseButtonEventArgs e)
-        {
+        private void OnClassItemClicked(object sender, SelectionChangedEventArgs e)
+        {         
+            if (selectedClassItem == null)
+                return;
+
             subjectListBoxItems.Clear();
 
             adminDAO.SelectClass(selectedClassItem.ClassName);
@@ -110,13 +117,18 @@ namespace TASMA
             }
         }
 
-        private void OnSubjectItemClicked(object sender, MouseButtonEventArgs e)
+        private void OnSubjectItemClicked(object sender, SelectionChangedEventArgs e)
         {
+
+            if (selectedSubjectItem == null)
+                return;
+
             var nav = NavigationService.GetNavigationService(this);
             //nav.Navigate(new MarkingViewPage(adminDAO, 
             //                                selectedGradeItem.GradeName, 
             //                                selectedClassItem.ClassName, 
             //                                selectedSubjectItem.SubjectName));
         }
+        
     }
 }
