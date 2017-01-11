@@ -33,6 +33,7 @@ namespace TASMA
             InitializeComponent();
 
             this.adminDAO = adminDAO;
+            adminDAO.ReturnToInitialLoginState();
 
             columns = new List<StackPanel>();
 

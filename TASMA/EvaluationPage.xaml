@@ -76,7 +76,7 @@
                     </StackPanel>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <ListBox Margin="8" ItemsSource="{Binding EvaluationListBoxItems}" SelectedItem="{Binding SelectedListBoxItem, Mode=TwoWay}">
+                    <ListBox Margin="8" ItemsSource="{Binding EvaluationListBoxItems}">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
 

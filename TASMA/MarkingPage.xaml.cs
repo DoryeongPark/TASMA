@@ -39,18 +39,43 @@ namespace TASMA
             set { classListBoxItems = value; }
         }
 
+        private ObservableCollection<Subject> subjectListBoxItems;
+        public ObservableCollection<Subject> SubjectListBoxItems
+        {
+            get { return subjectListBoxItems; }
+            set { subjectListBoxItems = value; }
+        }
+
         public MarkingPage(AdminDAO adminDAO)
         {
             this.adminDAO = adminDAO;
+            adminDAO.ReturnToInitialLoginState();
+            var gradeList = adminDAO.GetGradeList();
 
             gradeListBoxItems = new ObservableCollection<Grade>();
             classListBoxItems = new ObservableCollection<Class>();
-
-            gradeListBoxItems.Add(new Grade { GradeName = "Test1" });
-            gradeListBoxItems.Add(new Grade { GradeName = "Test2" });
-
+            subjectListBoxItems = new ObservableCollection<Subject>();
+            
+            foreach(var gradeName in gradeList)
+                gradeListBoxItems.Add(new Grade(){ GradeName = gradeName });
+            
             DataContext = this;
             InitializeComponent();
+        }
+
+        private void OnGradeItemClicked(object sender, MouseButtonEventArgs e)
+        {
+           
+        }
+
+        private void OnClassItemClicked(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void OnSubjectItemClicked(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }

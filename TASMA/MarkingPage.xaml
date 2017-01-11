@@ -28,14 +28,14 @@
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <ListBox ItemsSource="{Binding GradeListBoxItems}">
+                        <ListBox Name="GradeListBox" ItemsSource="{Binding GradeListBoxItems}" PreviewMouseDown="OnGradeItemClicked">
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
                                 </Style>
                             </ListBox.ItemContainerStyle>
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" PreviewMouseDown="OnClassItemClicked">
                                         <TextBlock Text="{Binding GradeName}"></TextBlock>
                                     </Grid>
                                 </DataTemplate>
@@ -43,7 +43,7 @@
                         </ListBox>
                     </Grid>
                     <Grid Grid.Column="1">
-                        <ListBox ItemsSource="{Binding ClassListBoxItems}">
+                        <ListBox Name="ClassListBox" ItemsSource="{Binding ClassListBoxItems}" PreviewMouseDown="OnSubjectItemClicked">
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
                                 </Style>
@@ -58,7 +58,7 @@
                         </ListBox>
                     </Grid>
                     <Grid Grid.Column="2">
-                        <ListBox ItemsSource="{Binding SubjectListBoxItems}">
+                        <ListBox Name="SubjectListBox" ItemsSource="{Binding SubjectListBoxItems}">
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
                                 </Style>
