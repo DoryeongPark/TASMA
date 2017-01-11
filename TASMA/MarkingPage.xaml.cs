@@ -46,6 +46,27 @@ namespace TASMA
             set { subjectListBoxItems = value; }
         }
 
+        private Grade selectedGradeItem;
+        public Grade SelectedGradeItem
+        {
+            get { return selectedGradeItem; }
+            set { selectedGradeItem = value; }
+        }
+
+        private Class selectedClassItem;
+        public Class SelectedClassItem
+        {
+            get { return selectedClassItem; }
+            set { selectedClassItem = value; }
+        }
+
+        private Subject selectedSubjectItem;
+        public Subject SelectedSubjectItem
+        {
+            get { return selectedSubjectItem; }
+            set { selectedSubjectItem = value; }
+        }
+
         public MarkingPage(AdminDAO adminDAO)
         {
             this.adminDAO = adminDAO;
@@ -65,17 +86,36 @@ namespace TASMA
 
         private void OnGradeItemClicked(object sender, MouseButtonEventArgs e)
         {
-           
+            classListBoxItems.Clear();
+            subjectListBoxItems.Clear();
+
+            adminDAO.SelectGrade(selectedGradeItem.GradeName);
+            var classList = adminDAO.GetClassList(); 
+            foreach(var className in classList)
+            {
+                classListBoxItems.Add(new Class() { ClassName = className });
+            }          
         }
 
         private void OnClassItemClicked(object sender, MouseButtonEventArgs e)
         {
+            subjectListBoxItems.Clear();
 
+            adminDAO.SelectClass(selectedClassItem.ClassName);
+            var subjectList = adminDAO.GetClassSubjects(selectedGradeItem.GradeName, selectedClassItem.ClassName);
+            foreach(var subjectName in subjectList)
+            {
+                subjectListBoxItems.Add(new Subject { SubjectName = subjectName });
+            }
         }
 
         private void OnSubjectItemClicked(object sender, MouseButtonEventArgs e)
         {
-
+            var nav = NavigationService.GetNavigationService(this);
+            //nav.Navigate(new MarkingViewPage(adminDAO, 
+            //                                selectedGradeItem.GradeName, 
+            //                                selectedClassItem.ClassName, 
+            //                                selectedSubjectItem.SubjectName));
         }
     }
 }

@@ -91,6 +91,7 @@
     <Compile Include="MarkingPage.xaml.cs">
       <DependentUpon>MarkingPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Subject.cs" />
     <Compile Include="SubjectTreeViewItem.cs" />
     <Compile Include="DataRectangleManager.cs" />
     <Compile Include="EvaluationPage.xaml.cs">

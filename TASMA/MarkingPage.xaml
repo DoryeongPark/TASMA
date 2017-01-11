@@ -28,14 +28,15 @@
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <ListBox Name="GradeListBox" ItemsSource="{Binding GradeListBoxItems}" PreviewMouseDown="OnGradeItemClicked">
+                        <ListBox ItemsSource="{Binding GradeListBoxItems}" SelectedItem="{Binding SelectedGradeItem}">
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
+                                    <EventSetter Event="MouseLeftButtonUp" Handler="OnGradeItemClicked"/>
                                 </Style>
                             </ListBox.ItemContainerStyle>
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" PreviewMouseDown="OnClassItemClicked">
+                                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                         <TextBlock Text="{Binding GradeName}"></TextBlock>
                                     </Grid>
                                 </DataTemplate>
@@ -43,9 +44,10 @@
                         </ListBox>
                     </Grid>
                     <Grid Grid.Column="1">
-                        <ListBox Name="ClassListBox" ItemsSource="{Binding ClassListBoxItems}" PreviewMouseDown="OnSubjectItemClicked">
+                        <ListBox ItemsSource="{Binding ClassListBoxItems}" SelectedItem="{Binding SelectedClassItem}">
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
+                                    <EventSetter Event="MouseLeftButtonUp" Handler="OnClassItemClicked"/>
                                 </Style>
                             </ListBox.ItemContainerStyle>
                             <ListBox.ItemTemplate>
@@ -58,9 +60,10 @@
                         </ListBox>
                     </Grid>
                     <Grid Grid.Column="2">
-                        <ListBox Name="SubjectListBox" ItemsSource="{Binding SubjectListBoxItems}">
+                        <ListBox ItemsSource="{Binding SubjectListBoxItems}" SelectedItem="{Binding SelectedSubjectItem}">
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
+                                    <EventSetter Event="MouseLeftButtonUp" Handler="OnSubjectItemClicked"/>
                                 </Style>
                             </ListBox.ItemContainerStyle>
                             <ListBox.ItemTemplate>
