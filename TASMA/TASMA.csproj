@@ -82,10 +82,15 @@
     <Compile Include="ChangePasswordDialog.xaml.cs">
       <DependentUpon>ChangePasswordDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Class.cs" />
     <Compile Include="ClassPage.xaml.cs">
       <DependentUpon>ClassPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="EvaluationListBoxItem.cs" />
+    <Compile Include="Grade.cs" />
+    <Compile Include="MarkingPage.xaml.cs">
+      <DependentUpon>MarkingPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SubjectTreeViewItem.cs" />
     <Compile Include="DataRectangleManager.cs" />
     <Compile Include="EvaluationPage.xaml.cs">
@@ -144,6 +149,10 @@
       <DependentUpon>LoginWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MarkingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="RegistrationDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
