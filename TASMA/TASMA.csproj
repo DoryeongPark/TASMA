@@ -91,6 +91,9 @@
     <Compile Include="MarkingPage.xaml.cs">
       <DependentUpon>MarkingPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MarkingViewPage.xaml.cs">
+      <DependentUpon>MarkingViewPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Subject.cs" />
     <Compile Include="SubjectTreeViewItem.cs" />
     <Compile Include="DataRectangleManager.cs" />
@@ -151,6 +154,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="MarkingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MarkingViewPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

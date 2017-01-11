@@ -124,10 +124,10 @@ namespace TASMA
                 return;
 
             var nav = NavigationService.GetNavigationService(this);
-            //nav.Navigate(new MarkingViewPage(adminDAO, 
-            //                                selectedGradeItem.GradeName, 
-            //                                selectedClassItem.ClassName, 
-            //                                selectedSubjectItem.SubjectName));
+            nav.Navigate(new MarkingViewPage(adminDAO,
+                                            selectedGradeItem.GradeName,
+                                            selectedClassItem.ClassName,
+                                            selectedSubjectItem.SubjectName));
         }
         
     }

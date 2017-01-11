@@ -798,7 +798,7 @@ namespace TASMA
             /// 학생번호 리스트 항목을 불러옵니다.
             /// </summary>
             /// <returns>실행 성공 여부</returns>
-            public List<string> GetStudentList() {
+            public List<Tuple<int, string>> GetStudentList() {
 
                 if (!CheckClassState())
                     return null;
@@ -807,14 +807,20 @@ namespace TASMA
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
 
-                var cmdStr = "SELECT SNUM FROM STUDENT WHERE GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "';";
+                var cmdStr = "SELECT SNUM, SNAME FROM STUDENT WHERE GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "';";
                 var cmd = new SQLiteCommand(cmdStr, conn);
                 var reader = cmd.ExecuteReader();
-                var result = new List<string>();
+                var result = new List<Tuple<int, string>>();
 
                 while (reader.Read())
                 {
-                    result.Add(reader["SNUM"].ToString());
+                    int sNum = (int)((long)reader["SNUM"]);
+                    string sName = null;
+
+                    if (reader["SNAME"] != null)
+                        sName = (string)reader["SNAME"];
+                    
+                    result.Add(new Tuple<int, string>(sNum, sName));
                 }
 
                 return result;

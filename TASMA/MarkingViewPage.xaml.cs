@@ -45,7 +45,23 @@ namespace TASMA
             this.className = className;
             this.subjectName = subjectName;
 
+            adminDAO.SelectClass(gradeName);
+            adminDAO.SelectClass(className);
+            var studentList = adminDAO.GetStudentList();
             
+            scoreTable = new DataTable();
+            scoreTable.Columns.Add("Number", typeof(int));
+            scoreTable.Columns.Add("Student name", typeof(string));
+            
+            foreach (var student in studentList)
+            {
+                var row = scoreTable.NewRow();
+                row["Number"] = student.Item1;
+                row["Student name"] = student.Item2;
+                scoreTable.Rows.Add(row);
+            }
+            
+            //Update와 Delete는 자동으로 되므로 새 학생 데이터를 과목 테이블에 삽입만 하면 된다.
 
             DataContext = this;
             InitializeComponent();
@@ -54,6 +70,26 @@ namespace TASMA
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void OnGenerateColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            e.Column.CanUserResize = false;
+            e.Column.CanUserSort = false;
+
+            if (e.PropertyName == "Number")
+            {
+                e.Column.IsReadOnly = true;
+                e.Column.Width = new DataGridLength(25);
+            }else if(e.PropertyName == "Student name")
+            {
+                e.Column.IsReadOnly = true;
+                e.Column.Width = new DataGridLength(1, DataGridLengthUnitType.Star);               
+            }
+            else
+            {
+                e.Column.Width = new DataGridLength(80, DataGridLengthUnitType.Auto);
+            }
         }
     }
 }
