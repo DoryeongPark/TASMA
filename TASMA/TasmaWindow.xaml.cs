@@ -36,7 +36,7 @@ namespace TASMA
 
             menuButtons.Add(TasmaWindow_Student);
             menuButtons.Add(TasmaWindow_Subject);
-            menuButtons.Add(TasmaWindow_Score);
+            menuButtons.Add(TasmaWindow_Marking);
             menuButtons.Add(TasmaWindow_Print);
             menuButtons.Add(TasmaWindow_Export);
 
@@ -96,7 +96,7 @@ namespace TASMA
                 TasmaWindow_Frame.Navigate(new GradePage(adminDAO));
             else if (menuBtn.Equals(TasmaWindow_Subject)) 
                 TasmaWindow_Frame.Navigate(new SubjectPage(adminDAO));
-            else if (menuBtn.Equals(TasmaWindow_Score))
+            else if (menuBtn.Equals(TasmaWindow_Marking))
                 return;
             else if (menuBtn.Equals(TasmaWindow_Print))
                 return;
