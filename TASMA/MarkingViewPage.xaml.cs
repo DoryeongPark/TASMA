@@ -64,11 +64,11 @@ namespace TASMA
 
             //과목 테이블에서 학생 정보를 가져온 뒤 비교한다.
             //Update와 Delete는 자동으로 되므로 새 학생 데이터를 과목 테이블에 삽입만 하면 된다.
-
             foreach (var student in studentList)
                 if (!studentListFromSubject.Contains(student.Item1))
                     adminDAO.CreateStudentInSubject(subjectName, student.Item1);
-
+            
+            
            
             
             DataContext = this;

@@ -1014,8 +1014,8 @@ namespace TASMA
                                     + "GRADE STRING NOT NULL, "
                                     + "CLASS STRING NOT NULL, "
                                     + "SNUM INTEGER NOT NULL, "
-                                    + "Midterm INTEGER NOT NULL, "
-                                    + "Final INTEGER NOT NULL, "
+                                    + "Midterm REAL NOT NULL, "
+                                    + "Final REAL NOT NULL, "
                                     + "PRIMARY KEY(GRADE, CLASS, SNUM), "
                                     + "FOREIGN KEY(GRADE, CLASS, SNUM) REFERENCES STUDENT(GRADE, CLASS, SNUM) "
                                     + "ON DELETE CASCADE "
@@ -1165,10 +1165,10 @@ namespace TASMA
                         {
                             indexChanged = i;
                             evaluationList[i] = newEvaluationName;
-                            cmdStr += newEvaluationName + " INTEGER, ";
+                            cmdStr += newEvaluationName + " REAL, ";
                         }
                         else
-                            cmdStr += evaluationList[i] + " INTEGER, ";
+                            cmdStr += evaluationList[i] + " REAL, ";
                     }
                     cmdStr += "PRIMARY KEY(GRADE, CLASS, SNUM), ";
                     cmdStr += "FOREIGN KEY(GRADE, CLASS, SNUM) REFERENCES STUDENT(GRADE, CLASS, SNUM) ";
@@ -1241,7 +1241,7 @@ namespace TASMA
                     cmdStr += "CLASS STRING NOT NULL, ";
                     cmdStr += "SNUM INTEGER NOT NULL, ";
                     for (int i = 0; i < evaluationList.Count; ++i)
-                        cmdStr += evaluationList[i] + " INTEGER, ";    
+                        cmdStr += evaluationList[i] + " REAL, ";    
           
                     cmdStr += "PRIMARY KEY(GRADE, CLASS, SNUM), ";
                     cmdStr += "FOREIGN KEY(GRADE, CLASS, SNUM) REFERENCES STUDENT(GRADE, CLASS, SNUM) ";
@@ -1519,11 +1519,18 @@ namespace TASMA
             /// <param name="evaluationName">항목</param>
             /// <param name="value">입력 값</param>
             /// <returns>실행 성공 여부</returns>
-            public bool UpdateScore(string subjectName, int sNum, string evaluationName, int value)
+            public bool UpdateScore(string subjectName, int sNum, string evaluationName, float? value)
             {
                 if (!CheckClassState())
                     return false;
-                
+
+                string score = "";
+
+                if (value == null)
+                    score = "NULL";
+                else
+                    score = value.Value.ToString();    
+
                 var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
@@ -1542,6 +1549,8 @@ namespace TASMA
 
                 return true;
             }
+
+            
 
         }
     }
