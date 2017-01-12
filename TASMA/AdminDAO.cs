@@ -1364,6 +1364,9 @@ namespace TASMA
                     result.Add(reader["SUBJECT"].ToString());
                 }
 
+                conn.Close();
+                cmd.Dispose();
+
                 return result;
             }
 
@@ -1387,6 +1390,9 @@ namespace TASMA
                 {
                     result.Add(reader["EVALUATION"].ToString());
                 }
+
+                conn.Close();
+                cmd.Dispose();
 
                 return result;
             }
@@ -1413,6 +1419,9 @@ namespace TASMA
                     result.Add(reader["SUBJECT"].ToString());
                 }
 
+                conn.Close();
+                cmd.Dispose();
+
                 return result;
             }
             
@@ -1435,6 +1444,7 @@ namespace TASMA
                 dataTable.Load(reader);
 
                 conn.Close();
+                cmd.Dispose();
 
                 return dataTable;
             }
@@ -1464,7 +1474,42 @@ namespace TASMA
                     result.Add(sNum);
                 }
 
+                conn.Close();
+                cmd.Dispose();
+
                 return result;
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="subjectName"></param>
+            /// <returns></returns>
+            public bool CreateStudentInSubject(string subjectName, int sNum)
+            {
+                if (!CheckClassState())
+                    return false;
+
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+                var cmd = new SQLiteCommand(conn);
+
+                try
+                {
+                    cmd.CommandText = "INSERT INTO " + subjectName + "(GRADE, CLASS, SNUM) VALUES('" + currentGrade + "', '" + currentClass + "', '" + sNum + "');";
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException se)
+                {
+                    MessageBox.Show(se.Message);
+                    return false;
+                }
+
+                cmd.Dispose();
+                conn.Close();
+                return true;
+            
             }
 
         }

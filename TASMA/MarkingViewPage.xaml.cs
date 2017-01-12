@@ -48,7 +48,8 @@ namespace TASMA
             adminDAO.SelectClass(gradeName);
             adminDAO.SelectClass(className);
             var studentList = adminDAO.GetStudentList();
-            
+            var studentListFromSubject = adminDAO.GetStudentNumberFromSubject(subjectName);
+
             scoreTable = new DataTable();
             scoreTable.Columns.Add("Number", typeof(int));
             scoreTable.Columns.Add("Student name", typeof(string));
@@ -60,8 +61,8 @@ namespace TASMA
                 row["Student name"] = student.Item2;
                 scoreTable.Rows.Add(row);
             }
+
             
-            var studentListFromSubject 
             //과목 테이블에서 학생 정보를 가져온 뒤 비교
             //Update와 Delete는 자동으로 되므로 새 학생 데이터를 과목 테이블에 삽입만 하면 된다.
 
