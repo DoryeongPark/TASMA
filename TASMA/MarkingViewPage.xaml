@@ -76,11 +76,7 @@
                     </Grid>
                     <Grid Grid.Column="1">
                         <DataGrid ItemsSource="{Binding ScoreTable, Mode=OneWay}" AutoGenerateColumns="True" HeadersVisibility="Column" FontFamily="Segoe UI" FontSize="10" Foreground="Gray" CanUserResizeRows="False" CanUserDeleteRows="False" CanUserAddRows="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGeneratingColumn="OnGenerateColumn" >
-                            <!--<DataGrid.Columns>
-                                <DataGridTextColumn Width="1*" Header="No." Binding="{Binding Path=SNUM, Mode=TwoWay}" CanUserResize="False"/>
-                                <DataGridTextColumn Width="4*" Header="Student Name" Binding="{Binding Path=SNAME, Mode=TwoWay}" CanUserResize="False"/>
-                            </DataGrid.Columns>-->
-                            <DataGrid.ColumnHeaderStyle>
+                           <DataGrid.ColumnHeaderStyle>
                                 <Style TargetType="{x:Type DataGridColumnHeader}">
                                     <Setter Property="FontWeight"  Value="SemiBold" />
                                     <Setter Property="BorderBrush" Value="Black"/>
@@ -94,6 +90,7 @@
                                     <Setter Property="Foreground" Value="WhiteSmoke" />
                                 </Style>
                             </DataGrid.ColumnHeaderStyle>
+                            
                         </DataGrid>
                     </Grid>
                 </Grid>

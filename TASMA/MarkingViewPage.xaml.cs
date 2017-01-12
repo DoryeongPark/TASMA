@@ -67,12 +67,47 @@ namespace TASMA
             foreach (var student in studentList)
                 if (!studentListFromSubject.Contains(student.Item1))
                     adminDAO.CreateStudentInSubject(subjectName, student.Item1);
-            
-            
-           
-            
+
+            var evaluationList = adminDAO.GetEvaluationList(subjectName);
+            foreach (var evaluationName in evaluationList)
+                scoreTable.Columns.Add(evaluationName, typeof(float));
+
+
+
             DataContext = this;
             InitializeComponent();
+        }
+
+        private void OnGenerateColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            DataGridTextColumn column = e.Column as DataGridTextColumn;
+
+            if (column != null)
+            {
+                column.Binding = new Binding(e.PropertyName);
+
+                Style elementStyle = new Style(typeof(TextBlock));
+                elementStyle.Setters.Add(new Setter(TextBlock.TextWrappingProperty, TextWrapping.WrapWithOverflow));
+                column.ElementStyle = elementStyle;
+
+                column.CanUserResize = false;
+                column.CanUserSort = false;
+
+                if (e.PropertyName == "Number")
+                {
+                    column.IsReadOnly = true;
+                    column.Width = new DataGridLength(20);
+                }
+                else if (e.PropertyName == "Student name")
+                {
+                    column.IsReadOnly = true;
+                    column.Width = new DataGridLength(140);
+                }
+                else
+                {
+                    column.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
+                }
+            }
         }
 
         protected void OnPropertyChanged(string propertyName)
@@ -80,24 +115,5 @@ namespace TASMA
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void OnGenerateColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
-        {
-            e.Column.CanUserResize = false;
-            e.Column.CanUserSort = false;
-
-            if (e.PropertyName == "Number")
-            {
-                e.Column.IsReadOnly = true;
-                e.Column.Width = new DataGridLength(25);
-            }else if(e.PropertyName == "Student name")
-            {
-                e.Column.IsReadOnly = true;
-                e.Column.Width = new DataGridLength(1, DataGridLengthUnitType.Star);               
-            }
-            else
-            {
-                e.Column.Width = new DataGridLength(80, DataGridLengthUnitType.Auto);
-            }
-        }
     }
 }
