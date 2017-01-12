@@ -1439,6 +1439,34 @@ namespace TASMA
                 return dataTable;
             }
 
+            /// <summary>
+            /// 해당 과목에 존재하는 학생 번호 리스트를 불러옵니다.
+            /// </summary>
+            /// <param name="subjectName">과목 이름</param>
+            /// <returns>학생 번호 리스트</returns>
+            public List<int> GetStudentNumberFromSubject(string subjectName)
+            {
+                if (!CheckClassState())
+                    return null;
+
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+
+                var cmdStr = "SELECT SNUM FROM " + subjectName + " WHERE GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "';";
+                var cmd = new SQLiteCommand(cmdStr, conn);
+                var reader = cmd.ExecuteReader();
+                var result = new List<int>();
+
+                while (reader.Read())
+                {
+                    var sNum = (int)((long)reader["SNUM"]);
+                    result.Add(sNum);
+                }
+
+                return result;
+            }
+
         }
     }
 }
