@@ -72,7 +72,8 @@ namespace TASMA
             foreach (var evaluationName in evaluationList)
                 scoreTable.Columns.Add(evaluationName, typeof(float));
 
-
+           
+            
 
             DataContext = this;
             InitializeComponent();

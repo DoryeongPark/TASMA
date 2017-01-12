@@ -1551,6 +1551,42 @@ namespace TASMA
                 return true;
             }
 
+            /// <summary>
+            /// 학생 점수 테이블을 가져옵니다.
+            /// </summary>
+            /// <param name="subjectName">과목 이름</param>
+            /// <returns>학생 점수 테이블</returns>
+            private DataTable GetScoreTable(string subjectName)
+            {
+                if (!CheckClassState())
+                    return null;
+                
+                var evaluationList = GetEvaluationList(subjectName);
+                
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+
+                var cmdStr = "";
+                cmdStr += "SELECT SNUM";
+
+                foreach (var evaluationName in evaluationList)
+                    cmdStr += "," + evaluationName;
+
+                cmdStr += " FROM " + subjectName;
+                cmdStr += " WHERE GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "';";
+                                
+                var cmd = new SQLiteCommand(cmdStr, conn);
+                var reader = cmd.ExecuteReader();
+
+                var dataTable = new DataTable();
+                dataTable.Load(reader);
+
+                conn.Close();
+
+                return dataTable;
+            }
+
         }
     }
 }
