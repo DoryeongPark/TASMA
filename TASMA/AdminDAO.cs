@@ -1014,8 +1014,8 @@ namespace TASMA
                                     + "GRADE STRING NOT NULL, "
                                     + "CLASS STRING NOT NULL, "
                                     + "SNUM INTEGER NOT NULL, "
-                                    + "Midterm REAL NOT NULL, "
-                                    + "Final REAL NOT NULL, "
+                                    + "Midterm REAL, "
+                                    + "Final REAL, "
                                     + "PRIMARY KEY(GRADE, CLASS, SNUM), "
                                     + "FOREIGN KEY(GRADE, CLASS, SNUM) REFERENCES STUDENT(GRADE, CLASS, SNUM) "
                                     + "ON DELETE CASCADE "
@@ -1540,6 +1540,7 @@ namespace TASMA
                 {
                     cmd.CommandText = "UPDATE " + subjectName + " SET " + evaluationName + " = " + value + " WHERE GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "' AND SNUM = " + sNum + ";";
                     cmd.ExecuteNonQuery();
+
                 }
                 catch (SQLiteException se)
                 {
@@ -1549,8 +1550,6 @@ namespace TASMA
 
                 return true;
             }
-
-            
 
         }
     }

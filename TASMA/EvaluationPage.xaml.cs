@@ -126,6 +126,10 @@ namespace TASMA
             foreach (var gradeItem in subjectTreeViewItems)
             {
                 gradeItem.PropertyChanged += OnSubjectTreeViewItemPropertyChanged;
+
+                if (gradeItem.Children == null)
+                    continue;
+
                 foreach (var classItem in gradeItem.Children)
                 {
                     classItem.PropertyChanged += OnSubjectTreeViewItemPropertyChanged;
@@ -280,6 +284,10 @@ namespace TASMA
             foreach (var gradeItem in subjectTreeViewItems)
             {
                 var gradeName = gradeItem.Name;
+
+                if (gradeItem.Children == null)
+                    continue;
+
                 foreach (var classItem in gradeItem.Children)
                 {
                     var className = classItem.Name;
