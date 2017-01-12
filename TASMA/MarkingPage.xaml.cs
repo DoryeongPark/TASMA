@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -22,7 +23,7 @@ namespace TASMA
     /// <summary>
     /// 점수 입력 페이지입니다.
     /// </summary>
-    public partial class MarkingPage : Page
+    public partial class MarkingPage : Page, INotifyPropertyChanged
     {
         private AdminDAO adminDAO;
 
@@ -47,40 +48,68 @@ namespace TASMA
             set { subjectListBoxItems = value; }
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         private Grade selectedGradeItem;
         public Grade SelectedGradeItem
         {
             get { return selectedGradeItem; }
-            set { selectedGradeItem = value; }
+            set { selectedGradeItem = value; OnPropertyChanged("SelectedGradeItem"); }
         }
 
         private Class selectedClassItem;
         public Class SelectedClassItem
         {
             get { return selectedClassItem; }
-            set { selectedClassItem = value; }
+            set { selectedClassItem = value;  OnPropertyChanged("SelectedClassItem"); }
         }
 
         private Subject selectedSubjectItem;
         public Subject SelectedSubjectItem
         {
             get { return selectedSubjectItem; }
-            set { selectedSubjectItem = value; }
+            set { selectedSubjectItem = value; OnPropertyChanged("SelectedSubjectItem"); }
         }
 
         public MarkingPage(AdminDAO adminDAO)
         {
             this.adminDAO = adminDAO;
+            InitializeRoutine();
+        }
+    
+        public MarkingPage(AdminDAO adminDAO, string gradeName, string className, string subjectName)
+        {
+            this.adminDAO = adminDAO;
+            InitializeRoutine();
+
+            foreach (var gradeItem in gradeListBoxItems)
+                if (gradeItem.GradeName == gradeName)
+                {
+                    SelectedGradeItem = gradeItem;
+                    break;
+                }
+            
+            foreach(var classItem in classListBoxItems)
+                if(classItem.ClassName == className)
+                {
+                    SelectedClassItem = classItem;
+                    break;
+                }
+            
+        }
+
+        private void InitializeRoutine()
+        {
             adminDAO.ReturnToInitialLoginState();
             var gradeList = adminDAO.GetGradeList();
 
             gradeListBoxItems = new ObservableCollection<Grade>();
             classListBoxItems = new ObservableCollection<Class>();
             subjectListBoxItems = new ObservableCollection<Subject>();
-            
-            foreach(var gradeName in gradeList)
-                gradeListBoxItems.Add(new Grade(){ GradeName = gradeName });
-            
+
+            foreach (var gradeName in gradeList)
+                gradeListBoxItems.Add(new Grade() { GradeName = gradeName });
+
             DataContext = this;
             InitializeComponent();
         }
@@ -129,6 +158,12 @@ namespace TASMA
                                             selectedClassItem.ClassName,
                                             selectedSubjectItem.SubjectName));
         }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         
     }
 }

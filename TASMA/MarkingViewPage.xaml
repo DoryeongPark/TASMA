@@ -56,6 +56,7 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
+                    <Button Name="MarkingViewPage_PreviousButton" Content="Back" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="30" Height="30" Click="OnPreviousButtonClicked"/>
                     <Label Content="Grade / Class / Subject" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Segoe UI" FontWeight="Bold" FontSize="18" Foreground="Indigo"/>
                 </Grid>
                 <Grid Grid.Row="1">

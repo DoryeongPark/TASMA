@@ -189,6 +189,10 @@ namespace TASMA
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        
+        private void OnPreviousButtonClicked(object sender, RoutedEventArgs e)
+        {
+            var nav = NavigationService.GetNavigationService(this);
+            nav.Navigate(new MarkingPage(adminDAO, gradeName, className, subjectName));
+        }
     }
 }
