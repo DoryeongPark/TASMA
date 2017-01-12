@@ -20,7 +20,7 @@ using TASMA.Database;
 namespace TASMA
 {
     /// <summary>
-    /// 학생에 대한 페이지
+    /// 학생 정보 페이지 입니다.
     /// </summary>
     public partial class StudentPage : Page
     {
@@ -87,7 +87,7 @@ namespace TASMA
             comboBoxColumn.ItemsSource = items;
 
             StudentDataTable.PreviewKeyDown += OnPreviewKeyDown;
-            StudentDataTable.CellEditEnding += OnCellEditEnding;
+            StudentDataTable.CellEditEnding += OnCellEditFinished;
         
             StudentDataTable.ItemsSource = dataTable.AsDataView();
 
@@ -104,7 +104,7 @@ namespace TASMA
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        private void OnCellEditFinished(object sender, DataGridCellEditEndingEventArgs e)
         {
             string valueEdited = "";
 

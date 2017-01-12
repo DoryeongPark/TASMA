@@ -51,13 +51,13 @@ namespace TASMA
             var studentListFromSubject = adminDAO.GetStudentNumberFromSubject(subjectName);
 
             scoreTable = new DataTable();
-            scoreTable.Columns.Add("Number", typeof(int));
+            scoreTable.Columns.Add("No", typeof(int));
             scoreTable.Columns.Add("Student name", typeof(string));
-            
+
             foreach (var student in studentList)
             {
                 var row = scoreTable.NewRow();
-                row["Number"] = student.Item1;
+                row["No"] = student.Item1;
                 row["Student name"] = student.Item2;
                 scoreTable.Rows.Add(row);
             }
@@ -72,11 +72,86 @@ namespace TASMA
             foreach (var evaluationName in evaluationList)
                 scoreTable.Columns.Add(evaluationName, typeof(float));
 
-           
-            
+            var scoreTableFromSubject = adminDAO.GetScoreTable(subjectName);
+            for (var i = 0; i < scoreTable.Rows.Count; ++i)
+            {
+                var rowFound = scoreTableFromSubject.Select("SNUM = " + (int)scoreTable.Rows[i]["No"]);
+                for (var j = 2; j < scoreTable.Columns.Count; ++j)
+                    scoreTable.Rows[i][j] = rowFound[0][j - 1];
+            }
+
+            for (var j = 2; j < scoreTable.Columns.Count; ++j)
+                scoreTable.Columns[2].AllowDBNull = true;
+
+            scoreTable.ColumnChanged += OnValueChanged;
+            scoreTable.AcceptChanges();
 
             DataContext = this;
             InitializeComponent();
+        }
+
+        private void OnCellEditFinished(object sender, DataGridCellEditEndingEventArgs e)
+        { 
+            var textBox = e.EditingElement as TextBox;
+            var rowIndex = e.Row.GetIndex();
+            var columnIndex = e.Column.DisplayIndex;
+            var newValueText = textBox.Text;
+            float? oldValue = null;
+
+            if (scoreTable.Rows[rowIndex][columnIndex] != DBNull.Value)
+            { 
+                oldValue = (float)scoreTable.Rows[rowIndex][columnIndex];
+            }
+
+            float newValue;
+
+            if(newValueText == "")
+            {
+                textBox.Text = "";
+                scoreTable.Rows[rowIndex][columnIndex] = DBNull.Value;
+                return;
+            }
+
+            try {
+
+                newValue = float.Parse(newValueText);
+
+            } catch
+            {
+                if (oldValue == null)
+                {
+                    textBox.Text = "";
+                    scoreTable.Rows[rowIndex][columnIndex] = DBNull.Value;
+                }
+                else
+                    textBox.Text = oldValue.ToString();
+
+                return;
+            }
+                  
+            if (0 > newValue)
+            {
+                textBox.Text = (-1.0f * float.Parse(newValueText)).ToString();
+            }
+           
+        }
+
+        private void OnValueChanged(object sender, DataColumnChangeEventArgs e)
+        {
+            var columnName = e.Column.ColumnName;
+            var sNum = (int)e.Row[0];
+            float? newValue;
+
+            if (e.Row[columnName] == DBNull.Value)
+            {
+                newValue = null;
+            }
+            else
+            {
+                newValue = (float)e.Row[columnName];
+            }
+            
+            adminDAO.UpdateScore(subjectName, sNum, columnName, newValue);              
         }
 
         private void OnGenerateColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
@@ -85,8 +160,6 @@ namespace TASMA
 
             if (column != null)
             {
-                column.Binding = new Binding(e.PropertyName);
-
                 Style elementStyle = new Style(typeof(TextBlock));
                 elementStyle.Setters.Add(new Setter(TextBlock.TextWrappingProperty, TextWrapping.WrapWithOverflow));
                 column.ElementStyle = elementStyle;
@@ -94,15 +167,15 @@ namespace TASMA
                 column.CanUserResize = false;
                 column.CanUserSort = false;
 
-                if (e.PropertyName == "Number")
+                if (e.PropertyName == "No")
                 {
                     column.IsReadOnly = true;
-                    column.Width = new DataGridLength(20);
+                    column.Width = new DataGridLength(25);
                 }
                 else if (e.PropertyName == "Student name")
                 {
                     column.IsReadOnly = true;
-                    column.Width = new DataGridLength(140);
+                    column.Width = new DataGridLength(200);
                 }
                 else
                 {
@@ -116,5 +189,6 @@ namespace TASMA
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        
     }
 }

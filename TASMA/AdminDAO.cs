@@ -1538,7 +1538,7 @@ namespace TASMA
 
                 try
                 {
-                    cmd.CommandText = "UPDATE " + subjectName + " SET " + evaluationName + " = " + value + " WHERE GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "' AND SNUM = " + sNum + ";";
+                    cmd.CommandText = "UPDATE " + subjectName + " SET " + evaluationName + " = " + score + " WHERE GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "' AND SNUM = " + sNum + ";";
                     cmd.ExecuteNonQuery();
 
                 }
@@ -1556,7 +1556,7 @@ namespace TASMA
             /// </summary>
             /// <param name="subjectName">과목 이름</param>
             /// <returns>학생 점수 테이블</returns>
-            private DataTable GetScoreTable(string subjectName)
+            public DataTable GetScoreTable(string subjectName)
             {
                 if (!CheckClassState())
                     return null;

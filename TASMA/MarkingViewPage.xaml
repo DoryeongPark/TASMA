@@ -59,42 +59,27 @@
                     <Label Content="Grade / Class / Subject" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Segoe UI" FontWeight="Bold" FontSize="18" Foreground="Indigo"/>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="5*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
-                        <ListBox Name="MarkingViewPage_SubjectList" ItemsSource="{Binding GradeListBoxItems}" SelectedItem="{Binding SelectedGradeItem}" ItemContainerStyle="{StaticResource listBoxItemStyle}"  >
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                        <TextBlock Name="TextBlock" Text="{Binding GradeName}"></TextBlock>
-                                    </Grid>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </Grid>
-                    <Grid Grid.Column="1">
-                        <DataGrid ItemsSource="{Binding ScoreTable, Mode=OneWay}" AutoGenerateColumns="True" HeadersVisibility="Column" FontFamily="Segoe UI" FontSize="10" Foreground="Gray" CanUserResizeRows="False" CanUserDeleteRows="False" CanUserAddRows="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGeneratingColumn="OnGenerateColumn" >
-                           <DataGrid.ColumnHeaderStyle>
-                                <Style TargetType="{x:Type DataGridColumnHeader}">
-                                    <Setter Property="FontWeight"  Value="SemiBold" />
-                                    <Setter Property="BorderBrush" Value="Black"/>
-                                    <Setter Property="BorderThickness" Value="1"/>
-                                    <Setter Property="Height" Value="25" />
-                                    <Setter Property="HorizontalAlignment" Value="Stretch" />
-                                    <Setter Property="VerticalAlignment" Value="Stretch" />
-                                    <Setter Property="FontSize" Value="10" />
-                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                    <Setter Property="Background" Value="MidnightBlue" />
-                                    <Setter Property="Foreground" Value="WhiteSmoke" />
-                                </Style>
-                            </DataGrid.ColumnHeaderStyle>
-                            
-                        </DataGrid>
-                    </Grid>
+                    <DataGrid ItemsSource="{Binding ScoreTable, Mode=TwoWay, NotifyOnTargetUpdated=True}" 
+                                AutoGenerateColumns="True" HeadersVisibility="Column" FontFamily="Segoe UI"
+                                FontSize="10" Foreground="Gray" CanUserResizeRows="False" CanUserDeleteRows="False" 
+                                CanUserAddRows="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                                Background="White" AutoGeneratingColumn="OnGenerateColumn" CellEditEnding="OnCellEditFinished">
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="FontWeight"  Value="SemiBold" />
+                                <Setter Property="BorderBrush" Value="Black"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="Height" Value="25" />
+                                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                                <Setter Property="VerticalAlignment" Value="Stretch" />
+                                <Setter Property="FontSize" Value="10" />
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="Background" Value="MidnightBlue" />
+                                <Setter Property="Foreground" Value="WhiteSmoke" />
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                    </DataGrid>
                 </Grid>
-
             </Grid>
         </ScrollViewer>
     </Grid>
