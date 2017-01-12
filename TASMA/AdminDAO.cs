@@ -1484,7 +1484,7 @@ namespace TASMA
             /// 
             /// </summary>
             /// <param name="subjectName"></param>
-            /// <returns></returns>
+            /// <returns>성공 여부</returns>
             public bool CreateStudentInSubject(string subjectName, int sNum)
             {
                 if (!CheckClassState())
@@ -1509,7 +1509,38 @@ namespace TASMA
                 cmd.Dispose();
                 conn.Close();
                 return true;
-            
+            }
+
+            /// <summary>
+            /// 학생의 점수를 입력합니다. 
+            /// </summary>
+            /// <param name="subjectName">과목</param>
+            /// <param name="sNum">학생번호</param>
+            /// <param name="evaluationName">항목</param>
+            /// <param name="value">입력 값</param>
+            /// <returns>실행 성공 여부</returns>
+            public bool UpdateScore(string subjectName, int sNum, string evaluationName, int value)
+            {
+                if (!CheckClassState())
+                    return false;
+                
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+                var cmd = new SQLiteCommand(conn);
+
+                try
+                {
+                    cmd.CommandText = "UPDATE " + subjectName + " SET " + evaluationName + " = " + value + " WHERE GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "' AND SNUM = " + sNum + ";";
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException se)
+                {
+                    MessageBox.Show(se.Message);
+                    return false;
+                }
+
+                return true;
             }
 
         }
