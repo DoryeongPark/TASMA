@@ -19,7 +19,7 @@ using TASMA.Database;
 namespace TASMA
 {
     /// <summary>
-    /// 학생 채점 테이블 페이지 입니다.
+    /// 반 채점 테이블 페이지 입니다.
     /// </summary>
     public partial class MarkingViewPage : Page, INotifyPropertyChanged
     {
@@ -38,6 +38,13 @@ namespace TASMA
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// 현재 선택된 반의 ViewModel을 초기화합니다.
+        /// </summary>
+        /// <param name="adminDAO"></param>
+        /// <param name="gradeName"></param>
+        /// <param name="className"></param>
+        /// <param name="subjectName"></param>
         public MarkingViewPage(AdminDAO adminDAO, string gradeName, string className, string subjectName)
         {
             this.adminDAO = adminDAO;
@@ -90,6 +97,11 @@ namespace TASMA
             InitializeComponent();
         }
 
+        /// <summary>
+        /// 셀 편집 종료 시의 호출 루틴입니다. 데이터의 유효성을 검사합니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnCellEditFinished(object sender, DataGridCellEditEndingEventArgs e)
         { 
             var textBox = e.EditingElement as TextBox;
@@ -136,6 +148,11 @@ namespace TASMA
            
         }
 
+        /// <summary>
+        /// 셀 편집을 통해 바뀐 데이터를 실제 데이터베이스에 반영합니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnValueChanged(object sender, DataColumnChangeEventArgs e)
         {
             var columnName = e.Column.ColumnName;
@@ -154,6 +171,11 @@ namespace TASMA
             adminDAO.UpdateScore(subjectName, sNum, columnName, newValue);              
         }
 
+        /// <summary>
+        /// 컬럼 생성 시 호출되는 루틴입니다. 컬럼 헤더에 대한 설정을 초기화합니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnGenerateColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
             DataGridTextColumn column = e.Column as DataGridTextColumn;
@@ -184,15 +206,21 @@ namespace TASMA
             }
         }
 
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
+        /// <summary>
+        /// 이전 반 선택 페이지로 돌아갑니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnPreviousButtonClicked(object sender, RoutedEventArgs e)
         {
             var nav = NavigationService.GetNavigationService(this);
             nav.Navigate(new MarkingPage(adminDAO, gradeName, className, subjectName));
         }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
     }
 }
