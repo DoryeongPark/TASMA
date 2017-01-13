@@ -21,7 +21,7 @@ using TASMA.Model;
 namespace TASMA
 {
     /// <summary>
-    /// 점수 입력 페이지입니다.
+    /// 채점 반 선택 페이지입니다.
     /// </summary>
     public partial class MarkingPage : Page, INotifyPropertyChanged
     {
@@ -71,12 +71,23 @@ namespace TASMA
             set { selectedSubjectItem = value; OnPropertyChanged("SelectedSubjectItem"); }
         }
 
+        /// <summary>
+        /// 초기 상태의 채점 반 선택 페이지를 생성합니다.
+        /// </summary>
+        /// <param name="adminDAO"></param>
         public MarkingPage(AdminDAO adminDAO)
         {
             this.adminDAO = adminDAO;
             InitializeRoutine();
         }
     
+        /// <summary>
+        /// 이미 선택되어 있는 상태의 채점 반 선택 페이지를 생성합니다.
+        /// </summary>
+        /// <param name="adminDAO"></param>
+        /// <param name="gradeName"></param>
+        /// <param name="className"></param>
+        /// <param name="subjectName"></param>
         public MarkingPage(AdminDAO adminDAO, string gradeName, string className, string subjectName)
         {
             this.adminDAO = adminDAO;
@@ -98,6 +109,9 @@ namespace TASMA
             
         }
 
+        /// <summary>
+        /// ViewModel과 컴포넌트를 초기화합니다.
+        /// </summary>
         private void InitializeRoutine()
         {
             adminDAO.ReturnToInitialLoginState();
@@ -114,6 +128,11 @@ namespace TASMA
             InitializeComponent();
         }
 
+        /// <summary>
+        /// 학년을 클릭할 시 해당하는 반이 보여지도록 합니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnGradeItemClicked(object sender, SelectionChangedEventArgs e)
         {
             if (selectedGradeItem == null)
@@ -131,6 +150,11 @@ namespace TASMA
             }          
         }
 
+        /// <summary>
+        /// 반을 클릭할 시 과목이 보여지도록 합니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnClassItemClicked(object sender, SelectionChangedEventArgs e)
         {         
             if (selectedClassItem == null)
@@ -146,9 +170,13 @@ namespace TASMA
             }
         }
 
+        /// <summary>
+        /// 과목을 클릭할 시 채점 페이지로 이동합니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnSubjectItemClicked(object sender, SelectionChangedEventArgs e)
         {
-
             if (selectedSubjectItem == null)
                 return;
 
@@ -159,11 +187,10 @@ namespace TASMA
                                             selectedSubjectItem.SubjectName));
         }
 
+        
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        
     }
 }
