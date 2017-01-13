@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
@@ -15,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TASMA.Database;
+using TASMA.Model;
 
 namespace TASMA
 {
@@ -34,6 +36,20 @@ namespace TASMA
         {
             get { return scoreTable; }
             set { scoreTable = value; OnPropertyChanged("ScoreTable"); }
+        }
+
+        private ObservableCollection<string> subjectComboBoxItems;
+        public ObservableCollection<string> SubjectComboBoxItems
+        {
+            get { return subjectComboBoxItems; }
+            set { subjectComboBoxItems = value; OnPropertyChanged("SubjectComboBoxItems"); }   
+        }
+
+        private string selectedSubjectComboBoxItem;
+        public string SelectedSubjectComboBoxItem
+        {
+            get { return selectedSubjectComboBoxItem; }
+            set { selectedSubjectComboBoxItem = value; OnPropertyChanged("SelectedSubjectComboBoxItem"); }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -57,6 +73,7 @@ namespace TASMA
             var studentList = adminDAO.GetStudentList();
             var studentListFromSubject = adminDAO.GetStudentNumberFromSubject(subjectName);
 
+            //Table creation routine
             scoreTable = new DataTable();
             scoreTable.Columns.Add("No", typeof(int));
             scoreTable.Columns.Add("Student name", typeof(string));
@@ -90,11 +107,35 @@ namespace TASMA
             for (var j = 2; j < scoreTable.Columns.Count; ++j)
                 scoreTable.Columns[2].AllowDBNull = true;
 
+            //ComboBox creation routine
+            var subjectList = adminDAO.GetClassSubjects(gradeName, className);
+            subjectComboBoxItems = new ObservableCollection<string>();
+
+            foreach (var subject in subjectList)
+                subjectComboBoxItems.Add(subject);
+            
+            foreach (var subjectComboBoxItem in subjectComboBoxItems)
+                if (subjectName == subjectComboBoxItem)
+                {
+                    selectedSubjectComboBoxItem = subjectComboBoxItem;
+                    break;
+                }
+
             scoreTable.ColumnChanged += OnValueChanged;
             scoreTable.AcceptChanges();
 
             DataContext = this;
             InitializeComponent();
+        }
+        
+        /// <summary>
+        /// ComboBox에 이벤트를 추가합니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            MarkingViewPage_ComboBox.SelectionChanged += OnSubjectComboBoxSelected;
         }
 
         /// <summary>
@@ -215,6 +256,17 @@ namespace TASMA
         {
             var nav = NavigationService.GetNavigationService(this);
             nav.Navigate(new MarkingPage(adminDAO, gradeName, className, subjectName));
+        }
+
+        /// <summary>
+        /// 콤보 박스 선택 시 호출되는 루틴입니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnSubjectComboBoxSelected(object sender, SelectionChangedEventArgs e)
+        {
+            var nav = NavigationService.GetNavigationService(this);
+            nav.Navigate(new MarkingViewPage(adminDAO, gradeName, className, selectedSubjectComboBoxItem));
         }
 
         protected void OnPropertyChanged(string propertyName)
