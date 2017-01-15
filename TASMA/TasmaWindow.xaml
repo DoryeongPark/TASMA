@@ -68,7 +68,6 @@
             <Grid Grid.Row="0" Background="{StaticResource tasmaDimGray}">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Center">
                     <TextBlock Text="TASMA" FontFamily="{StaticResource tasmaFont}" FontSize="25" FontWeight="Bold" Foreground="{StaticResource tasmaGreen}" Margin="15, 0, 0, 0" VerticalAlignment="Bottom"/>
-                    <TextBlock Text="Tanzania Student Management Application" FontFamily="{StaticResource tasmaFont}" FontSize="8" Foreground="Gray" Margin="15, 0, 0, 0" VerticalAlignment="Top"/>
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="1">
@@ -90,7 +89,7 @@
             <Grid Grid.Row="0" Background="{StaticResource tasmaNormalGray}">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                     <Button x:Name="LoginWindow_Minimized" Content="{StaticResource tasmaMinimizeButton}" Width="20" Height="20" Background="Transparent" BorderThickness="0" Click="MinimizeRoutine"/>
-                    <Button x:Name="LoginWindow_Exit" Content="{StaticResource tasmaCloseButton}" Width="20" Height="20" Background="Transparent" BorderThickness="0" Click="OnLogoutButtonClicked"/>
+                    <Button x:Name="LoginWindow_Exit" Content="{StaticResource tasmaCloseButton}" Width="20" Height="20" Background="Transparent" BorderThickness="0" Click="OnLogoutButtonClicked" Margin="0,0,4,0"/>
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="1">

@@ -7,10 +7,11 @@
         <Image x:Key="tasmaCloseButton" Source="/Resources/Tasma_CloseButton.png" Width="15" Height="15"/>
         <Image x:Key="tasmaMinimizeButton" Source="/Resources/Tasma_MinimizeButton.png" Width="15" Height="15"/>
         <SolidColorBrush x:Key="tasmaDimGray" Color="#454545"/>
+        <SolidColorBrush x:Key="tasmaDemiGray" Color="#555555" />
         <SolidColorBrush x:Key="tasmaNormalGray" Color="#666666"/>
         <SolidColorBrush x:Key="tasmaLightGray" Color="#ADADAD"/>
         <SolidColorBrush x:Key="tasmaWhiteGray" Color="#E1E1E1"/>
-        <SolidColorBrush x:Key="tasmaGreen" Color="#00822E"/>
+        <SolidColorBrush x:Key="tasmaGreen" Color="MediumSeaGreen"/>
         <SolidColorBrush x:Key="tasmaBlack" Color="#333333"/>
         <SolidColorBrush x:Key="tasmaWhite" Color="WhiteSmoke"/>
         <FontFamily x:Key="tasmaFont" >Segoe UI</FontFamily>

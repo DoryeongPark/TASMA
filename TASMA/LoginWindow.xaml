@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TASMA"
         mc:Ignorable="d"
-        Height="290" Width="250" WindowStyle="None" AllowsTransparency="True" MouseDown="OnMouseDown" BorderBrush="Gray" BorderThickness="1" Background="White">
+        Height="290" Width="250" WindowStyle="None" AllowsTransparency="True" MouseDown="OnMouseDown" BorderBrush="Gray" BorderThickness="1" Background="{StaticResource tasmaDimGray}">
     <Window.Resources>
         <Style x:Key="loginButtonStyle">
             <Setter Property="Button.Background" Value="{StaticResource tasmaGreen}" />
@@ -35,15 +35,16 @@
                     <RowDefinition Height="1.5*"/>
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Label Content="TASMA" FontFamily="{StaticResource tasmaFont}" FontSize="25" FontWeight="Bold" Foreground="{StaticResource tasmaGreen}"/>
+                <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="TASMA" FontFamily="{StaticResource tasmaFont}" FontSize="25" HorizontalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource tasmaGreen}"/>
+                    <TextBlock Text="Tanzania Student Management Application" FontFamily="{StaticResource tasmaFont}" FontSize="8" Foreground="{StaticResource tasmaLightGray}" />
                 </StackPanel>
                 <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Orientation="Vertical">
-                        <Label Content="Username" FontSize="10" Width="210"/>
-                            <TextBox Width="200" Name="LoginWindow_ID"/>
-                            <Label Content="Password" FontSize="10" Width="210"/>
-                        <PasswordBox Width="200" Name="LoginWindow_Password"/>
+                        <Label Content="Username" FontSize="10" Width="210" FontWeight="DemiBold" FontFamily="{StaticResource tasmaFont}" Foreground="{StaticResource tasmaLightGray}"/>
+                            <TextBox Width="200" Name="LoginWindow_ID" MaxLength="15" Background="{StaticResource tasmaDemiGray}" Foreground="{StaticResource tasmaWhite}"/>
+                            <Label Content="Password" FontSize="10" Width="210" FontWeight="DemiBold" FontFamily="{StaticResource tasmaFont}" Foreground="{StaticResource tasmaLightGray}"/>
+                        <PasswordBox Width="200" Name="LoginWindow_Password" MaxLength="15" Background="{StaticResource tasmaDemiGray}" Foreground="{StaticResource tasmaWhite}"/>
                     </StackPanel>
                 </Grid>
                 <StackPanel Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
