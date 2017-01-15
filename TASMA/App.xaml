@@ -10,8 +10,9 @@
         <SolidColorBrush x:Key="tasmaNormalGray" Color="#666666"/>
         <SolidColorBrush x:Key="tasmaLightGray" Color="#ADADAD"/>
         <SolidColorBrush x:Key="tasmaWhiteGray" Color="#E1E1E1"/>
-        <SolidColorBrush x:Key="tasmaGreen" Color="#2CA857"/>
-        <SolidColorBrush x:Key="tasmaBlack" Color="#242424"/>
+        <SolidColorBrush x:Key="tasmaGreen" Color="#00822E"/>
+        <SolidColorBrush x:Key="tasmaBlack" Color="#333333"/>
+        <SolidColorBrush x:Key="tasmaWhite" Color="WhiteSmoke"/>
         <FontFamily x:Key="tasmaFont" >Segoe UI</FontFamily>
     </Application.Resources>
 </Application>

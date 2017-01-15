@@ -84,25 +84,14 @@
         </Grid>
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1.5*"/>
-                <RowDefinition Height="8.5*"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" Background="{StaticResource tasmaNormalGray}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="2*"/>
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                        <Button x:Name="LoginWindow_Minimized" Content="{StaticResource tasmaMinimizeButton}" Width="20" Height="20" Background="Transparent" BorderThickness="0" Click="MinimizeRoutine"/>
-                        <Button x:Name="LoginWindow_Exit" Content="{StaticResource tasmaCloseButton}" Width="20" Height="20" Background="Transparent" BorderThickness="0" Click="OnLogoutButtonClicked"/>
-                    </StackPanel>
-                </Grid>
-                <Grid Grid.Row="1">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-
-                    </StackPanel>
-                </Grid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Button x:Name="LoginWindow_Minimized" Content="{StaticResource tasmaMinimizeButton}" Width="20" Height="20" Background="Transparent" BorderThickness="0" Click="MinimizeRoutine"/>
+                    <Button x:Name="LoginWindow_Exit" Content="{StaticResource tasmaCloseButton}" Width="20" Height="20" Background="Transparent" BorderThickness="0" Click="OnLogoutButtonClicked"/>
+                </StackPanel>
             </Grid>
             <Grid Grid.Row="1">
                 <Frame Name="TasmaWindow_Frame" NavigationUIVisibility="Hidden"/>
