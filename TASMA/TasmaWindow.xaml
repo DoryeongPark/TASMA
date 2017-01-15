@@ -14,21 +14,26 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Name="border"
-                            BorderThickness="0"
-                            Padding="4,2"
-                            CornerRadius="3"
-                            Background="White"
-                            Height="40">
+                            Background="#444444"
+                            BorderThickness="0,0,0,1"
+                            BorderBrush="LightGray"
+                            Height="43">
                             <Grid>
+                                <Border Name="borderSelected"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Stretch"
+                                        Width="4"
+                                        Background="Indigo"
+                                        Visibility="Hidden"/>
                                 <ContentPresenter HorizontalAlignment="Left"
                                         VerticalAlignment="Center" Name="content">
                                     <ContentPresenter.Style>
                                         <Style TargetType="ContentPresenter">
-                                            <Setter Property="Control.Foreground" Value="DimGray" />
+                                            <Setter Property="Control.Foreground" Value="WhiteSmoke" />
                                             <Setter Property="Control.FontFamily" Value="Segoe UI" />
                                             <Setter Property="Control.FontSize" Value="13" />
-                                            <Setter Property="Control.FontWeight" Value="Bold" />
-                                            <Setter Property="Control.Margin" Value="4,0,0,0" />
+                                            <Setter Property="Control.FontWeight" Value="SemiBold" />
+                                            <Setter Property="Control.Margin" Value="10,0,0,0" />
                                         </Style>
                                     </ContentPresenter.Style>
                                     <ContentPresenter.RenderTransform>
@@ -39,12 +44,11 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsDefault" Value="False">
-                                <Setter TargetName="border" Property="Background" Value="White" />
-                                <Setter TargetName="content" Property="Control.Foreground" Value="DimGray" />
+                                <Setter TargetName="border" Property="Background" Value="#444444" />
+                                <Setter TargetName="content" Property="Control.Foreground" Value="WhiteSmoke" />
                             </Trigger>
                             <Trigger Property="IsDefault" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="DimGray" />
-                                <Setter TargetName="content" Property="Control.Foreground" Value="White" />
+                                <Setter TargetName="borderSelected" Property="Visibility" Value="Visible" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -91,10 +95,10 @@
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="2.2*"/>
+                <ColumnDefinition Width="7.8*"/>
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0">
+            <Grid Grid.Column="0" Background="#FF444444">
                 <StackPanel VerticalAlignment="Top">
                     <Button Name="TasmaWindow_Student" Style="{StaticResource menuButtonStyle}" Content="Student"/>
                     <Button Name="TasmaWindow_Subject" Style="{StaticResource menuButtonStyle}" Content="Subject"/>
