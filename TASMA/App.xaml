@@ -4,8 +4,14 @@
              xmlns:local="clr-namespace:TASMA"
              StartupUri="LoginWindow.xaml">
     <Application.Resources>
-        <Style TargetType="{x:Type Window}">
-            <Setter Property="FontFamily" Value="Segoe UI" />
-        </Style>
+        <Image x:Key="tasmaCloseButton" Source="/Resources/Tasma_CloseButton.png" Width="15" Height="15"/>
+        <Image x:Key="tasmaMinimizeButton" Source="/Resources/Tasma_MinimizeButton.png" Width="15" Height="15"/>
+        <SolidColorBrush x:Key="tasmaDimGray" Color="#454545"/>
+        <SolidColorBrush x:Key="tasmaNormalGray" Color="#666666"/>
+        <SolidColorBrush x:Key="tasmaLightGray" Color="#ADADAD"/>
+        <SolidColorBrush x:Key="tasmaWhiteGray" Color="#E1E1E1"/>
+        <SolidColorBrush x:Key="tasmaGreen" Color="#2CA857"/>
+        <SolidColorBrush x:Key="tasmaBlack" Color="#242424"/>
+        <FontFamily x:Key="tasmaFont" >Segoe UI</FontFamily>
     </Application.Resources>
 </Application>

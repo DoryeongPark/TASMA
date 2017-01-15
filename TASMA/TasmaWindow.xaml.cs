@@ -29,7 +29,6 @@ namespace TASMA
         public TasmaWindow(AdminDAO adminDAO)
         {
             InitializeComponent();
-            Style = (Style)FindResource(typeof(Window));
             this.adminDAO = adminDAO;
 
             menuButtons = new List<Button>();
