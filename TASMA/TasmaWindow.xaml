@@ -10,16 +10,46 @@
         <Image x:Key="tasmaCloseButton" Source="/Resources/Tasma_CloseButton.png" Width="15" Height="15"/>
         <Image x:Key="tasmaMinimizeButton" Source="/Resources/Tasma_MinimizeButton.png" Width="15" Height="15"/>
         <Style x:Key="menuButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="Indigo" />
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="FontFamily" Value="Segoe UI" />
-            <Setter Property="FontWeight" Value="DemiBold" />
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="HorizontalAlignment" Value="Stretch" />
-            <Setter Property="Height" Value="40" />
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="Padding" Value="5,0,0,0"/>
-            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border"
+                            BorderThickness="0"
+                            Padding="4,2"
+                            CornerRadius="3"
+                            Background="White"
+                            Height="40">
+                            <Grid>
+                                <ContentPresenter HorizontalAlignment="Left"
+                                        VerticalAlignment="Center" Name="content">
+                                    <ContentPresenter.Style>
+                                        <Style TargetType="ContentPresenter">
+                                            <Setter Property="Control.Foreground" Value="DimGray" />
+                                            <Setter Property="Control.FontFamily" Value="Segoe UI" />
+                                            <Setter Property="Control.FontSize" Value="13" />
+                                            <Setter Property="Control.FontWeight" Value="Bold" />
+                                            <Setter Property="Control.Margin" Value="4,0,0,0" />
+                                        </Style>
+                                    </ContentPresenter.Style>
+                                    <ContentPresenter.RenderTransform>
+                                        <TranslateTransform X="1.0" Y="1.0" />
+                                    </ContentPresenter.RenderTransform>
+                                </ContentPresenter>
+                                </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefault" Value="False">
+                                <Setter TargetName="border" Property="Background" Value="White" />
+                                <Setter TargetName="content" Property="Control.Foreground" Value="DimGray" />
+                            </Trigger>
+                            <Trigger Property="IsDefault" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="DimGray" />
+                                <Setter TargetName="content" Property="Control.Foreground" Value="White" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Window.Resources>
     <Grid>

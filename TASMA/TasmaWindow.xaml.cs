@@ -42,8 +42,6 @@ namespace TASMA
 
             foreach(var btn in menuButtons)
             {
-                btn.MouseEnter += OnMouseEnter;
-                btn.MouseLeave += OnMouseLeave;
                 btn.Click += OnClickMenuButton;
             }
 
@@ -51,26 +49,7 @@ namespace TASMA
 
         }
 
-        private void OnMouseLeave(object sender, MouseEventArgs e)
-        {
-            var menuBtn = sender as Button;
-
-            if (menuBtn.Equals(btnClicked))
-                return;
-
-            SetUnClickedStyle(menuBtn);
-        }
-
-        private void OnMouseEnter(object sender, MouseEventArgs e)
-        {
-            var menuBtn = sender as Button;
-
-            if (menuBtn.Equals(btnClicked))
-                return;
-
-            SetClickedStyle(menuBtn);
-        }
-
+        
         /// <summary>
         /// 메뉴 버튼 클릭 이벤트 루틴을 수행합니다.
         /// </summary>
@@ -82,15 +61,12 @@ namespace TASMA
 
             var menuBtn = sender as Button;
             btnClicked = menuBtn;
-            
-            for(int i = 0; i < menuButtons.Count; ++i)
-            {
-                if (btnClicked.Equals(menuButtons[i]))
-                    SetClickedStyle(menuButtons[i]);
-                else
-                    SetUnClickedStyle(menuButtons[i]);
-            }
 
+            foreach (var buttons in menuButtons)
+                buttons.IsDefault = false;
+
+            btnClicked.IsDefault = true;
+                          
             //Event for each buttons
             if (menuBtn.Equals(TasmaWindow_Student))
                 TasmaWindow_Frame.Navigate(new GradePage(adminDAO));
@@ -104,26 +80,6 @@ namespace TASMA
                 return;
             else
                 return; //Error
-        }
-
-        /// <summary>
-        /// 버튼 클릭 스타일을 적용합니다.
-        /// </summary>
-        /// <param name="btn">스타일을 적용할 버튼</param>
-        private void SetClickedStyle(Button btn)
-        {
-            btn.Foreground = Brushes.Black;
-            btn.Background = Brushes.Azure;
-        }
-
-        /// <summary>
-        /// 버튼을 클릭하지 않은 스타일을 적용합니다.
-        /// </summary>
-        /// <param name="btn">스타일을 적용할 버튼</param>
-        private void SetUnClickedStyle(Button btn)
-        {
-            btn.Foreground = Brushes.White;
-            btn.Background = Brushes.Indigo;
         }
 
         /// <summary>
