@@ -1499,9 +1499,9 @@ namespace TASMA
 
                 try
                 {
-                    cmd.CommandText = "INSERT INTO " + subjectName + "(SEMESTER, GRADE, CLASS, SNUM) VALUES('1', '" + currentGrade + "', '" + currentClass + "', '" + sNum + "');";
+                    cmd.CommandText = "INSERT INTO " + subjectName + "(SEMESTER, GRADE, CLASS, SNUM) VALUES('0', '" + currentGrade + "', '" + currentClass + "', '" + sNum + "');";
                     cmd.ExecuteNonQuery();
-                    cmd.CommandText = "INSERT INTO " + subjectName + "(SEMESTER, GRADE, CLASS, SNUM) VALUES('2', '" + currentGrade + "', '" + currentClass + "', '" + sNum + "');";
+                    cmd.CommandText = "INSERT INTO " + subjectName + "(SEMESTER, GRADE, CLASS, SNUM) VALUES('1', '" + currentGrade + "', '" + currentClass + "', '" + sNum + "');";
                     cmd.ExecuteNonQuery();
                 }
                 catch (SQLiteException se)
@@ -1560,7 +1560,7 @@ namespace TASMA
             /// </summary>
             /// <param name="subjectName">과목 이름</param>
             /// <returns>학생 점수 테이블</returns>
-            public DataTable GetScoreTable(string subjectName, string semester)
+            public DataTable GetScoreTable(string subjectName, int semester)
             {
                 if (!CheckClassState())
                     return null;

@@ -57,8 +57,9 @@
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
                     <Button Name="MarkingViewPage_PreviousButton" Content="Back" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="30" Height="30" Click="OnPreviousButtonClicked"/>
-                    <Label Content="Grade / Class / Subject" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Segoe UI" FontWeight="Bold" FontSize="18" Foreground="Indigo"/>
-                    <ComboBox Name="MarkingViewPage_ComboBox" Margin="0,0,5,0" FontFamily="Segoe UI" Width="80" VerticalAlignment="Center" HorizontalAlignment="Right" ItemsSource="{Binding SubjectComboBoxItems}" SelectedValue="{Binding SelectedSubjectComboBoxItem, Mode=TwoWay}" />
+                    <Label Content="Table" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="{StaticResource tasmaFont}" FontWeight="Bold" FontSize="18" Foreground="Indigo"/>
+                    <ComboBox Name="MarkingViewPage_SubjectComboBox" Margin="0,0,5,0" FontFamily="{StaticResource tasmaFont}" Width="80" VerticalAlignment="Center" HorizontalAlignment="Right" ItemsSource="{Binding SubjectComboBoxItems}" SelectedValue="{Binding SelectedSubjectComboBoxItem, Mode=TwoWay}" />
+                    <ComboBox Name="MarkingViewPage_SemesterComboBox" FontFamily="{StaticResource tasmaFont}" Width="60" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,100,0" ItemsSource="{Binding SemesterComboBoxItems, Mode=TwoWay}" SelectedItem="{Binding SelectedSemesterComboBoxItem}" SelectedValuePath="Key" DisplayMemberPath="Value"/>
                 </Grid>
                 <Grid Grid.Row="1">
                     <DataGrid ItemsSource="{Binding ScoreTable, Mode=TwoWay, NotifyOnTargetUpdated=True}" 

@@ -182,6 +182,7 @@ namespace TASMA
 
             var nav = NavigationService.GetNavigationService(this);
             nav.Navigate(new MarkingViewPage(adminDAO,
+                                            null,
                                             selectedGradeItem.GradeName,
                                             selectedClassItem.ClassName,
                                             selectedSubjectItem.SubjectName));
