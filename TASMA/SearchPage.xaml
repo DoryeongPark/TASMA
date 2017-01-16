@@ -66,21 +66,20 @@
                     ItemsSource="{Binding SearchTable}"
                     AutoGenerateColumns="False"
                     Margin="8,0,8,8"
-                    CanUserAddRows="False">
+                    CanUserAddRows="False"
+                    CanUserResizeColumns="False"
+                    CanUserResizeRows="False"
+                    HeadersVisibility="Column">
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="1*" Header="Grade" 
                                             Binding="{Binding GRADE}" CanUserResize="False"/>
                         <DataGridTextColumn Width="1*" Header="Class" Binding="{Binding CLASS}" 
-                                            CanUserResize="False"
                                             IsReadOnly="True"/>
                         <DataGridTextColumn Width="30" Header="No" Binding="{Binding SNUM}" 
-                                            CanUserResize="False"
                                             IsReadOnly="True"/>
                         <DataGridTextColumn Width="2*" Header="Name" Binding="{Binding SNAME}"
-                                            CanUserResize="False"
                                             IsReadOnly="True"/>
                         <DataGridTemplateColumn Width="0.5*" Header="Info"
-                                            CanUserResize="False"
                                             IsReadOnly="True">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -97,8 +96,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridCheckBoxColumn Width="0.5*" Header="Print" Binding="{Binding PRINT}"
-                                            CanUserResize="False"/>
+                        <DataGridCheckBoxColumn Width="0.5*" Header="Print" Binding="{Binding PRINT}"/>
                     </DataGrid.Columns>
                     <DataGrid.ColumnHeaderStyle>
                         <Style TargetType="{x:Type DataGridColumnHeader}">

@@ -75,7 +75,7 @@
                     <Button Name="TasmaWindow_Student" Style="{StaticResource menuButtonStyle}" Content="Student"/>
                     <Button Name="TasmaWindow_Subject" Style="{StaticResource menuButtonStyle}" Content="Subject"/>
                     <Button Name="TasmaWindow_Marking" Style="{StaticResource menuButtonStyle}" Content="Marking"/>
-                    <Button Name="TasmaWindow_Search" Style="{StaticResource menuButtonStyle}" Content="Print"/>
+                    <Button Name="TasmaWindow_Search" Style="{StaticResource menuButtonStyle}" Content="Search"/>
                     <Button Name="TasmaWindow_Export" Style="{StaticResource menuButtonStyle}" Content="Export"/>
                 </StackPanel>
                 <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource tasmaDimGray}" />
