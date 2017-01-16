@@ -1586,6 +1586,35 @@ namespace TASMA
                 var dataTable = new DataTable();
                 dataTable.Load(reader);
 
+                cmd.Dispose();
+                conn.Close();
+
+                return dataTable;
+            }
+
+            /// <summary>
+            /// 학생 정보를 검색합니다.
+            /// </summary>
+            /// <param name="gradeName"></param>
+            /// <param name="className"></param>
+            /// <param name="studentName"></param>
+            /// <returns></returns>
+            public DataTable SearchStudent(string gradeName, string className, string studentName)
+            {
+               
+                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+
+                var cmdStr = "SELECT * FROM STUDENT WHERE GRADE = '" + gradeName + "' AND CLASS = '" + className + "' AND SNAME LIKE " + "%" + studentName + "%;";
+
+                var cmd = new SQLiteCommand(cmdStr, conn);
+                var reader = cmd.ExecuteReader();
+
+                var dataTable = new DataTable();
+                dataTable.Load(reader);
+
+                cmd.Dispose();
                 conn.Close();
 
                 return dataTable;

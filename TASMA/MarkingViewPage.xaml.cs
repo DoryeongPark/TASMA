@@ -292,7 +292,7 @@ namespace TASMA
         }
 
         /// <summary>
-        /// 콤보 박스 선택 시 호출되는 루틴입니다.
+        /// 과목 콤보 박스 선택 시 호출되는 루틴입니다.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -302,6 +302,11 @@ namespace TASMA
             nav.Navigate(new MarkingViewPage(adminDAO, selectedSemesterComboBoxItem.Key, gradeName, className, selectedSubjectComboBoxItem));
         }
 
+        /// <summary>
+        /// 학기 콤보 박스 선택 시 호출되는 루틴입니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnSemesterComboBoxSelected(object sender, SelectionChangedEventArgs e)
         {
             var nav = NavigationService.GetNavigationService(this);
