@@ -1595,18 +1595,35 @@ namespace TASMA
             /// <summary>
             /// 학생 정보를 검색합니다.
             /// </summary>
-            /// <param name="gradeName"></param>
-            /// <param name="className"></param>
-            /// <param name="studentName"></param>
-            /// <returns></returns>
+            /// <param name="gradeName">학년 이름</param>
+            /// <param name="className">반 이름</param>
+            /// <param name="studentName">학생 이름</param>
+            /// <returns>학생 정보 테이블</returns>
             public DataTable SearchStudent(string gradeName, string className, string studentName)
             {
-               
+                string sqlPhase = "";
+
+                if(gradeName != null)
+                {
+                    sqlPhase += "WHERE GRADE = '" + gradeName + "' ";
+
+                    if(className != null)
+                        sqlPhase += "AND CLASS = '" + className + "' ";
+                   
+                    if(studentName != null)
+                        sqlPhase += "AND SNAME LIKE " + "%" + studentName + "%"; 
+
+                }else
+                {
+                    if(studentName != null)
+                        sqlPhase += "WHERE SNAME LIKE " + "%" + studentName + "%";    
+                }
+                       
                 var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
 
-                var cmdStr = "SELECT * FROM STUDENT WHERE GRADE = '" + gradeName + "' AND CLASS = '" + className + "' AND SNAME LIKE " + "%" + studentName + "%;";
+                var cmdStr = "SELECT * FROM STUDENT " + sqlPhase;
 
                 var cmd = new SQLiteCommand(cmdStr, conn);
                 var reader = cmd.ExecuteReader();
