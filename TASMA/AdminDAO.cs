@@ -1010,20 +1010,21 @@ namespace TASMA
                     cmd.ExecuteNonQuery();
                     cmd.CommandText = "INSERT INTO EVALUATION VALUES('" + subjectName + "', " + "'Final');";
                     cmd.ExecuteNonQuery();
-                    cmd.CommandText = "CREATE TABLE IF NOT EXISTS "+ subjectName +"("
+                    cmd.CommandText = "CREATE TABLE IF NOT EXISTS " + subjectName + "("
+                                    + "SEMESTER INTEGER NOT NULL, "
                                     + "GRADE STRING NOT NULL, "
                                     + "CLASS STRING NOT NULL, "
                                     + "SNUM INTEGER NOT NULL, "
                                     + "Midterm REAL, "
                                     + "Final REAL, "
-                                    + "PRIMARY KEY(GRADE, CLASS, SNUM), "
+                                    + "PRIMARY KEY(SEMESTER, GRADE, CLASS, SNUM), "
                                     + "FOREIGN KEY(GRADE, CLASS, SNUM) REFERENCES STUDENT(GRADE, CLASS, SNUM) "
                                     + "ON DELETE CASCADE "
                                     + "ON UPDATE CASCADE "
                                     + ");";
                     cmd.ExecuteNonQuery();
                 }
-                catch(SQLiteException se)
+                catch (SQLiteException se)
                 {
                     MessageBox.Show(se.Message);
                     return false;
@@ -1156,6 +1157,7 @@ namespace TASMA
                     cmdStr += "BEGIN TRANSACTION; ";
                     cmdStr += "ALTER TABLE " + subjectName + " RENAME TO TEMP; ";
                     cmdStr += "CREATE TABLE " + subjectName + "(";
+                    cmdStr += "SEMESTER INTEGER NOT NULL, ";
                     cmdStr += "GRADE STRING NOT NULL, ";
                     cmdStr += "CLASS STRING NOT NULL, ";
                     cmdStr += "SNUM INTEGER NOT NULL, ";
@@ -1170,13 +1172,13 @@ namespace TASMA
                         else
                             cmdStr += evaluationList[i] + " REAL, ";
                     }
-                    cmdStr += "PRIMARY KEY(GRADE, CLASS, SNUM), ";
+                    cmdStr += "PRIMARY KEY(SEMESTER, GRADE, CLASS, SNUM), ";
                     cmdStr += "FOREIGN KEY(GRADE, CLASS, SNUM) REFERENCES STUDENT(GRADE, CLASS, SNUM) ";
                     cmdStr += "ON DELETE CASCADE ";
                     cmdStr += "ON UPDATE CASCADE ";
                     cmdStr += "); ";
                     cmdStr += "INSERT INTO " + subjectName + "(";
-                    cmdStr += "GRADE, CLASS, SNUM, ";
+                    cmdStr += "SEMESTER, GRADE, CLASS, SNUM, ";
                     for (int i = 0; i < evaluationList.Count; ++i)
                     {
                         if (i != evaluationList.Count - 1)
@@ -1188,7 +1190,7 @@ namespace TASMA
                             evaluationList[i] = oldEvaluationName;
                     }
                     cmdStr += "SELECT ";
-                    cmdStr += "GRADE, CLASS, SNUM, ";
+                    cmdStr += "SEMESTER, GRADE, CLASS, SNUM, ";
                     for (int i = 0; i < evaluationList.Count; ++i)
                     {
                         if (i != evaluationList.Count - 1)
@@ -1237,6 +1239,7 @@ namespace TASMA
                     cmdStr += "BEGIN TRANSACTION; ";
                     cmdStr += "ALTER TABLE " + subjectName + " RENAME TO TEMP; ";
                     cmdStr += "CREATE TABLE " + subjectName + "(";
+                    cmdStr += "SEMESTER INTEGER NOT NULL, ";
                     cmdStr += "GRADE STRING NOT NULL, ";
                     cmdStr += "CLASS STRING NOT NULL, ";
                     cmdStr += "SNUM INTEGER NOT NULL, ";
@@ -1249,17 +1252,16 @@ namespace TASMA
                     cmdStr += "ON UPDATE CASCADE ";
                     cmdStr += "); ";
                     cmdStr += "INSERT INTO " + subjectName + "(";
-                    cmdStr += "GRADE, CLASS, SNUM, ";
+                    cmdStr += "SEMESTER, GRADE, CLASS, SNUM, ";
                     for (int i = 0; i < evaluationList.Count; ++i)
                     {
                         if (i != evaluationList.Count - 1)
                             cmdStr += evaluationList[i] + ", ";
                         else
                             cmdStr += evaluationList[i] + ") ";
-
                     }
                     cmdStr += "SELECT ";
-                    cmdStr += "GRADE, CLASS, SNUM, ";
+                    cmdStr += "SEMESTER, GRADE, CLASS, SNUM, ";
                     for (int i = 0; i < evaluationList.Count; ++i)
                     {
                         if (i != evaluationList.Count - 1)
@@ -1463,7 +1465,7 @@ namespace TASMA
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
 
-                var cmdStr = "SELECT SNUM FROM " + subjectName + " WHERE GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "';";
+                var cmdStr = "SELECT SNUM FROM " + subjectName + " WHERE SEMESTER = 1 AND GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "';";
                 var cmd = new SQLiteCommand(cmdStr, conn);
                 var reader = cmd.ExecuteReader();
                 var result = new List<int>();
@@ -1497,7 +1499,9 @@ namespace TASMA
 
                 try
                 {
-                    cmd.CommandText = "INSERT INTO " + subjectName + "(GRADE, CLASS, SNUM) VALUES('" + currentGrade + "', '" + currentClass + "', '" + sNum + "');";
+                    cmd.CommandText = "INSERT INTO " + subjectName + "(SEMESTER, GRADE, CLASS, SNUM) VALUES('1', '" + currentGrade + "', '" + currentClass + "', '" + sNum + "');";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "INSERT INTO " + subjectName + "(SEMESTER, GRADE, CLASS, SNUM) VALUES('2', '" + currentGrade + "', '" + currentClass + "', '" + sNum + "');";
                     cmd.ExecuteNonQuery();
                 }
                 catch (SQLiteException se)
@@ -1519,7 +1523,7 @@ namespace TASMA
             /// <param name="evaluationName">항목</param>
             /// <param name="value">입력 값</param>
             /// <returns>실행 성공 여부</returns>
-            public bool UpdateScore(string subjectName, int sNum, string evaluationName, float? value)
+            public bool UpdateScore(string subjectName, int semester, int sNum, string evaluationName, float? value)
             {
                 if (!CheckClassState())
                     return false;
@@ -1538,7 +1542,7 @@ namespace TASMA
 
                 try
                 {
-                    cmd.CommandText = "UPDATE " + subjectName + " SET " + evaluationName + " = " + score + " WHERE GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "' AND SNUM = " + sNum + ";";
+                    cmd.CommandText = "UPDATE " + subjectName + " SET " + evaluationName + " = " + score + " WHERE SEMESTER = " + semester + " AND GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "' AND SNUM = " + sNum + ";";
                     cmd.ExecuteNonQuery();
 
                 }
@@ -1556,7 +1560,7 @@ namespace TASMA
             /// </summary>
             /// <param name="subjectName">과목 이름</param>
             /// <returns>학생 점수 테이블</returns>
-            public DataTable GetScoreTable(string subjectName)
+            public DataTable GetScoreTable(string subjectName, string semester)
             {
                 if (!CheckClassState())
                     return null;
@@ -1574,7 +1578,7 @@ namespace TASMA
                     cmdStr += "," + evaluationName;
 
                 cmdStr += " FROM " + subjectName;
-                cmdStr += " WHERE GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "';";
+                cmdStr += " WHERE SEMESTER = " + semester + " AND GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "';";
                                 
                 var cmd = new SQLiteCommand(cmdStr, conn);
                 var reader = cmd.ExecuteReader();
