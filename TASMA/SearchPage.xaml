@@ -63,13 +63,16 @@
             </Grid>
             <Grid Grid.Row="1">
                 <DataGrid
-                    ItemsSource="{Binding SearchTable}"
+                    ItemsSource="{Binding SearchTable, Mode=TwoWay}"
                     AutoGenerateColumns="False"
                     Margin="8,0,8,8"
                     CanUserAddRows="False"
                     CanUserResizeColumns="False"
                     CanUserResizeRows="False"
-                    HeadersVisibility="Column">
+                    HeadersVisibility="Column"
+                    FontSize="10"
+                    FontFamily="{StaticResource tasmaFont}"
+                    VerticalContentAlignment="Center">
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="1*" Header="Grade" 
                                             Binding="{Binding GRADE}" CanUserResize="False"/>

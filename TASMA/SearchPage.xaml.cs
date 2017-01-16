@@ -90,13 +90,10 @@ namespace TASMA
             classComboBoxItems.Add("----");
             selectedClassComboBoxItem = classComboBoxItems[0];
 
-            searchTable = adminDAO.SearchStudent(null, null, null);
-            searchTable.Columns.Add("INFO", typeof(string));
-            searchTable.Columns.Add("SCORE", typeof(string));
-            searchTable.Columns.Add("PRINT", typeof(bool));
-
-            for (var i = 0; i < searchTable.Rows.Count; ++i) 
-                searchTable.Rows[i]["PRINT"] = true;
+            searchTable = adminDAO.SearchStudent(null, null, "");
+            
+            //Initialize Student 
+            studentName = "";
            
             DataContext = this;
             InitializeComponent();
@@ -106,7 +103,29 @@ namespace TASMA
         {
             SearchPage_GradeComboBox.SelectionChanged += (s, ea) =>
             {
+                adminDAO.ReturnToInitialLoginState();
 
+                if (selectedGradeComboBoxItem == "----")
+                {
+                    classComboBoxItems = new ObservableCollection<string>();
+                    classComboBoxItems.Add("----");
+                    selectedClassComboBoxItem = classComboBoxItems[0];
+
+                    SearchTable = adminDAO.SearchStudent(null, null, studentName);
+                }
+                else
+                {
+                    adminDAO.SelectGrade(selectedGradeComboBoxItem);
+                    var classList = adminDAO.GetClassList();
+                    adminDAO.ReturnToInitialLoginState();
+                    ClassComboBoxItems = new ObservableCollection<string>();
+                    ClassComboBoxItems.Add("----");
+                    foreach (var className in classList)
+                        ClassComboBoxItems.Add(className);
+                    SelectedClassComboBoxItem = classComboBoxItems[0];
+
+                    SearchTable = adminDAO.SearchStudent(selectedGradeComboBoxItem, null, studentName);
+                }
             };
 
             SearchPage_ClassComboBox.SelectionChanged += (s, ea) =>

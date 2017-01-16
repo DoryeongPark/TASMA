@@ -1610,13 +1610,13 @@ namespace TASMA
                     if(className != null)
                         sqlPhase += "AND CLASS = '" + className + "' ";
                    
-                    if(studentName != null)
-                        sqlPhase += "AND SNAME LIKE " + "%" + studentName + "%"; 
+                    if(studentName != "")
+                        sqlPhase += "AND SNAME LIKE " + "'%" + studentName + "%'"; 
 
                 }else
                 {
-                    if(studentName != null)
-                        sqlPhase += "WHERE SNAME LIKE " + "%" + studentName + "%";    
+                    if(studentName != "")
+                        sqlPhase += "WHERE SNAME LIKE " + "'%" + studentName + "%'";    
                 }
                        
                 var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
@@ -1631,6 +1631,10 @@ namespace TASMA
                 var dataTable = new DataTable();
                 dataTable.Load(reader);
 
+                dataTable.Columns.Add("PRINT", typeof(bool));
+                for (var i = 0; i < dataTable.Rows.Count; ++i)
+                    dataTable.Rows[i]["PRINT"] = true;
+            
                 cmd.Dispose();
                 conn.Close();
 
