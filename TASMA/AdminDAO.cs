@@ -1623,7 +1623,7 @@ namespace TASMA
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
 
-                var cmdStr = "SELECT * FROM STUDENT " + sqlPhase;
+                var cmdStr = "SELECT GRADE, CLASS, SNUM, SNAME FROM STUDENT " + sqlPhase;
 
                 var cmd = new SQLiteCommand(cmdStr, conn);
                 var reader = cmd.ExecuteReader();

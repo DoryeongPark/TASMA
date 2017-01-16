@@ -6,7 +6,7 @@
       xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" x:Class="TASMA.SearchPage"
       mc:Ignorable="d" 
       Title="SearchPage" Background="{StaticResource tasmaWhite}" 
-      HorizontalAlignment="Stretch" VerticalAlignment="Stretch" d:DesignWidth="500" d:DesignHeight="350">
+      HorizontalAlignment="Stretch" VerticalAlignment="Stretch" d:DesignWidth="500" d:DesignHeight="350" Loaded="OnLoaded">
     <Page.Resources>
        
     </Page.Resources>
@@ -29,8 +29,8 @@
                     </TextBlock>
                     <ComboBox Name="SearchPage_GradeComboBox" 
                               Width="60"
-                              ItemsSource="{Binding GradeComboBox, Mode=TwoWay}"
-                              SelectedValue="{Binding SelectedGradeComboBox, Mode=TwoWay}"
+                              ItemsSource="{Binding GradeComboBoxItems, Mode=TwoWay}"
+                              SelectedValue="{Binding SelectedGradeComboBoxItem, Mode=TwoWay}"
                               Margin="5,0,5,0"/>
                     <TextBlock FontFamily="{StaticResource tasmaFont}"
                                VerticalAlignment="Center"
@@ -39,8 +39,8 @@
                     </TextBlock>
                     <ComboBox Name="SearchPage_ClassComboBox"
                               Width="60"
-                              ItemsSource="{Binding ClassComboBox, Mode=TwoWay}"
-                              SelectedValue="{Binding SelectedClassComboBox, Mode=TwoWay}"
+                              ItemsSource="{Binding ClassComboBoxItems, Mode=TwoWay}"
+                              SelectedValue="{Binding SelectedClassComboBoxItem, Mode=TwoWay}"
                               Margin="5,0,5,0"/>
                     <TextBlock FontFamily="{StaticResource tasmaFont}"
                                VerticalAlignment="Center"
@@ -64,21 +64,40 @@
             <Grid Grid.Row="1">
                 <DataGrid
                     ItemsSource="{Binding SearchTable}"
-                    Margin="8,0,8,8">
+                    AutoGenerateColumns="False"
+                    Margin="8,0,8,8"
+                    CanUserAddRows="False">
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="1*" Header="Grade" 
-                                            Binding="{Binding Path=GRADE}" CanUserResize="False"/>
-                        <DataGridTextColumn Width="1*" Header="Class" Binding="{Binding Path=CLASS}" 
-                                            CanUserResize="False"/>
-                        <DataGridTextColumn Width="30" Header="No" Binding="{Binding Path=SNUM}" 
-                                            CanUserResize="False" />
-                        <DataGridTextColumn Width="2*" Header="Name" Binding="{Binding Path=SNAME}"
-                                            CanUserResize="False"/>
-                        <DataGridHyperlinkColumn Width="0.5*" Header="Info" Binding="{Binding Path=INFO}"
-                                            CanUserResize="False"/>
-                        <DataGridHyperlinkColumn Width="0.5*" Header="Score" Binding="{Binding Path=SCORE}"
-                                            CanUserResize="False"/>
-                        <DataGridCheckBoxColumn Width="0.5*" Header="Print" Binding="{Binding Path=PRINT}"
+                                            Binding="{Binding GRADE}" CanUserResize="False"/>
+                        <DataGridTextColumn Width="1*" Header="Class" Binding="{Binding CLASS}" 
+                                            CanUserResize="False"
+                                            IsReadOnly="True"/>
+                        <DataGridTextColumn Width="30" Header="No" Binding="{Binding SNUM}" 
+                                            CanUserResize="False"
+                                            IsReadOnly="True"/>
+                        <DataGridTextColumn Width="2*" Header="Name" Binding="{Binding SNAME}"
+                                            CanUserResize="False"
+                                            IsReadOnly="True"/>
+                        <DataGridTemplateColumn Width="0.5*" Header="Info"
+                                            CanUserResize="False"
+                                            IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Click="OnInfoButtonClicked">Link</Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Width="0.5*" Header="Score" 
+                                            CanUserResize="False"
+                                            IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Click="OnScoreButtonClicked">Link</Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridCheckBoxColumn Width="0.5*" Header="Print" Binding="{Binding PRINT}"
                                             CanUserResize="False"/>
                     </DataGrid.Columns>
                     <DataGrid.ColumnHeaderStyle>
@@ -90,7 +109,7 @@
                             <Setter Property="HorizontalAlignment" Value="Stretch" />
                             <Setter Property="VerticalAlignment" Value="Stretch" />
                             <Setter Property="FontSize" Value="10" />
-                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
                             <Setter Property="Background" Value="{StaticResource tasmaGreen}" />
                             <Setter Property="Foreground" Value="{StaticResource tasmaWhite}" />
                         </Style>

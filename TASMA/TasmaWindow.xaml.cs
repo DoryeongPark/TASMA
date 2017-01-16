@@ -36,7 +36,7 @@ namespace TASMA
             menuButtons.Add(TasmaWindow_Student);
             menuButtons.Add(TasmaWindow_Subject);
             menuButtons.Add(TasmaWindow_Marking);
-            menuButtons.Add(TasmaWindow_Print);
+            menuButtons.Add(TasmaWindow_Search);
             menuButtons.Add(TasmaWindow_Export);
 
             foreach(var btn in menuButtons)
@@ -65,7 +65,7 @@ namespace TASMA
                 buttons.IsDefault = false;
 
             btnClicked.IsDefault = true;
-                          
+
             //Event for each buttons
             if (menuBtn.Equals(TasmaWindow_Student))
                 TasmaWindow_Frame.Navigate(new GradePage(adminDAO));
@@ -73,8 +73,8 @@ namespace TASMA
                 TasmaWindow_Frame.Navigate(new SubjectPage(adminDAO));
             else if (menuBtn.Equals(TasmaWindow_Marking))
                 TasmaWindow_Frame.Navigate(new MarkingPage(adminDAO));
-            else if (menuBtn.Equals(TasmaWindow_Print))
-                return;
+            else if (menuBtn.Equals(TasmaWindow_Search))
+                TasmaWindow_Frame.Navigate(new SearchPage(adminDAO));
             else if (menuBtn.Equals(TasmaWindow_Export))
                 return;
             else
