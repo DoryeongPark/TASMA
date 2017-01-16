@@ -1,0 +1,105 @@
+﻿<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TASMA"
+      xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" x:Class="TASMA.SearchPage"
+      mc:Ignorable="d" 
+      Title="SearchPage" Background="{StaticResource tasmaWhite}" 
+      HorizontalAlignment="Stretch" VerticalAlignment="Stretch" d:DesignWidth="500" d:DesignHeight="350">
+    <Page.Resources>
+       
+    </Page.Resources>
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="45"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0"
+                  HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal" 
+                            HorizontalAlignment="Left" 
+                            VerticalAlignment="Center"
+                            Height="20">
+                    <TextBlock FontFamily="{StaticResource tasmaFont}"
+                               VerticalAlignment="Center"
+                               Margin="5,0,5,0">
+                        Grade
+                    </TextBlock>
+                    <ComboBox Name="SearchPage_GradeComboBox" 
+                              Width="60"
+                              ItemsSource="{Binding GradeComboBox, Mode=TwoWay}"
+                              SelectedValue="{Binding SelectedGradeComboBox, Mode=TwoWay}"
+                              Margin="5,0,5,0"/>
+                    <TextBlock FontFamily="{StaticResource tasmaFont}"
+                               VerticalAlignment="Center"
+                               Margin="5,0,5,0">
+                        Class
+                    </TextBlock>
+                    <ComboBox Name="SearchPage_ClassComboBox"
+                              Width="60"
+                              ItemsSource="{Binding ClassComboBox, Mode=TwoWay}"
+                              SelectedValue="{Binding SelectedClassComboBox, Mode=TwoWay}"
+                              Margin="5,0,5,0"/>
+                    <TextBlock FontFamily="{StaticResource tasmaFont}"
+                               VerticalAlignment="Center"
+                               Margin="5,0,5,0">
+                        Name
+                    </TextBlock>
+                    <TextBox Name="SearchPage_SNameTextBox"
+                             Width="120" 
+                             MaxLength="25"
+                             Text="{Binding StudentName}"
+                             Margin="5,0,0,0"/>
+                    <Button Name="SearchPage_SearchButton" 
+                            Width="20"
+                            Height="20"/>
+                    <Button Name="SearchPage_Print"
+                            Width="60"
+                            Height="20" 
+                            Margin="5,0,5,0"/>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="1">
+                <DataGrid
+                    ItemsSource="{Binding SearchTable}"
+                    Margin="8,0,8,8">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="1*" Header="Grade" 
+                                            Binding="{Binding Path=GRADE}" CanUserResize="False"/>
+                        <DataGridTextColumn Width="1*" Header="Class" Binding="{Binding Path=CLASS}" 
+                                            CanUserResize="False"/>
+                        <DataGridTextColumn Width="30" Header="No" Binding="{Binding Path=SNUM}" 
+                                            CanUserResize="False" />
+                        <DataGridTextColumn Width="2*" Header="Name" Binding="{Binding Path=SNAME}"
+                                            CanUserResize="False"/>
+                        <DataGridHyperlinkColumn Width="0.5*" Header="Info" Binding="{Binding Path=INFO}"
+                                            CanUserResize="False"/>
+                        <DataGridHyperlinkColumn Width="0.5*" Header="Score" Binding="{Binding Path=SCORE}"
+                                            CanUserResize="False"/>
+                        <DataGridCheckBoxColumn Width="0.5*" Header="Print" Binding="{Binding Path=PRINT}"
+                                            CanUserResize="False"/>
+                    </DataGrid.Columns>
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="FontWeight"  Value="SemiBold" />
+                            <Setter Property="BorderBrush" Value="{StaticResource tasmaLightGray}"/>
+                            <Setter Property="BorderThickness" Value="1"/>
+                            <Setter Property="Height" Value="25" />
+                            <Setter Property="HorizontalAlignment" Value="Stretch" />
+                            <Setter Property="VerticalAlignment" Value="Stretch" />
+                            <Setter Property="FontSize" Value="10" />
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                            <Setter Property="Background" Value="{StaticResource tasmaGreen}" />
+                            <Setter Property="Foreground" Value="{StaticResource tasmaWhite}" />
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                </DataGrid>
+            </Grid>
+        </Grid>
+
+    </Grid>
+</Page>
+
+
