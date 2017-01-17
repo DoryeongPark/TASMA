@@ -18,7 +18,7 @@ using TASMA.DataInterfaces;
 namespace TASMA
 {
     /// <summary>
-    /// Grade 
+    /// 학년 페이지 입니다.
     /// </summary>
     public partial class GradePage : Page
     {
@@ -35,7 +35,7 @@ namespace TASMA
         public GradePage(AdminDAO adminDAO)
         {
             InitializeComponent();
-
+           
             this.adminDAO = adminDAO;
             columns = new List<StackPanel>();
             columns.Add(GradePage_Column0);
@@ -45,6 +45,16 @@ namespace TASMA
             GradePage_AddButton.Click += OnAddButtonClicked;
 
             Invalidate();
+        }
+
+        /// <summary>
+        /// Navigation의 GoBack 이벤트를 Disable 합니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            
         }
 
         /// <summary>
@@ -150,8 +160,7 @@ namespace TASMA
 
             var gradeSelected = (sender as DataRectangle).Data;
             adminDAO.SelectGrade(gradeSelected);
-            NavigationService nav = NavigationService.GetNavigationService(this);
-            nav.Navigate(new ClassPage(adminDAO));
-        }
+            NavigationService.Navigate(new ClassPage(adminDAO));      
+        }        
     }
 }

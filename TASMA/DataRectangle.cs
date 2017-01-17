@@ -168,6 +168,7 @@ namespace TASMA
                     DataRectangleManager.IsModified = true;
                 };
 
+                
                 textArea.Children.Add(textBox);
             }
         }

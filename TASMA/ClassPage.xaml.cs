@@ -23,6 +23,7 @@ namespace TASMA
     public partial class ClassPage : Page
     {
         private AdminDAO adminDAO;
+        private string gradeName;
         private List<StackPanel> columns;
         private List<string> classList;
         
@@ -33,7 +34,8 @@ namespace TASMA
             InitializeComponent();
             this.adminDAO = adminDAO;
 
-            ClassPage_Grade.Content = "GRADE " + adminDAO.CurrentGrade;
+            gradeName = adminDAO.CurrentGrade;
+            ClassPage_Grade.Content = "GRADE " + gradeName;
 
             columns = new List<StackPanel>();
             columns.Add(ClassPage_Column0);
@@ -46,11 +48,18 @@ namespace TASMA
             Invalidate();
         }
 
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+             
+        }
+
         /// <summary>
         /// 데이터베이스의 상태를 페이지에 반영합니다.
         /// </summary>
         private void Invalidate()
         {
+            adminDAO.ReturnToInitialLoginState();
+            adminDAO.SelectGrade(gradeName);
             classList = adminDAO.GetClassList();
 
             //모든 데이터 박스 제거
@@ -144,6 +153,6 @@ namespace TASMA
             adminDAO.MovePrevious();
             var nav = NavigationService.GetNavigationService(this);
             nav.Navigate(new GradePage(adminDAO));
-        }
+        }   
     }
 }

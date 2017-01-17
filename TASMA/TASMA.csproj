@@ -123,6 +123,7 @@
     <Compile Include="TasmaConfirmationMessageBox.xaml.cs">
       <DependentUpon>TasmaConfirmationMessageBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TasmaFrame.cs" />
     <Compile Include="TasmaPromptMessageBox.xaml.cs">
       <DependentUpon>TasmaPromptMessageBox.xaml</DependentUpon>
     </Compile>

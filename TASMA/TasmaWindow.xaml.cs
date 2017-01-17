@@ -44,11 +44,15 @@ namespace TASMA
                 btn.Click += OnClickMenuButton;
             }
 
-            OnClickMenuButton(TasmaWindow_Student, null);
-
+            TasmaFrame.Frame = TasmaWindow_Frame;
         }
 
-        
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            OnClickMenuButton(TasmaWindow_Student, null);
+        }
+
+
         /// <summary>
         /// 메뉴 버튼 클릭 이벤트 루틴을 수행합니다.
         /// </summary>
@@ -122,6 +126,6 @@ namespace TASMA
             Owner.Close();
         }
 
-                
+       
     }
 }

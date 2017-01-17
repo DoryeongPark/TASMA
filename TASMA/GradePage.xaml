@@ -6,7 +6,8 @@
       xmlns:local="clr-namespace:TASMA"
       mc:Ignorable="d" 
       Title="GradePage" Background="{StaticResource tasmaWhite}" 
-      HorizontalAlignment="Stretch" VerticalAlignment="Stretch" d:DesignWidth="500" d:DesignHeight="350">
+      HorizontalAlignment="Stretch" VerticalAlignment="Stretch" d:DesignWidth="500" d:DesignHeight="350"
+      Loaded="OnLoaded">
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <Grid>

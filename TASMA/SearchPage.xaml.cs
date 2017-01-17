@@ -107,10 +107,9 @@ namespace TASMA
 
                 if (selectedGradeComboBoxItem == "----")
                 {
-                    classComboBoxItems = new ObservableCollection<string>();
-                    classComboBoxItems.Add("----");
-                    selectedClassComboBoxItem = classComboBoxItems[0];
-
+                    ClassComboBoxItems = new ObservableCollection<string>();
+                    ClassComboBoxItems.Add("----");
+                    SelectedClassComboBoxItem = classComboBoxItems[0];
                     SearchTable = adminDAO.SearchStudent(null, null, studentName);
                 }
                 else
@@ -130,7 +129,11 @@ namespace TASMA
 
             SearchPage_ClassComboBox.SelectionChanged += (s, ea) =>
             {
-
+                if(selectedClassComboBoxItem != "----")
+                {
+                    adminDAO.ReturnToInitialLoginState();
+                    SearchTable = adminDAO.SearchStudent(selectedGradeComboBoxItem, selectedClassComboBoxItem, studentName);
+                }
             };
         }
 
