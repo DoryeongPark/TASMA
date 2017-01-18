@@ -72,11 +72,11 @@
             </Grid>
             <Grid Grid.Row="1">
                 <StackPanel VerticalAlignment="Top">
-                    <Button Name="TasmaWindow_Student" Style="{StaticResource menuButtonStyle}" Content="Student"/>
-                    <Button Name="TasmaWindow_Subject" Style="{StaticResource menuButtonStyle}" Content="Subject"/>
-                    <Button Name="TasmaWindow_Marking" Style="{StaticResource menuButtonStyle}" Content="Marking"/>
-                    <Button Name="TasmaWindow_Search" Style="{StaticResource menuButtonStyle}" Content="Search"/>
-                    <Button Name="TasmaWindow_Export" Style="{StaticResource menuButtonStyle}" Content="Export"/>
+                    <Button Name="TasmaWindow_Student" Style="{StaticResource menuButtonStyle}" Content="Student" Focusable="False"/>
+                    <Button Name="TasmaWindow_Subject" Style="{StaticResource menuButtonStyle}" Content="Subject" Focusable="False"/>
+                    <Button Name="TasmaWindow_Marking" Style="{StaticResource menuButtonStyle}" Content="Marking" Focusable="False"/>
+                    <Button Name="TasmaWindow_Search" Style="{StaticResource menuButtonStyle}" Content="Search" Focusable="False"/>
+                    <Button Name="TasmaWindow_Export" Style="{StaticResource menuButtonStyle}" Content="Export" Focusable="False"/>
                 </StackPanel>
                 <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource tasmaDimGray}" />
             </Grid>
@@ -93,7 +93,7 @@
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="1">
-                <Frame x:Name="TasmaWindow_Frame" NavigationUIVisibility="Hidden"/>
+                <Frame x:Name="TasmaWindow_Frame" NavigationUIVisibility="Hidden" />
             </Grid>
         </Grid>
     </Grid>

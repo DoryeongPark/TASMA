@@ -139,8 +139,10 @@ namespace TASMA
                 textBox.FontSize = 15;
                 textBox.FontFamily = new FontFamily("Segoe UI");
                 textBox.FontWeight = FontWeights.SemiBold;
-                textBox.SelectedText = data;
-                textBox.SelectAll();
+                textBox.Focus();
+                textBox.Text = data;
+                textBox.Select(0, data.Length);
+               // textBox.RaiseEvent(new RoutedEventArgs(TextBox.MouseDownEvent));
 
                 //이벤트 등록 - 텍스트박스가 포커스를 잃어버리면 현재의 객체 참조를 보내고 알려준다.
                 textBox.LostFocus += (s, ea) =>
@@ -166,6 +168,14 @@ namespace TASMA
                     textArea.Children.Remove((TextBox)s);
                     OnModificationComplete?.Invoke(oldData, data);
                     DataRectangleManager.IsModified = true;
+                };
+
+                textBox.KeyDown += (s, ea) =>
+                {
+                    if(ea.Key == Key.Enter)
+                    {
+                        textBox.RaiseEvent(new RoutedEventArgs(TextBox.LostFocusEvent));
+                    }
                 };
 
                 

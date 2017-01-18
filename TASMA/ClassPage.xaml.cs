@@ -108,6 +108,9 @@ namespace TASMA
 
         private void OnDeleteData(object sender, EventArgs e)
         {
+            if (!DataRectangleManager.IsModified)
+                return;
+
             var dataRect = sender as DataRectangle;
             adminDAO.DeleteClass(dataRect.Data);
             Invalidate();

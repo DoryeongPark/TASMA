@@ -54,7 +54,7 @@ namespace TASMA
         /// <param name="e"></param>
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            
+           
         }
 
         /// <summary>
@@ -130,6 +130,9 @@ namespace TASMA
         /// <param name="e"></param>
         private void OnAddButtonClicked(object sender, RoutedEventArgs e)
         {
+            if (!DataRectangleManager.IsModified)
+                return;
+
             var promptWindow = new TasmaPromptMessageBox("Create grade", "Please input grade name");
             promptWindow.ShowDialog();
 
@@ -160,7 +163,7 @@ namespace TASMA
 
             var gradeSelected = (sender as DataRectangle).Data;
             adminDAO.SelectGrade(gradeSelected);
-            NavigationService.Navigate(new ClassPage(adminDAO));      
+            TasmaFrame.Frame.Navigate(new ClassPage(adminDAO));         
         }        
     }
 }

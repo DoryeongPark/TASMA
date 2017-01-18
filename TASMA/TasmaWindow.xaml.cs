@@ -60,15 +60,20 @@ namespace TASMA
         /// <param name="e"></param>
         private void OnClickMenuButton(object sender, RoutedEventArgs e)
         {
+            
             adminDAO.ReturnToInitialLoginState();
 
             var menuBtn = sender as Button;
             btnClicked = menuBtn;
 
             foreach (var buttons in menuButtons)
+            {
                 buttons.IsDefault = false;
-
+                buttons.IsEnabled = true;
+            }
+            
             btnClicked.IsDefault = true;
+            btnClicked.IsEnabled = false;
 
             //Event for each buttons
             if (menuBtn.Equals(TasmaWindow_Student))
