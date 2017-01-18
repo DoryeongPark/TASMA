@@ -15,5 +15,11 @@
         <SolidColorBrush x:Key="tasmaBlack" Color="#333333"/>
         <SolidColorBrush x:Key="tasmaWhite" Color="WhiteSmoke"/>
         <FontFamily x:Key="tasmaFont" >Segoe UI</FontFamily>
+        <Style x:Key="tasmaComboBoxLabelStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontFamily" Value="{StaticResource tasmaFont}" />
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="Foreground" Value="{StaticResource tasmaDemiGray}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+        </Style>
     </Application.Resources>
 </Application>
