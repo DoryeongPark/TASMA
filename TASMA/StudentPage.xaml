@@ -28,7 +28,7 @@
             <Button Name="StudentPage_SortButton" Content="Sort" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" Width="30" Height="30" />
         </Grid>
         <Grid Grid.Row="1">
-            <DataGrid HeadersVisibility="Column" Margin="8,0,8,0" FontFamily="Segoe UI" FontSize="10" Foreground="Gray" Background="{StaticResource tasmaWhite}" AutoGenerateColumns="False" CanUserResizeRows="False" CanUserDeleteRows="False" CanUserAddRows="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="StudentDataTable">
+            <DataGrid HeadersVisibility="Column" Margin="8,0,8,0" FontFamily="{StaticResource tasmaFont}" FontSize="10" Foreground="Gray" Background="{StaticResource tasmaWhite}" AutoGenerateColumns="False" CanUserResizeRows="False" CanUserDeleteRows="False" CanUserAddRows="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="StudentDataTable">
                 <DataGrid.Columns>
                     <DataGridTextColumn Width="1*" Header="No." Binding="{Binding Path=SNUM}" CanUserResize="False"/>
                     <DataGridTextColumn Width="4*" Header="Student Name" Binding="{Binding Path=SNAME}" CanUserResize="False"/>
@@ -46,8 +46,8 @@
                         <Setter Property="VerticalAlignment" Value="Stretch" />
                         <Setter Property="FontSize" Value="10" />
                         <Setter Property="HorizontalContentAlignment" Value="Center" />
-                        <Setter Property="Background" Value="MidnightBlue" />
-                        <Setter Property="Foreground" Value="WhiteSmoke" />
+                        <Setter Property="Background" Value="{StaticResource tasmaDeepGreen}" />
+                        <Setter Property="Foreground" Value="{StaticResource tasmaWhite}" />
                     </Style>
                 </DataGrid.ColumnHeaderStyle>
             </DataGrid>

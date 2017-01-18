@@ -72,6 +72,7 @@
                     AutoGenerateColumns="False"
                     Margin="8,0,8,8"
                     CanUserAddRows="False"
+                    Background="{StaticResource tasmaWhite}"
                     CanUserResizeColumns="False"
                     CanUserResizeRows="False"
                     HeadersVisibility="Column"
@@ -121,15 +122,15 @@
                     </DataGrid.Columns>
                     <DataGrid.ColumnHeaderStyle>
                         <Style TargetType="{x:Type DataGridColumnHeader}">
-                            <Setter Property="FontWeight"  Value="SemiBold" />
-                            <Setter Property="BorderBrush" Value="{StaticResource tasmaLightGray}"/>
+                            <Setter Property="FontWeight"  Value="DemiBold" />
+                            <Setter Property="BorderBrush" Value="{StaticResource tasmaDimGray}"/>
                             <Setter Property="BorderThickness" Value="1"/>
                             <Setter Property="Height" Value="25" />
                             <Setter Property="HorizontalAlignment" Value="Stretch" />
                             <Setter Property="VerticalAlignment" Value="Stretch" />
                             <Setter Property="FontSize" Value="10" />
                             <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                            <Setter Property="Background" Value="{StaticResource tasmaGreen}" />
+                            <Setter Property="Background" Value="{StaticResource tasmaDeepGreen}" />
                             <Setter Property="Foreground" Value="{StaticResource tasmaWhite}" />
                         </Style>
                     </DataGrid.ColumnHeaderStyle>
