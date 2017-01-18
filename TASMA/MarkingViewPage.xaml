@@ -63,31 +63,36 @@
                                    Style="{StaticResource tasmaComboBoxLabelStyle}"
                                    />
                         <ComboBox Name="MarkingViewPage_GradeComboBox"
-                                  Width="60" Margin="4,0,4,0"
+                                  Width="80" Margin="4,0,4,0"
                                   ItemsSource="{Binding GradeComboBoxItems}"
                                   SelectedItem="{Binding SelectedGradeComboBoxItem}"
-                                  SelectionChanged="OnGradeComboBoxSelectionChanged"/>
+                                  Style="{StaticResource tasmaComboBoxStyle}"
+                                  SelectionChanged="OnGradeComboBoxSelectionChanged"
+                                  />
                         <TextBlock Text="Class" Margin="6,0,0,0"
                                    Style="{StaticResource tasmaComboBoxLabelStyle}"/>
                         <ComboBox Name="MarkingViewPage_ClassComboBox"
-                                  Width="60" Margin="4,0,4,0"
+                                  Width="80" Margin="4,0,4,0"
                                   ItemsSource="{Binding ClassComboBoxItems}"
                                   SelectedItem="{Binding SelectedClassComboBoxItem}"
+                                  Style="{StaticResource tasmaComboBoxStyle}"
                                   SelectionChanged="OnClassComboBoxSelectionChanged"/>
                         <TextBlock Text="Semester" Margin="6,0,0,0"
                                    Style="{StaticResource tasmaComboBoxLabelStyle}"/>
                         <ComboBox Name="MarkingViewPage_SemesterComboBox" 
                                   FontFamily="{StaticResource tasmaFont}" 
-                                  Width="60" Margin="4,0,6,0" 
+                                  Width="50" Margin="4,0,6,0" 
                                   ItemsSource="{Binding SemesterComboBoxItems, Mode=TwoWay}" 
                                   SelectedItem="{Binding SelectedSemesterComboBoxItem}" 
+                                  Style="{StaticResource tasmaComboBoxStyle}"
                                   SelectedValuePath="Key" DisplayMemberPath="Value"/>
                         <TextBlock Text="Subject" Margin="6,0,0,0"
                                    Style="{StaticResource tasmaComboBoxLabelStyle}"/>
                         <ComboBox Name="MarkingViewPage_SubjectComboBox" 
                                   FontFamily="{StaticResource tasmaFont}" 
-                                  Width="80" Margin="4,0,0,0" 
+                                  Width="100" Margin="4,0,0,0" 
                                   ItemsSource="{Binding SubjectComboBoxItems}" 
+                                  Style="{StaticResource tasmaComboBoxStyle}"
                                   SelectedValue="{Binding SelectedSubjectComboBoxItem, Mode=TwoWay}" />
                     </StackPanel>
                 </Grid>

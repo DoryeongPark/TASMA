@@ -22,45 +22,47 @@
                             HorizontalAlignment="Left" 
                             VerticalAlignment="Center"
                             Height="20">
-                    <TextBlock FontFamily="{StaticResource tasmaFont}"
-                               VerticalAlignment="Center"
+                    <TextBlock Style="{StaticResource tasmaComboBoxLabelStyle}"
                                Margin="5,0,5,0">
                         Grade
                     </TextBlock>
                     <ComboBox Name="SearchPage_GradeComboBox" 
-                              Width="60"
+                              Width="80"
                               ItemsSource="{Binding GradeComboBoxItems, Mode=TwoWay}"
                               SelectedValue="{Binding SelectedGradeComboBoxItem, Mode=TwoWay}"
+                              Style="{StaticResource tasmaComboBoxStyle}"
                               Margin="5,0,5,0"/>
-                    <TextBlock FontFamily="{StaticResource tasmaFont}"
-                               VerticalAlignment="Center"
+                    <TextBlock Style="{StaticResource tasmaComboBoxLabelStyle}"
                                Margin="5,0,5,0">
                         Class
                     </TextBlock>
                     <ComboBox Name="SearchPage_ClassComboBox"
-                              Width="60"
+                              Width="80"
                               ItemsSource="{Binding ClassComboBoxItems, Mode=TwoWay}"
                               SelectedValue="{Binding SelectedClassComboBoxItem, Mode=TwoWay}"
+                              Style="{StaticResource tasmaComboBoxStyle}"
                               Margin="5,0,5,0"/>
-                    <TextBlock FontFamily="{StaticResource tasmaFont}"
-                               VerticalAlignment="Center"
+                    <TextBlock Style="{StaticResource tasmaComboBoxLabelStyle}"
                                Margin="5,0,5,0">
                         Name
                     </TextBlock>
+
+
                     <TextBox Name="SearchPage_SNameTextBox"
-                             Width="120" 
-                             MaxLength="25"
+                             Width="125" 
+                             MaxLength="30"
                              Text="{Binding StudentName, Mode=TwoWay}"
                              Margin="5,0,0,0" Height="20" VerticalAlignment="Bottom"
+                             
                              TextChanged="OnTextChanged"
                              />
-                    <Button Name="SearchPage_SearchButton" 
+                    <Image Name="SearchPage_SearchButton" 
                             Width="20"
                             Height="20"/>
                     <Button Name="SearchPage_Print"
-                            Width="60"
+                            Width="50"
                             Height="20" 
-                            Margin="5,0,5,0"/>
+                            Margin="5,0,0,0"/>
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="1">
