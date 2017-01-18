@@ -180,12 +180,6 @@ namespace TASMA
             if (selectedSubjectItem == null)
                 return;
 
-            var nav = NavigationService.GetNavigationService(this);
-            nav.Navigate(new MarkingViewPage(adminDAO,
-                                            null,
-                                            selectedGradeItem.GradeName,
-                                            selectedClassItem.ClassName,
-                                            selectedSubjectItem.SubjectName));
         }
 
         

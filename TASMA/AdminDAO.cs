@@ -1393,6 +1393,23 @@ namespace TASMA
                     result.Add(reader["EVALUATION"].ToString());
                 }
 
+                for(int i = 0; i < result.Count; ++i)
+                {
+                    if (result[i] == "Midterm")
+                    {
+                        var temp = result[0];
+                        result[0] = "Midterm";
+                        result[i] = temp;
+                    }
+
+                    if (result[i] == "Final")
+                    {
+                        var temp = result[1];
+                        result[1] = "Final";
+                        result[i] = temp;
+                    }
+                }
+
                 conn.Close();
                 cmd.Dispose();
 
@@ -1465,7 +1482,7 @@ namespace TASMA
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
 
-                var cmdStr = "SELECT SNUM FROM " + subjectName + " WHERE SEMESTER = 1 AND GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "';";
+                var cmdStr = "SELECT SNUM FROM " + subjectName + " WHERE SEMESTER = 0 AND GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "' ORDER BY SNUM ASC;";
                 var cmd = new SQLiteCommand(cmdStr, conn);
                 var reader = cmd.ExecuteReader();
                 var result = new List<int>();
@@ -1578,7 +1595,7 @@ namespace TASMA
                     cmdStr += "," + evaluationName;
 
                 cmdStr += " FROM " + subjectName;
-                cmdStr += " WHERE SEMESTER = " + semester + " AND GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "';";
+                cmdStr += " WHERE SEMESTER = " + semester + " AND GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "' ORDER BY SNUM ASC;";
                                 
                 var cmd = new SQLiteCommand(cmdStr, conn);
                 var reader = cmd.ExecuteReader();

@@ -27,15 +27,39 @@ namespace TASMA
     {
         private AdminDAO adminDAO;
 
-        private string gradeName;
-        private string className;
-        private string subjectName;
-
         private DataTable scoreTable;
         public DataTable ScoreTable
         {
             get { return scoreTable; }
             set { scoreTable = value; OnPropertyChanged("ScoreTable"); }
+        }
+
+        private ObservableCollection<string> gradeComboBoxItems;
+        public ObservableCollection<string> GradeComboBoxItems
+        {
+            get { return gradeComboBoxItems; }
+            set { gradeComboBoxItems = value; OnPropertyChanged("GradeComboBoxItems"); }
+        }
+
+        private string selectedGradeComboBoxItem;
+        public string SelectedGradeComboBoxItem
+        {
+            get { return selectedGradeComboBoxItem; }
+            set { selectedGradeComboBoxItem = value; OnPropertyChanged("SelectedGradeComboBoxItem"); }
+        }
+
+        private ObservableCollection<string> classComboBoxItems;
+        public ObservableCollection<string> ClassComboBoxItems
+        {
+            get { return classComboBoxItems; }
+            set { classComboBoxItems = value; OnPropertyChanged("ClassComboBoxItems"); }
+        }
+
+        private string selectedClassComboBoxItem;
+        public string SelectedClassComboBoxItem
+        {
+            get { return selectedClassComboBoxItem; }
+            set { selectedClassComboBoxItem = value; OnPropertyChanged("SelectedClassComboBoxItem"); }
         }
 
         private ObservableCollection<string> subjectComboBoxItems;
@@ -75,87 +99,35 @@ namespace TASMA
         /// <param name="gradeName"></param>
         /// <param name="className"></param>
         /// <param name="subjectName"></param>
-        public MarkingViewPage(AdminDAO adminDAO, int? semester, string gradeName, string className, string subjectName)
+        public MarkingViewPage(AdminDAO adminDAO)
         {
             this.adminDAO = adminDAO;
-            this.gradeName = gradeName;
-            this.className = className;
-            this.subjectName = subjectName;
+            adminDAO.ReturnToInitialLoginState();
 
-            adminDAO.SelectClass(gradeName);
-            adminDAO.SelectClass(className);
-            var studentList = adminDAO.GetStudentList();
-            var studentListFromSubject = adminDAO.GetStudentNumberFromSubject(subjectName);
+            gradeComboBoxItems = new ObservableCollection<string>();
+            var gradeList = adminDAO.GetGradeList();
 
-            //ComboBox creation routine
-            var subjectList = adminDAO.GetClassSubjects(gradeName, className);
+            foreach(var gradeName in gradeList)
+            {
+                gradeComboBoxItems.Add(gradeName);
+            }
+
+            classComboBoxItems = new ObservableCollection<string>();
             subjectComboBoxItems = new ObservableCollection<string>();
-
-            foreach (var subject in subjectList)
-                subjectComboBoxItems.Add(subject);
-
-            foreach (var subjectComboBoxItem in subjectComboBoxItems)
-                if (subjectName == subjectComboBoxItem)
-                {
-                    selectedSubjectComboBoxItem = subjectComboBoxItem;
-                    break;
-                }
-
+            
             semesterComboBoxItems = new ObservableCollection<KeyValuePair<int, string>>();
             semesterComboBoxItems.Add(new KeyValuePair<int, string>(0, "1st"));
             semesterComboBoxItems.Add(new KeyValuePair<int, string>(1, "2nd"));
 
-            if (semester == null)
-            {
-                if (DateTime.Today.Month <= 6)
-                    selectedSemesterComboBoxItem = semesterComboBoxItems[0];
-                else
-                    selectedSemesterComboBoxItem = semesterComboBoxItems[1];
-            }else
-            {
-                selectedSemesterComboBoxItem = semesterComboBoxItems[semester.Value];
-            }
+            if (DateTime.Today.Month <= 6)
+                selectedSemesterComboBoxItem = semesterComboBoxItems[0];
+            else
+                selectedSemesterComboBoxItem = semesterComboBoxItems[1];
 
-            //Table creation routine
-            scoreTable = new DataTable();
-            scoreTable.Columns.Add("No", typeof(int));
-            scoreTable.Columns.Add("Student name", typeof(string));
-
-            foreach (var student in studentList)
-            {
-                var row = scoreTable.NewRow();
-                row["No"] = student.Item1;
-                row["Student name"] = student.Item2;
-                scoreTable.Rows.Add(row);
-            }
-
-            //과목 테이블에서 학생 정보를 가져온 뒤 비교한다.
-            //Update와 Delete는 자동으로 되므로 새 학생 데이터를 과목 테이블에 삽입만 하면 된다.
-            foreach (var student in studentList)
-                if (!studentListFromSubject.Contains(student.Item1))
-                    adminDAO.CreateStudentInSubject(subjectName, student.Item1);
-
-            var evaluationList = adminDAO.GetEvaluationList(subjectName);
-            foreach (var evaluationName in evaluationList)
-                scoreTable.Columns.Add(evaluationName, typeof(float));
-
-            var scoreTableFromSubject = adminDAO.GetScoreTable(subjectName, selectedSemesterComboBoxItem.Key);
-            for (var i = 0; i < scoreTable.Rows.Count; ++i)
-            {
-                var rowsFound = scoreTableFromSubject.Select("SNUM = " + (int)scoreTable.Rows[i]["No"]);
-                for (var j = 2; j < scoreTable.Columns.Count; ++j)
-                    if(rowsFound.Length != 0)
-                        scoreTable.Rows[i][j] = rowsFound[0][j - 1];
-                
-            }
-
-            for (var j = 2; j < scoreTable.Columns.Count; ++j)
-                scoreTable.Columns[2].AllowDBNull = true; 
-
-            //Add Event 
+            //Add Event
+            scoreTable = new DataTable(); 
             scoreTable.ColumnChanged += OnValueChanged;
-            scoreTable.AcceptChanges();
-
+            
             DataContext = this;
             InitializeComponent();
         }
@@ -167,10 +139,11 @@ namespace TASMA
         /// <param name="e"></param>
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            MarkingViewPage_SubjectComboBox.SelectionChanged += OnSubjectComboBoxSelected;
+            MarkingViewPage_SubjectComboBox.SelectionChanged += OnSubjectComboBoxSelectionChanged;
             MarkingViewPage_SemesterComboBox.SelectionChanged += OnSemesterComboBoxSelected;
         }
 
+       
         /// <summary>
         /// 셀 편집 종료 시의 호출 루틴입니다. 데이터의 유효성을 검사합니다.
         /// </summary>
@@ -241,9 +214,17 @@ namespace TASMA
             {
                 newValue = (float)e.Row[columnName];
             }
-            
-            adminDAO.UpdateScore(subjectName, selectedSemesterComboBoxItem.Key, sNum, columnName, newValue);              
+
+            adminDAO.SelectGrade(SelectedGradeComboBoxItem);
+            adminDAO.SelectClass(SelectedClassComboBoxItem);
+            adminDAO.UpdateScore(SelectedSubjectComboBoxItem,
+                                SelectedSemesterComboBoxItem.Key, 
+                                sNum, 
+                                columnName, 
+                                newValue);
+            adminDAO.ReturnToInitialLoginState();          
         }
+
 
         /// <summary>
         /// 컬럼 생성 시 호출되는 루틴입니다. 컬럼 헤더에 대한 설정을 초기화합니다.
@@ -280,15 +261,33 @@ namespace TASMA
             }
         }
 
-        /// <summary>
-        /// 이전 반 선택 페이지로 돌아갑니다.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnPreviousButtonClicked(object sender, RoutedEventArgs e)
+
+        private void OnGradeComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var nav = NavigationService.GetNavigationService(this);
-            nav.Navigate(new MarkingPage(adminDAO, gradeName, className, subjectName));
+            ClassComboBoxItems.Clear();
+            SubjectComboBoxItems.Clear();
+            adminDAO.ReturnToInitialLoginState();
+            adminDAO.SelectGrade(selectedGradeComboBoxItem);
+            var classList = adminDAO.GetClassList();
+            foreach(var className in classList)
+            {
+                ClassComboBoxItems.Add(className);
+            }
+            SelectedClassComboBoxItem = null;
+            SelectedSubjectComboBoxItem = null;
+
+            adminDAO.ReturnToInitialLoginState();
+        }
+
+        private void OnClassComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SubjectComboBoxItems.Clear();
+            var subjectList = adminDAO.GetClassSubjects(SelectedGradeComboBoxItem, SelectedClassComboBoxItem);
+            foreach(var subjectName in subjectList)
+            {
+                SubjectComboBoxItems.Add(subjectName);
+            }
+            SelectedSubjectComboBoxItem = null;
         }
 
         /// <summary>
@@ -296,10 +295,57 @@ namespace TASMA
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnSubjectComboBoxSelected(object sender, SelectionChangedEventArgs e)
+        private void OnSubjectComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var nav = NavigationService.GetNavigationService(this);
-            nav.Navigate(new MarkingViewPage(adminDAO, selectedSemesterComboBoxItem.Key, gradeName, className, selectedSubjectComboBoxItem));
+            if (SelectedClassComboBoxItem == null || 
+                SelectedGradeComboBoxItem == null ||
+                SelectedSubjectComboBoxItem == null)
+                return;
+
+            adminDAO.ReturnToInitialLoginState();
+
+            var dataTable = new DataTable();
+           
+            adminDAO.SelectGrade(SelectedGradeComboBoxItem);
+            adminDAO.SelectClass(SelectedClassComboBoxItem);
+            var evaluationList = adminDAO.GetEvaluationList(SelectedSubjectComboBoxItem);
+            
+            /* Column 추가 */
+            dataTable.Columns.Add("No", typeof(int));
+            dataTable.Columns.Add("Student name", typeof(string));
+            foreach(var evaluationName in evaluationList)
+            {
+                dataTable.Columns.Add(evaluationName, typeof(float));
+            }
+
+            /* Data 삽입 */
+            var studentList = adminDAO.GetStudentList();
+            foreach(var studentData in studentList)
+            {
+                dataTable.Rows.Add(new object[]{ studentData.Item1, studentData.Item2 });
+            }
+
+            var studentListFromSubject = adminDAO.GetStudentNumberFromSubject(SelectedSubjectComboBoxItem);
+            foreach(var studentData in studentList)
+            {
+                if (!studentListFromSubject.Contains(studentData.Item1))
+                {
+                    adminDAO.CreateStudentInSubject(SelectedSubjectComboBoxItem, studentData.Item1);
+                }
+            }
+
+            var scoreDataTable = adminDAO.GetScoreTable(SelectedSubjectComboBoxItem, SelectedSemesterComboBoxItem.Key);
+            for(int i = 0; i < dataTable.Rows.Count; ++i)
+            {
+                for(int j = 2; j < dataTable.Columns.Count; ++j)
+                {
+                    dataTable.Rows[i][j] = scoreDataTable.Rows[i][j - 1];
+                }
+            }
+
+            ScoreTable = dataTable;
+            ScoreTable.ColumnChanged += OnValueChanged;
+            adminDAO.ReturnToInitialLoginState();
         }
 
         /// <summary>
@@ -309,8 +355,7 @@ namespace TASMA
         /// <param name="e"></param>
         private void OnSemesterComboBoxSelected(object sender, SelectionChangedEventArgs e)
         {
-            var nav = NavigationService.GetNavigationService(this);
-            nav.Navigate(new MarkingViewPage(adminDAO, selectedSemesterComboBoxItem.Key, gradeName, className, selectedSubjectComboBoxItem));
+            OnSubjectComboBoxSelectionChanged(sender, e);
         }
 
         protected void OnPropertyChanged(string propertyName)

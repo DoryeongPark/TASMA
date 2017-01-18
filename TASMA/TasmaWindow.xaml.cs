@@ -82,7 +82,7 @@ namespace TASMA
             else if (menuBtn.Equals(TasmaWindow_Subject))
                 TasmaWindow_Frame.Navigate(new SubjectPage(adminDAO));
             else if (menuBtn.Equals(TasmaWindow_Marking))
-                TasmaWindow_Frame.Navigate(new MarkingPage(adminDAO));
+                TasmaWindow_Frame.Navigate(new MarkingViewPage(adminDAO));
             else if (menuBtn.Equals(TasmaWindow_Search))
                 TasmaWindow_Frame.Navigate(new SearchPage(adminDAO));
             else if (menuBtn.Equals(TasmaWindow_Export))

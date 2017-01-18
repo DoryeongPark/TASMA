@@ -49,24 +49,50 @@
         </Style>
     </Page.Resources>
     <Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
+        
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="45"/>
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
-                    <Button Name="MarkingViewPage_PreviousButton" Content="Back" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="30" Height="30" Click="OnPreviousButtonClicked"/>
-                    <Label Content="Table" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="{StaticResource tasmaFont}" FontWeight="Bold" FontSize="18" Foreground="Indigo"/>
-                    <ComboBox Name="MarkingViewPage_SubjectComboBox" Margin="0,0,5,0" FontFamily="{StaticResource tasmaFont}" Width="80" VerticalAlignment="Center" HorizontalAlignment="Right" ItemsSource="{Binding SubjectComboBoxItems}" SelectedValue="{Binding SelectedSubjectComboBoxItem, Mode=TwoWay}" />
-                    <ComboBox Name="MarkingViewPage_SemesterComboBox" FontFamily="{StaticResource tasmaFont}" Width="60" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,100,0" ItemsSource="{Binding SemesterComboBoxItems, Mode=TwoWay}" SelectedItem="{Binding SelectedSemesterComboBoxItem}" SelectedValuePath="Key" DisplayMemberPath="Value"/>
+                    <StackPanel VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Height="20" Orientation="Horizontal">
+                        <TextBlock Text="Grade" FontFamily="{StaticResource tasmaFont}"/>
+                        <ComboBox Name="MarkingViewPage_GradeComboBox"
+                                  Width="60" Margin="0,0,0,0"
+                                  ItemsSource="{Binding GradeComboBoxItems}"
+                                  SelectedItem="{Binding SelectedGradeComboBoxItem}"
+                                  SelectionChanged="OnGradeComboBoxSelectionChanged"/>
+                        <TextBlock Text="Class" FontFamily="{StaticResource tasmaFont}"/>
+                        <ComboBox Name="MarkingViewPage_ClassComboBox"
+                                  Width="60" Margin="0,0,0,0"
+                                  ItemsSource="{Binding ClassComboBoxItems}"
+                                  SelectedItem="{Binding SelectedClassComboBoxItem}"
+                                  SelectionChanged="OnClassComboBoxSelectionChanged"/>
+                        <TextBlock Text="Semester" FontFamily="{StaticResource tasmaFont}"/>
+                        <ComboBox Name="MarkingViewPage_SemesterComboBox" 
+                                  FontFamily="{StaticResource tasmaFont}" 
+                                  Width="60" Margin="0,0,0,0" 
+                                  ItemsSource="{Binding SemesterComboBoxItems, Mode=TwoWay}" 
+                                  SelectedItem="{Binding SelectedSemesterComboBoxItem}" 
+                                  SelectedValuePath="Key" DisplayMemberPath="Value"/>
+                        <TextBlock Text="Subject" FontFamily="{StaticResource tasmaFont}"/>
+                        <ComboBox Name="MarkingViewPage_SubjectComboBox" 
+                                  FontFamily="{StaticResource tasmaFont}" 
+                                  Width="80" Margin="0,0,0,0" 
+                                  ItemsSource="{Binding SubjectComboBoxItems}" 
+                                  SelectedValue="{Binding SelectedSubjectComboBoxItem, Mode=TwoWay}" />
+                    </StackPanel>
                 </Grid>
                 <Grid Grid.Row="1">
                     <DataGrid ItemsSource="{Binding ScoreTable, Mode=TwoWay, NotifyOnTargetUpdated=True}" 
                                 AutoGenerateColumns="True" HeadersVisibility="Column" FontFamily="Segoe UI"
                                 FontSize="10" Foreground="Gray" CanUserResizeRows="False" CanUserDeleteRows="False" 
                                 CanUserAddRows="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                                Background="White" AutoGeneratingColumn="OnGenerateColumn" CellEditEnding="OnCellEditFinished">
+                                Background="White" AutoGeneratingColumn="OnGenerateColumn" CellEditEnding="OnCellEditFinished"
+                                Margin="8,0,8,8">
                         <DataGrid.ColumnHeaderStyle>
                             <Style TargetType="{x:Type DataGridColumnHeader}">
                                 <Setter Property="FontWeight"  Value="SemiBold" />
@@ -84,7 +110,7 @@
                     </DataGrid>
                 </Grid>
             </Grid>
-        </ScrollViewer>
+        
     </Grid>
 </Page>
 
