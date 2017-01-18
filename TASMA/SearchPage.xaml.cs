@@ -92,11 +92,13 @@ namespace TASMA
 
             searchTable = adminDAO.SearchStudent(null, null, "");
             
-            //Initialize Student 
+            /* Initialize Student */ 
             studentName = "";
            
             DataContext = this;
             InitializeComponent();
+
+            
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -160,11 +162,25 @@ namespace TASMA
 
         private void OnInfoButtonClicked(object sender, RoutedEventArgs e)
         {
+            var row = SearchPage_DataGrid.SelectedIndex;
+            var gradeName = SearchTable.Rows[row]["Grade"] as string;
+            var className = SearchTable.Rows[row]["Class"] as string;
 
+            adminDAO.SelectGrade(gradeName);
+            adminDAO.SelectClass(className);
+
+            TasmaMenuButtons.UpdateButtonsState(TasmaMenuButtons.Buttons[0]);
+            NavigationService.Navigate(new StudentPage(adminDAO));
+            
         }
 
         private void OnScoreButtonClicked(object sender, RoutedEventArgs e)
         {
+            var row = SearchPage_DataGrid.SelectedIndex;
+            var gradeName = SearchTable.Rows[row]["GRADE"] as string;
+            var className = SearchTable.Rows[row]["CLASS"] as string;
+
+
 
         }
 
@@ -173,5 +189,6 @@ namespace TASMA
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        
     }
 }

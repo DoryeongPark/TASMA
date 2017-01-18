@@ -120,6 +120,7 @@
       <DependentUpon>SubjectPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="SubjectTreeViewItemType.cs" />
+    <Compile Include="TasmaMenuButtons.cs" />
     <Compile Include="TasmaConfirmationMessageBox.xaml.cs">
       <DependentUpon>TasmaConfirmationMessageBox.xaml</DependentUpon>
     </Compile>

@@ -65,6 +65,7 @@
             </Grid>
             <Grid Grid.Row="1">
                 <DataGrid
+                    Name="SearchPage_DataGrid"
                     ItemsSource="{Binding SearchTable, Mode=TwoWay}"
                     AutoGenerateColumns="False"
                     Margin="8,0,8,8"
@@ -88,7 +89,9 @@
                                             IsReadOnly="True">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Click="OnInfoButtonClicked">Link</Button>
+                                    <Button Click="OnInfoButtonClicked">
+                                        Link
+                                    </Button>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -97,11 +100,22 @@
                                             IsReadOnly="True">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Click="OnScoreButtonClicked">Link</Button>
+                                    <Button Click="OnScoreButtonClicked">
+                                        Link
+                                    </Button>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridCheckBoxColumn Width="0.5*" Header="Print" Binding="{Binding PRINT}"/>
+                        <DataGridTemplateColumn Width="0.5*" Header="Print">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox 
+                                        IsChecked="{Binding PRINT, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                     </DataGrid.Columns>
                     <DataGrid.ColumnHeaderStyle>
                         <Style TargetType="{x:Type DataGridColumnHeader}">

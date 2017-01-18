@@ -44,7 +44,7 @@ namespace TASMA
         /// <param name="e"></param>
         private void OnSortButtonClicked(object sender, RoutedEventArgs e)
         {
-            var messageBoxResult = MessageBox.Show("Are you sure execute auto number allocation?","Auto number allocation", MessageBoxButton.YesNo);
+            var messageBoxResult = MessageBox.Show("Are you sure execute auto number allocation?", "Auto number allocation", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.No)
                 return;
 
