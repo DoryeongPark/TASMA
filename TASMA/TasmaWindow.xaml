@@ -7,52 +7,7 @@
         mc:Ignorable="d"
         Title="TasmaWindow" Background="White" Height="480" Width="640" BorderBrush="Gray" BorderThickness="1" WindowStyle="None" AllowsTransparency="True" MouseLeftButtonDown="OnLeftMouseButtonDown" Closed="OnClosed" Loaded="OnLoaded">
     <Window.Resources>
-         <Style x:Key="menuButtonStyle" TargetType="Button">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Name="border"
-                            Background="{StaticResource tasmaDimGray}"
-                            BorderThickness="0,0,0,1"
-                            BorderBrush="{StaticResource tasmaLightGray}"
-                            Height="43">
-                            <Grid>
-                                <Border Name="borderSelected"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Stretch"
-                                        Width="4"
-                                        Background="{StaticResource tasmaGreen}"
-                                        Visibility="Hidden"/>
-                                <ContentPresenter HorizontalAlignment="Left"
-                                        VerticalAlignment="Center" Name="content">
-                                    <ContentPresenter.Style>
-                                        <Style TargetType="ContentPresenter">
-                                            <Setter Property="Control.Foreground" Value="{StaticResource tasmaWhiteGray}" />
-                                            <Setter Property="Control.FontFamily" Value="Segoe UI" />
-                                            <Setter Property="Control.FontSize" Value="13" />
-                                            <Setter Property="Control.FontWeight" Value="SemiBold" />
-                                            <Setter Property="Control.Margin" Value="10,0,0,0" />
-                                        </Style>
-                                    </ContentPresenter.Style>
-                                    <ContentPresenter.RenderTransform>
-                                        <TranslateTransform X="1.0" Y="1.0" />
-                                    </ContentPresenter.RenderTransform>
-                                </ContentPresenter>
-                                </Grid>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsDefault" Value="False">
-                                <Setter TargetName="border" Property="Background" Value="#454545"/>
-                                <Setter TargetName="content" Property="Control.Foreground" Value="#E1E1E1" />
-                            </Trigger>
-                            <Trigger Property="IsDefault" Value="True">
-                                <Setter TargetName="borderSelected" Property="Visibility" Value="Visible" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+         
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -72,11 +27,31 @@
             </Grid>
             <Grid Grid.Row="1">
                 <StackPanel VerticalAlignment="Top">
-                    <Button Name="TasmaWindow_Student" Style="{StaticResource menuButtonStyle}" Content="Student" Focusable="False"/>
-                    <Button Name="TasmaWindow_Subject" Style="{StaticResource menuButtonStyle}" Content="Subject" Focusable="False"/>
-                    <Button Name="TasmaWindow_Marking" Style="{StaticResource menuButtonStyle}" Content="Marking" Focusable="False"/>
-                    <Button Name="TasmaWindow_Search" Style="{StaticResource menuButtonStyle}" Content="Search" Focusable="False"/>
-                    <Button Name="TasmaWindow_Export" Style="{StaticResource menuButtonStyle}" Content="Export" Focusable="False"/>
+                    <Button Name="TasmaWindow_Student" Style="{StaticResource menuButtonStyle}" Content="Student" Focusable="False">
+                        <Button.Tag>
+                            <ImageSource>/Resources/Tasma_StudentMenuButton.png</ImageSource>
+                        </Button.Tag>
+                    </Button>
+                    <Button Name="TasmaWindow_Subject" Style="{StaticResource menuButtonStyle}" Content="Subject" Focusable="False">
+                        <Button.Tag>
+                            <ImageSource>/Resources/Tasma_SubjectMenuButton.png</ImageSource>
+                        </Button.Tag>
+                    </Button>
+                    <Button Name="TasmaWindow_Marking" Style="{StaticResource menuButtonStyle}" Content="Marking" Focusable="False">
+                        <Button.Tag>
+                            <ImageSource>/Resources/Tasma_MarkingMenuButton.png</ImageSource>
+                        </Button.Tag>
+                    </Button>
+                    <Button Name="TasmaWindow_Search" Style="{StaticResource menuButtonStyle}" Content="Search" Focusable="False">
+                        <Button.Tag>
+                            <ImageSource>/Resources/Tasma_SearchMenuButton.png</ImageSource>
+                        </Button.Tag>
+                    </Button>
+                    <Button Name="TasmaWindow_Export" Style="{StaticResource menuButtonStyle}" Content="Export" Focusable="False">
+                        <Button.Tag>
+                            <ImageSource>/Resources/Tasma_ExportMenuButton.png</ImageSource>
+                        </Button.Tag>
+                    </Button>
                 </StackPanel>
                 <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource tasmaDimGray}" />
             </Grid>

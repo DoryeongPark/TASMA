@@ -56,9 +56,15 @@
                              
                              TextChanged="OnTextChanged"
                              />
-                    <Image Name="SearchPage_SearchButton" 
+                    <Button Name="SearchPage_SearchButton" 
                             Width="20"
-                            Height="20"/>
+                            Height="20"
+                            Style="{StaticResource imageButtonStyle}"
+                            >
+                        <Button.Tag>
+                            <ImageSource>/Resources/Tasma_SearchMenuButton.png</ImageSource>
+                        </Button.Tag>
+                    </Button>
                     <Button Name="SearchPage_Print"
                             Width="50"
                             Height="20" 

@@ -6,6 +6,15 @@
     <Application.Resources>
         <Image x:Key="tasmaCloseButton" Source="/Resources/Tasma_CloseButton.png" Width="15" Height="15"/>
         <Image x:Key="tasmaMinimizeButton" Source="/Resources/Tasma_MinimizeButton.png" Width="15" Height="15"/>
+        <Image x:Key="tasmaStudentMenuButton" Source="/Resources/Tasma_StudentMenuButton.png" Width="20" Height="20"/>
+        <Image x:Key="tasmaSubjectMenuButton" Source="/Resources/Tasma_SubjectMenuButton.png" Width="20" Height="20"/>
+        <Image x:Key="tasmaSearchMenuButton" Source="/Resources/Tasma_SearchMenuButton.png" Width="20" Height="20"/>
+        <Image x:Key="tasmaExportMenuButton" Source="/Resources/Tasma_ExportMenuButton.png" Width="20" Height="20"/>
+        <Image x:Key="tasmaAddButton" Source="/Resources/Tasma_AddButton.png" Width="20" Height="20"/>
+        <Image x:Key="tasmaDeleteButton" Source="/Resources/Tasma_DeleteButton.png" Width="20" Height="20"/>
+        <Image x:Key="tasmaModifyButton" Source="/Resources/Tasma_ModifyButton.png" Width="20" Height="20"/>
+        <Image x:Key="tasmaBackButton" Source="/Resources/Tasma_BackButton.png" Width="20" Height="20"/>
+        <Image x:Key="tasmaSortButton" Source="/Resources/Tasma_SortButton.png" Width="20" Height="20"/>
         <SolidColorBrush x:Key="tasmaDimGray" Color="#454545"/>
         <SolidColorBrush x:Key="tasmaDemiGray" Color="#555555" />
         <SolidColorBrush x:Key="tasmaNormalGray" Color="#666666"/>
@@ -32,6 +41,119 @@
             <Setter Property="BorderBrush" Value="{StaticResource tasmaDimGray}"/>
             <Setter Property="FontWeight" Value="DemiBold"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="menuButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border"
+                            Background="{StaticResource tasmaDimGray}"
+                            BorderThickness="0,0,0,1"
+                            BorderBrush="{StaticResource tasmaLightGray}"
+                            Height="43">
+                            <Grid>
+                                <Border Name="borderSelected"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Stretch"
+                                        Width="4"
+                                        Background="{StaticResource tasmaGreen}"
+                                        Visibility="Hidden"/>
+                                <ContentPresenter HorizontalAlignment="Left"
+                                        VerticalAlignment="Center" Name="content">
+                                    <ContentPresenter.Style>
+                                        <Style TargetType="ContentPresenter">
+                                            <Setter Property="Control.Foreground" Value="{StaticResource tasmaWhiteGray}" />
+                                            <Setter Property="Control.FontFamily" Value="Segoe UI" />
+                                            <Setter Property="Control.FontSize" Value="13" />
+                                            <Setter Property="Control.FontWeight" Value="SemiBold" />
+                                            <Setter Property="Control.Margin" Value="40,0,0,0" />
+                                        </Style>
+                                    </ContentPresenter.Style>
+                                    <ContentPresenter.RenderTransform>
+                                        <TranslateTransform X="1.0" Y="1.0" />
+                                    </ContentPresenter.RenderTransform>
+
+                                </ContentPresenter>
+                                <Image Width="15" Height="15" HorizontalAlignment="Left"
+                                       Source="{TemplateBinding Tag}"
+                                       Margin="10,2,0,0"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefault" Value="False">
+                                <Setter TargetName="border" Property="Background" Value="#454545"/>
+                                <Setter TargetName="content" Property="Control.Foreground" Value="#E1E1E1" />
+                            </Trigger>
+                            <Trigger Property="IsDefault" Value="True">
+                                <Setter TargetName="borderSelected" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="pageButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border"
+                            Background="{StaticResource tasmaDeepGreen}"
+                            Width="100" Height="43">
+                            <Grid>
+                                <ContentPresenter HorizontalAlignment="Left"
+                                        VerticalAlignment="Center" Name="content">
+                                    <ContentPresenter.Style>
+                                        <Style TargetType="ContentPresenter">
+                                            <Setter Property="Control.Foreground" Value="{StaticResource tasmaWhite}" />
+                                            <Setter Property="Control.FontFamily" Value="Segoe UI" />
+                                            <Setter Property="Control.FontSize" Value="10" />
+                                            <Setter Property="Control.FontWeight" Value="DemiBold" />
+                                            <Setter Property="Control.Margin" Value="5,0,0,0" />
+                                        </Style>
+                                    </ContentPresenter.Style>
+                                    <ContentPresenter.RenderTransform>
+                                        <TranslateTransform X="1.0" Y="1.0" />
+                                    </ContentPresenter.RenderTransform>
+
+                                </ContentPresenter>
+                                <Image Width="15" Height="15" HorizontalAlignment="Left"
+                                       Source="{TemplateBinding Tag}"
+                                       Margin="10,2,0,0"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#547462"/>
+                            </Trigger>
+                       </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="imageButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border"
+                            Background="{StaticResource tasmaNormalGray}"
+                            Width="20" Height="20" Padding="3">
+                            <Grid>
+                                <Image Width="15" Height="15" HorizontalAlignment="Left"
+                                       Source="{TemplateBinding Tag}"
+                                       />
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#ADADAD"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Application.Resources>
 </Application>
