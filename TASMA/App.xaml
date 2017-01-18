@@ -14,7 +14,7 @@
         <SolidColorBrush x:Key="tasmaGreen" Color="MediumSeaGreen"/>
         <SolidColorBrush x:Key="tasmaBlack" Color="#333333"/>
         <SolidColorBrush x:Key="tasmaWhite" Color="WhiteSmoke"/>
-        <SolidColorBrush x:Key="tasmaDeepGreen" Color="#025D2A"/>
+        <SolidColorBrush x:Key="tasmaDeepGreen" Color="#547462"/>
         <FontFamily x:Key="tasmaFont" >Segoe UI</FontFamily>
         <Style x:Key="tasmaComboBoxLabelStyle" TargetType="{x:Type TextBlock}">
             <Setter Property="FontFamily" Value="{StaticResource tasmaFont}" />

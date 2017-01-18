@@ -50,13 +50,19 @@ namespace TASMA
         }
 
         /// <summary>
-        /// Navigation의 GoBack 이벤트를 Disable 합니다.
+        /// Navigation의 이벤트 처리 루틴입니다.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-           
+            this.NavigationService.Navigating += (s, ea) =>
+            {
+                if (!DataRectangleManager.IsModified)
+                {
+                    DataRectangleManager.IsModified = true;
+                }
+            };
         }
 
         /// <summary>
