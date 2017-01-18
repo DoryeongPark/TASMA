@@ -100,7 +100,7 @@
                     <ControlTemplate TargetType="Button">
                         <Border Name="border"
                             Background="{StaticResource tasmaDeepGreen}"
-                            Width="100" Height="43">
+                            Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
                             <Grid>
                                 <ContentPresenter HorizontalAlignment="Left"
                                         VerticalAlignment="Center" Name="content">
@@ -110,7 +110,7 @@
                                             <Setter Property="Control.FontFamily" Value="Segoe UI" />
                                             <Setter Property="Control.FontSize" Value="10" />
                                             <Setter Property="Control.FontWeight" Value="DemiBold" />
-                                            <Setter Property="Control.Margin" Value="5,0,0,0" />
+                                            <Setter Property="Control.Margin" Value="20,0,2,0" />
                                         </Style>
                                     </ContentPresenter.Style>
                                     <ContentPresenter.RenderTransform>
@@ -118,14 +118,14 @@
                                     </ContentPresenter.RenderTransform>
 
                                 </ContentPresenter>
-                                <Image Width="15" Height="15" HorizontalAlignment="Left"
+                                <Image Width="10" Height="10" HorizontalAlignment="Left"
                                        Source="{TemplateBinding Tag}"
-                                       Margin="10,2,0,0"/>
+                                       Margin="5,0,0,0"/>
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#547462"/>
+                                <Setter TargetName="border" Property="Background" Value="#47C35F"/>
                             </Trigger>
                        </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -139,9 +139,9 @@
                     <ControlTemplate TargetType="Button">
                         <Border Name="border"
                             Background="{StaticResource tasmaNormalGray}"
-                            Width="20" Height="20" Padding="3">
+                            Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Padding="5">
                             <Grid>
-                                <Image Width="15" Height="15" HorizontalAlignment="Left"
+                                <Image Width="10" Height="10" HorizontalAlignment="Left"
                                        Source="{TemplateBinding Tag}"
                                        />
                             </Grid>

@@ -68,7 +68,13 @@
                     <Button Name="SearchPage_Print"
                             Width="50"
                             Height="20" 
-                            Margin="5,0,0,0"/>
+                            Margin="5,0,0,0"
+                            Style="{StaticResource pageButtonStyle}"
+                            Content="Print">
+                        <Button.Tag>
+                            <ImageSource>/Resources/Tasma_SearchMenuButton.png</ImageSource>
+                        </Button.Tag>
+                    </Button>
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="1">
