@@ -173,7 +173,7 @@ namespace TASMA
                 dataTable.Rows.Add(
                     new object[] { adminDAO.CurrentGrade, adminDAO.CurrentClass, GetAvailableStudentNumber(), "New Student", "M", null, null });
                 StudentDataTable.ItemsSource = dataTable.AsDataView();
-                StudentDataTable.CurrentCell = new DataGridCellInfo(StudentDataTable.Items[StudentDataTable.Items.Count - 1], StudentDataTable.Columns[3]);
+                StudentDataTable.CurrentCell = new DataGridCellInfo(StudentDataTable.Items[StudentDataTable.Items.Count - 1], StudentDataTable.Columns[1]);
                 StudentDataTable.BeginEdit();
                 ReflectDataTable();
             }

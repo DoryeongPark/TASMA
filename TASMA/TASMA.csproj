@@ -89,9 +89,6 @@
     </Compile>
     <Compile Include="EvaluationListBoxItem.cs" />
     <Compile Include="Grade.cs" />
-    <Compile Include="MarkingPage.xaml.cs">
-      <DependentUpon>MarkingPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="MarkingViewPage.xaml.cs">
       <DependentUpon>MarkingViewPage.xaml</DependentUpon>
     </Compile>
@@ -159,10 +156,6 @@
       <DependentUpon>LoginWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="MarkingPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MarkingViewPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
