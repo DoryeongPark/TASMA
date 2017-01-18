@@ -50,8 +50,10 @@
                     <TextBox Name="SearchPage_SNameTextBox"
                              Width="120" 
                              MaxLength="25"
-                             Text="{Binding StudentName}"
-                             Margin="5,0,0,0"/>
+                             Text="{Binding StudentName, Mode=TwoWay}"
+                             Margin="5,0,0,0" Height="20" VerticalAlignment="Bottom"
+                             TextChanged="OnTextChanged"
+                             />
                     <Button Name="SearchPage_SearchButton" 
                             Width="20"
                             Height="20"/>

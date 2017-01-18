@@ -129,6 +129,9 @@ namespace TASMA
 
         private void OnAddButtonClicked(object sender, RoutedEventArgs e)
         {
+            if (!DataRectangleManager.IsModified)
+                return;
+
             var promptWindow = new TasmaPromptMessageBox("Create class", "Please input class name");
             promptWindow.ShowDialog();
 

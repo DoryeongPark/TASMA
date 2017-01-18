@@ -44,7 +44,6 @@ namespace TASMA
                 btn.Click += OnClickMenuButton;
             }
 
-            TasmaFrame.Frame = TasmaWindow_Frame;
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)

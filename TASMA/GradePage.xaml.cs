@@ -163,7 +163,7 @@ namespace TASMA
 
             var gradeSelected = (sender as DataRectangle).Data;
             adminDAO.SelectGrade(gradeSelected);
-            TasmaFrame.Frame.Navigate(new ClassPage(adminDAO));         
+            NavigationService.Navigate(new ClassPage(adminDAO));         
         }        
     }
 }

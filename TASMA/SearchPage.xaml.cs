@@ -137,6 +137,27 @@ namespace TASMA
             };
         }
 
+        private void OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            string gradeName = null;
+            string className = null;
+            
+            var textBox = sender as TextBox;
+            StudentName = textBox.Text;
+
+            if(selectedGradeComboBoxItem != "----")
+            {
+                gradeName = selectedGradeComboBoxItem;
+            }
+
+            if(selectedClassComboBoxItem != "----")
+            {
+                className = selectedClassComboBoxItem;
+            }
+
+            SearchTable = adminDAO.SearchStudent(gradeName, className, StudentName);
+        }
+
         private void OnInfoButtonClicked(object sender, RoutedEventArgs e)
         {
 
