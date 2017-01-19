@@ -72,7 +72,7 @@
                             Style="{StaticResource pageButtonStyle}"
                             Content="Print">
                         <Button.Tag>
-                            <ImageSource>/Resources/Tasma_SearchMenuButton.png</ImageSource>
+                            <ImageSource>/Resources/Tasma_PrintButton.png</ImageSource>
                         </Button.Tag>
                     </Button>
                 </StackPanel>

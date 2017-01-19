@@ -180,8 +180,8 @@ namespace TASMA
             var gradeName = SearchTable.Rows[row]["GRADE"] as string;
             var className = SearchTable.Rows[row]["CLASS"] as string;
 
-
-
+            TasmaMenuButtons.UpdateButtonsState(TasmaMenuButtons.Buttons[2]);
+            NavigationService.Navigate(new MarkingViewPage(adminDAO, gradeName, className));
         }
 
         protected void OnPropertyChanged(string propertyName)

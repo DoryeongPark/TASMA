@@ -111,7 +111,7 @@
                                             <Setter Property="Control.FontFamily" Value="Segoe UI" />
                                             <Setter Property="Control.FontSize" Value="10" />
                                             <Setter Property="Control.FontWeight" Value="DemiBold" />
-                                            <Setter Property="Control.Margin" Value="20,0,2,0" />
+                                            <Setter Property="Control.Margin" Value="20,0,5,0" />
                                         </Style>
                                     </ContentPresenter.Style>
                                     <ContentPresenter.RenderTransform>

@@ -99,8 +99,9 @@ namespace TASMA
         /// <param name="gradeName"></param>
         /// <param name="className"></param>
         /// <param name="subjectName"></param>
-        public MarkingViewPage(AdminDAO adminDAO)
+        public MarkingViewPage(AdminDAO adminDAO, string currentGradeName = null, string currentClassName = null)
         {
+            
             this.adminDAO = adminDAO;
             adminDAO.ReturnToInitialLoginState();
 
@@ -130,6 +131,22 @@ namespace TASMA
             
             DataContext = this;
             InitializeComponent();
+
+            if(currentGradeName != null &&
+               currentClassName != null)
+            {
+                SelectedGradeComboBoxItem = currentGradeName;
+                OnGradeComboBoxSelectionChanged(null, null);
+                SelectedClassComboBoxItem = currentClassName;
+                OnClassComboBoxSelectionChanged(null, null);
+                adminDAO.ReturnToInitialLoginState();
+                var subjectList = adminDAO.GetClassSubjects(SelectedGradeComboBoxItem,
+                                                            SelectedClassComboBoxItem);
+                if (subjectList == null || subjectList.Count == 0)
+                    return;
+                SelectedSubjectComboBoxItem = subjectList[0];
+                OnSubjectComboBoxSelectionChanged(null, null);
+            }
         }
         
         /// <summary>
