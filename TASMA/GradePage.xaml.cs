@@ -37,7 +37,7 @@ namespace TASMA
             InitializeComponent();
            
             this.adminDAO = adminDAO;
-            adminDAO.ReturnToInitialLoginState();
+            adminDAO.ReturnToInitialState();
 
             columns = new List<StackPanel>();
             columns.Add(GradePage_Column0);

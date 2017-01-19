@@ -58,7 +58,7 @@ namespace TASMA
         /// </summary>
         private void Invalidate()
         {
-            adminDAO.ReturnToInitialLoginState();
+            adminDAO.ReturnToInitialState();
             adminDAO.SelectGrade(gradeName);
             classList = adminDAO.GetClassList();
 

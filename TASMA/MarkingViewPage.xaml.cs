@@ -103,7 +103,7 @@ namespace TASMA
         {
             
             this.adminDAO = adminDAO;
-            adminDAO.ReturnToInitialLoginState();
+            adminDAO.ReturnToInitialState();
 
             gradeComboBoxItems = new ObservableCollection<string>();
             var gradeList = adminDAO.GetGradeList();
@@ -139,7 +139,7 @@ namespace TASMA
                 OnGradeComboBoxSelectionChanged(null, null);
                 SelectedClassComboBoxItem = currentClassName;
                 OnClassComboBoxSelectionChanged(null, null);
-                adminDAO.ReturnToInitialLoginState();
+                adminDAO.ReturnToInitialState();
                 var subjectList = adminDAO.GetClassSubjects(SelectedGradeComboBoxItem,
                                                             SelectedClassComboBoxItem);
                 if (subjectList == null || subjectList.Count == 0)
@@ -239,7 +239,7 @@ namespace TASMA
                                 sNum, 
                                 columnName, 
                                 newValue);
-            adminDAO.ReturnToInitialLoginState();          
+            adminDAO.ReturnToInitialState();          
         }
 
 
@@ -283,7 +283,7 @@ namespace TASMA
         {
             ClassComboBoxItems.Clear();
             SubjectComboBoxItems.Clear();
-            adminDAO.ReturnToInitialLoginState();
+            adminDAO.ReturnToInitialState();
             adminDAO.SelectGrade(selectedGradeComboBoxItem);
             var classList = adminDAO.GetClassList();
             foreach(var className in classList)
@@ -293,7 +293,7 @@ namespace TASMA
             SelectedClassComboBoxItem = null;
             SelectedSubjectComboBoxItem = null;
 
-            adminDAO.ReturnToInitialLoginState();
+            adminDAO.ReturnToInitialState();
         }
 
         private void OnClassComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -319,7 +319,7 @@ namespace TASMA
                 SelectedSubjectComboBoxItem == null)
                 return;
 
-            adminDAO.ReturnToInitialLoginState();
+            adminDAO.ReturnToInitialState();
 
             var dataTable = new DataTable();
            
@@ -362,7 +362,7 @@ namespace TASMA
 
             ScoreTable = dataTable;
             ScoreTable.ColumnChanged += OnValueChanged;
-            adminDAO.ReturnToInitialLoginState();
+            adminDAO.ReturnToInitialState();
         }
 
         /// <summary>

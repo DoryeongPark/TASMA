@@ -62,7 +62,7 @@ namespace TASMA
         private void OnClickMenuButton(object sender, RoutedEventArgs e)
         {
             
-            adminDAO.ReturnToInitialLoginState();
+            adminDAO.ReturnToInitialState();
 
             var menuBtn = sender as Button;
             btnClicked = menuBtn;

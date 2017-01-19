@@ -74,7 +74,7 @@ namespace TASMA
         public SearchPage(AdminDAO adminDAO)
         {
             this.adminDAO = adminDAO;
-            adminDAO.ReturnToInitialLoginState();
+            adminDAO.ReturnToInitialState();
 
             /* Init GradeComboBox */ 
             var gradeList = adminDAO.GetGradeList();
@@ -105,7 +105,7 @@ namespace TASMA
         {
             SearchPage_GradeComboBox.SelectionChanged += (s, ea) =>
             {
-                adminDAO.ReturnToInitialLoginState();
+                adminDAO.ReturnToInitialState();
 
                 if (selectedGradeComboBoxItem == "----")
                 {
@@ -118,7 +118,7 @@ namespace TASMA
                 {
                     adminDAO.SelectGrade(selectedGradeComboBoxItem);
                     var classList = adminDAO.GetClassList();
-                    adminDAO.ReturnToInitialLoginState();
+                    adminDAO.ReturnToInitialState();
                     ClassComboBoxItems = new ObservableCollection<string>();
                     ClassComboBoxItems.Add("----");
                     foreach (var className in classList)
@@ -133,7 +133,7 @@ namespace TASMA
             {
                 if(selectedClassComboBoxItem != "----")
                 {
-                    adminDAO.ReturnToInitialLoginState();
+                    adminDAO.ReturnToInitialState();
                     SearchTable = adminDAO.SearchStudent(selectedGradeComboBoxItem, selectedClassComboBoxItem, studentName);
                 }
             };
