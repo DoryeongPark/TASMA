@@ -48,9 +48,12 @@ namespace TASMA
 
         private void Login(object sender, RoutedEventArgs e)
         {
-            if(adminDAO.Auth(LoginWindow_ID.Text, LoginWindow_Password.Password))
+            if(adminDAO.Authenticate(LoginWindow_ID.Text, LoginWindow_Password.Password))
             {
-               
+                var dld = new DatabaseListWindow(adminDAO, LoginWindow_ID.Text);
+                dld.ShowDialog();
+                
+
                // adminDAO.LoginAs(LoginWindow_ID.Text, LoginWindow_Password.Password);                
             }else
             {
@@ -84,7 +87,7 @@ namespace TASMA
             if (rd.IsDetermined)
             {
                 adminDAO.RegisterAccount(rd.UserName, rd.Password);
-                if(adminDAO.Auth(rd.UserName, rd.Password))
+                if(adminDAO.Authenticate(rd.UserName, rd.Password))
                 {
 
                 }

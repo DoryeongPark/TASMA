@@ -6,6 +6,8 @@
     <Application.Resources>
         <Image x:Key="tasmaCloseButton" Source="/Resources/Tasma_CloseButton.png" Width="15" Height="15"/>
         <Image x:Key="tasmaMinimizeButton" Source="/Resources/Tasma_MinimizeButton.png" Width="15" Height="15"/>
+        <Image x:Key="tasmaDBListCloseButton" Source="/Resources/Tasma_CloseButton.png" Width="15" Height="15"/>
+        <Image x:Key="tasmaDBListMinimizeButton" Source="/Resources/Tasma_MinimizeButton.png" Width="15" Height="15"/>
         <Image x:Key="tasmaStudentMenuButton" Source="/Resources/Tasma_StudentMenuButton.png" Width="20" Height="20"/>
         <Image x:Key="tasmaSubjectMenuButton" Source="/Resources/Tasma_SubjectMenuButton.png" Width="20" Height="20"/>
         <Image x:Key="tasmaSearchMenuButton" Source="/Resources/Tasma_SearchMenuButton.png" Width="20" Height="20"/>
@@ -13,6 +15,9 @@
         <Image x:Key="tasmaAddButton" Source="/Resources/Tasma_AddButton.png" Width="20" Height="20"/>
         <Image x:Key="tasmaDeleteButton" Source="/Resources/Tasma_DeleteButton.png" Width="20" Height="20"/>
         <Image x:Key="tasmaModifyButton" Source="/Resources/Tasma_ModifyButton.png" Width="20" Height="20"/>
+        <Image x:Key="tasmaDBListAddButton" Source="/Resources/Tasma_GreenAddButton.png" Width="20" Height="20"/>
+        <Image x:Key="tasmaDBListDeleteButton" Source="/Resources/Tasma_GreenDeleteButton.png" Width="20" Height="20"/>
+        <Image x:Key="tasmaDBListModifyButton" Source="/Resources/Tasma_GreenModifyButton.png" Width="20" Height="20"/>
         <Image x:Key="tasmaBackButton" Source="/Resources/Tasma_BackButton.png" Width="20" Height="20"/>
         <Image x:Key="tasmaSortButton" Source="/Resources/Tasma_SortButton.png" Width="20" Height="20"/>
         <Image x:Key="tasmaPrintButton" Source="/Resources/Tasma_PrintButton.png" Width="20" Height="20"/>
@@ -26,6 +31,7 @@
         <SolidColorBrush x:Key="tasmaWhite" Color="WhiteSmoke"/>
         <SolidColorBrush x:Key="tasmaDeepGreen" Color="#547462"/>
         <FontFamily x:Key="tasmaFont" >Segoe UI</FontFamily>
+        
         <Style x:Key="tasmaComboBoxLabelStyle" TargetType="{x:Type TextBlock}">
             <Setter Property="FontFamily" Value="{StaticResource tasmaFont}" />
             <Setter Property="FontSize" Value="9" />
@@ -34,6 +40,21 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
 
+        <Style x:Key="tasmaLabelStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontFamily" Value="{StaticResource tasmaFont}" />
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="Foreground" Value="{StaticResource tasmaDemiGray}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="tasmaTextBoxStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="FontFamily" Value="{StaticResource tasmaFont}" />
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="Foreground" Value="{StaticResource tasmaDemiGray}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+        </Style>
+        
         <Style x:Key="tasmaComboBoxStyle" TargetType="{x:Type ComboBox}">
             <Setter Property="FontFamily" Value="{StaticResource tasmaFont}" />
             <Setter Property="FontSize" Value="9" />
@@ -156,5 +177,40 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style x:Key="textButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border"
+                            Background="{StaticResource tasmaDeepGreen}"
+                            Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+                            <Grid>
+                                <ContentPresenter HorizontalAlignment="Center"
+                                        VerticalAlignment="Center" Name="content">
+                                    <ContentPresenter.Style>
+                                        <Style TargetType="ContentPresenter">
+                                            <Setter Property="Control.Foreground" Value="{StaticResource tasmaWhite}" />
+                                            <Setter Property="Control.FontFamily" Value="Segoe UI" />
+                                            <Setter Property="Control.FontWeight" Value="DemiBold" />
+                                        </Style>
+                                    </ContentPresenter.Style>
+                                    <ContentPresenter.RenderTransform>
+                                        <TranslateTransform X="1.0" Y="1.0" />
+                                    </ContentPresenter.RenderTransform>
+
+                                </ContentPresenter>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#47C35F"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </Application.Resources>
 </Application>

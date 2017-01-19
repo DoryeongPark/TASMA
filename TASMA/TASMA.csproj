@@ -87,6 +87,12 @@
     <Compile Include="ClassPage.xaml.cs">
       <DependentUpon>ClassPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CreateDatabaseWindow.xaml.cs">
+      <DependentUpon>CreateDatabaseWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseListWindow.xaml.cs">
+      <DependentUpon>DatabaseListWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EvaluationListBoxItem.cs" />
     <Compile Include="Grade.cs" />
     <Compile Include="MarkingViewPage.xaml.cs">
@@ -132,6 +138,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ClassPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CreateDatabaseWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DatabaseListWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -242,6 +256,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Tasma_PrintButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Tasma_GreenDeleteButton.png" />
+    <Resource Include="Resources\Tasma_GreenModifyButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Tasma_GreenAddButton.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.104.0\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.104.0\build\net451\System.Data.SQLite.Core.targets')" />

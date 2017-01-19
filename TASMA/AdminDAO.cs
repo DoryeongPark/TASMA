@@ -26,11 +26,11 @@ namespace TASMA
             }
 
             //선생님 계정 로그인 상태
-            private bool loginState = false;
+            private bool dbLoginState = false;
 
             public bool LoginState
             {
-                get { return loginState; }
+                get { return dbLoginState; }
             }
 
             //현재 선택된 학년, 반, 학생 번호
@@ -71,7 +71,7 @@ namespace TASMA
             /// <returns>로그인 여부</returns>
             private bool CheckLoginState()
             {
-                if (loginState == false)
+                if (dbLoginState == false)
                 {
                     MessageBox.Show("You should login first");
                     return false;
@@ -86,7 +86,7 @@ namespace TASMA
             /// <returns>선택 여부</returns>
             private bool CheckGradeState()
             {
-                if (loginState == false)
+                if (dbLoginState == false)
                 {
                     MessageBox.Show("You should login first");
                     return false;
@@ -107,7 +107,7 @@ namespace TASMA
             /// <returns>선택 여부</returns>
             private bool CheckClassState()
             {
-                if (loginState == false)
+                if (dbLoginState == false)
                 {
                     MessageBox.Show("You should login first");
                     return false;
@@ -186,7 +186,13 @@ namespace TASMA
                 return true;
             }
 
-            public bool Auth(string id, string password)
+            /// <summary>
+            /// 입력한 계정과 비밀번호를 인증합니다.
+            /// </summary>
+            /// <param name="id">계정</param>
+            /// <param name="password">비밀번호</param>
+            /// <returns></returns>
+            public bool Authenticate(string id, string password)
             {
                 if (!Directory.Exists(id))
                 {
@@ -214,54 +220,56 @@ namespace TASMA
                 cmd.Dispose();
                 conn.Close();
 
+                currentPassword = password;
                 return true;
             }
 
             /// <summary>
-            /// 선생님의 새로운 계정을 등록합니다.
+            /// 새로운 데이터베이스를 등록합니다.
             /// </summary>
-            /// <param name="id">등록할 ID</param>
+            /// <param name="path">DB생성 경로</param>
             /// <param name="password">비밀번호</param>
             /// <returns>실행 성공 여부</returns>
-            public bool RegisterAdmin(string id, string password)
+            public bool CreateDatabase(string path, string[] metaData)
             {
-                if (loginState == true)
+                if (dbLoginState == true)
                 {
                     MessageBox.Show("You should logout first");
                     return false;
                 }
 
-                if (new FileInfo(id + ".db").Exists)
-                {
-                    MessageBox.Show("ID already exists");
-                    return false;
-                }
-
-                var connStr = @"Data Source=" + id + ".db";
+                var connStr = @"Data Source=" + path + ".db";
 
                 SQLiteConnection conn = new SQLiteConnection(connStr);
                 conn.Open();
-                conn.ChangePassword(password);
+                conn.ChangePassword(currentPassword);
                 conn.Close();
 
-                connStr = @"Data Source=" + id + ".db;Password=" + password + ";Foreign Keys=True;";
+                connStr = @"Data Source=" + path + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 conn = new SQLiteConnection(connStr);
                 conn.Open();
 
                 var cmd = new SQLiteCommand(conn);
 
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS DBINFO("
+                                + "SCHOOLNAME STRING, "
+                                + "YEAR STRING, "
+                                + "REGION STRING, "
+                                + "ADDRESS STRING "
+                                + ");";
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = "INSERT INTO DBINFO VALUES('" + metaData[0] + "', '" + metaData[1] + "', '" + metaData[2] + "', '" + metaData[3] + "');";
+
+                cmd.ExecuteNonQuery();
+
                 cmd.CommandText = "CREATE TABLE IF NOT EXISTS GRADE("
                                 + "GRADE STRING NOT NULL, "
                                 + "PRIMARY KEY(GRADE)"
                                 + ");";
-                try
-                {
-                    cmd.ExecuteNonQuery();
-                } catch (SQLiteException se)
-                {
-                    se.ErrorCode.ToString();
-                }
-
+                
+                cmd.ExecuteNonQuery();
+                
                 cmd.CommandText = "CREATE TABLE IF NOT EXISTS CLASS("
                                 + "GRADE STRING NOT NULL, "
                                 + "CLASS STRING NOT NULL, "
@@ -316,56 +324,13 @@ namespace TASMA
                                 + "ON UPDATE CASCADE "
                                 + ");";
                 cmd.ExecuteNonQuery();
-                
-                cmd.CommandText = "CREATE TABLE IF NOT EXISTS CHECKPASSWORD("
-                                + "CHECKPASSWORD STRING NOT NULL, "
-                                + "PRIMARY KEY(CHECKPASSWORD) "
-                                + ");";
-                cmd.ExecuteNonQuery();
                                
                 conn.Close();
-                MessageBox.Show("ID is successfully created");
+                MessageBox.Show("Database is successfully created");
                 return true;
             }
 
-            /// <summary>
-            /// 계정의 비밀번호의 매칭 여부를 검사합니다.
-            /// </summary>
-            /// <param name="id">선생님 계정</param>
-            /// <param name="password">비밀번호</param>
-            /// <returns>매칭 여부</returns>
-            public bool Authenticate(string id, string password)
-            {
-                if (!new FileInfo(id + ".db").Exists)
-                {
-                    MessageBox.Show("ID doesn't exist");
-                    return false;
-                }
-
-                var connStr = @"Data Source=" + id + ".db;Password=" + password + ";Foreign Keys=True;";
-                var conn = new SQLiteConnection(connStr);
-                conn.Open();
-
-                var cmd = new SQLiteCommand(conn);
-                cmd.CommandText = "UPDATE CHECKPASSWORD SET CHECKPASSWORD = '1' WHERE CHECKPASSWORD = '0'";
-                try
-                {
-                    cmd.ExecuteNonQuery();
-                }
-                catch (SQLiteException se)
-                {
-                    //비밀번호 틀렸을 시의 SQLite 에러코드 알아볼 것
-                    conn.Close();
-                    MessageBox.Show("Error code - " + se.ErrorCode.ToString());
-                    return false;
-                }
-
-                cmd.Dispose();
-                conn.Close();
-                return true;
-
-            }
-
+            
             /// <summary>
             /// 계정의 비밀번호를 바꿉니다.
             /// </summary>
@@ -375,7 +340,7 @@ namespace TASMA
             /// <returns>실행 성공 여부</returns>
             public bool ChangePassword(string id, string oldPassword, string newPassword)
             {
-                if(loginState == true)
+                if(dbLoginState == true)
                 {
                     MessageBox.Show("You should logout first");
                     return false;
@@ -413,14 +378,14 @@ namespace TASMA
             }
 
             /// <summary>
-            /// 선생님 계정을 지웁니다.
+            /// 데이터베이스를 지웁니다.
             /// </summary>
             /// <param name="id">선생님 계정</param>
             /// <param name="password">계정 비밀번호</param>
             /// <returns>실행 성공 여부</returns>
-            public bool DeleteAdmin(string id, string password)
+            public bool DeleteDatabase(string id, string password)
             {
-                if (loginState == true)
+                if (dbLoginState == true)
                 {
                     MessageBox.Show("You should logout first");
                     return false;
@@ -462,19 +427,14 @@ namespace TASMA
             }
 
             /// <summary>
-            /// 선생님 ID로 로그인 합니다.
+            /// 데이터베이스로 로그인 합니다.
             /// </summary>
-            /// <param name="id">등록된 ID</param>
+            /// <param name="dbPath">등록된 ID</param>
             /// <param name="password">비밀번호</param>
-            public void LoginAs(string id, string password)
+            public void LoginDatabase(string dbPath)
             {
-                if (!new FileInfo(id + ".db").Exists)
-                {
-                    MessageBox.Show("ID is not registered");
-                    return;
-                }
 
-                var connStr = @"Data Source=" + id + ".db;Password=" + password + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + dbPath + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
 
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
@@ -487,7 +447,6 @@ namespace TASMA
                 }
                 catch (SQLiteException se)
                 {
-                    //비밀번호 틀렸을 시의 SQLite 에러코드 알아볼 것
                     conn.Close();
                     MessageBox.Show(se.ErrorCode.ToString());
                     return;
@@ -496,9 +455,8 @@ namespace TASMA
                 cmd.Dispose();
                 conn.Close();
 
-                currentId = id;
-                currentPassword = password;
-                loginState = true;
+                currentId = dbPath;
+                dbLoginState = true;
             }
 
             /// <summary>
@@ -506,11 +464,11 @@ namespace TASMA
             /// </summary>
             public void Logout()
             {
-                if (loginState == true)
+                if (dbLoginState == true)
                 {
                     currentId = null;
                     currentPassword = null;
-                    loginState = false;
+                    dbLoginState = false;
                 }
             }
 

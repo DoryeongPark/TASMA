@@ -5,13 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TASMA"
         mc:Ignorable="d"
-        Height="240" Width="300" WindowStyle="None" Background="{StaticResource tasmaWhite}"
-        BorderThickness="1" BorderBrush="{StaticResource tasmaDimGray}">
+        Height="240" Width="300" WindowStyle="None" AllowsTransparency="True" Background="{StaticResource tasmaWhite}"
+        BorderThickness="1" BorderBrush="{StaticResource tasmaDimGray}"
+        MouseLeftButtonDown="OnMouseLeftButtonDown">
     <Window.Resources>
         <Style x:Key="listBoxItemStyle" TargetType="{x:Type ListBoxItem}">
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="{StaticResource tasmaGreen}"/>
+                    <Setter Property="Foreground" Value="{StaticResource tasmaWhite}"/>
                 </Trigger>
                 <MultiTrigger>
                     <MultiTrigger.Conditions>
@@ -30,8 +32,9 @@
             <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
             <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
             <Setter Property="Padding" Value="2,0,0,0"/>
-            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontSize" Value="12" />
             <Setter Property="FontFamily" Value="{StaticResource tasmaFont}"/>
+            <Setter Property="Foreground" Value="{StaticResource tasmaDeepGreen}"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
@@ -56,20 +59,39 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Background="{StaticResource tasmaNormalGray}">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="2">
-                <Button Width="20" Height="20" Content="{StaticResource tasmaMinimizeButton}"/>
-                <Button Width="20" Height="20" Content="{StaticResource tasmaCloseButton}"/>
+                <Button Width="20" Height="20" Content="{StaticResource tasmaDBListMinimizeButton}"
+                        Background="Transparent" BorderThickness="0"
+                        Click="OnMinimizeButtonClicked"/>
+                <Button Width="20" Height="20" Content="{StaticResource tasmaDBListCloseButton}"
+                        Background="Transparent" BorderThickness="0"
+                        Click="OnExitButtonClicked"/>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" 
                         VerticalAlignment="Center" Margin="8,0,8,0">
-                <Button Width="70" Height="25" />
+                <Button Width="60" Height="25" 
+                        Style="{StaticResource textButtonStyle}" 
+                        Content="OK"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"/>
+
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
                         VerticalAlignment="Center" Margin="8,0,8,0">
-                <Button Width="25" Height="25" />
-                <Button Width="25" Height="25" />
-                <Button Width="25" Height="25" />
+                <Button Width="25" Height="25" 
+                        BorderThickness="0"
+                        Background="Transparent"
+                        Content="{StaticResource tasmaDBListAddButton}"
+                        Click="OnAddButtonClicked"/>
+                <Button Width="25" Height="25"
+                        Background="Transparent" BorderThickness="0"
+                        Content="{StaticResource tasmaDBListModifyButton}"
+                        Click="OnModifyButtonClicked"/>
+                <Button Width="25" Height="25" 
+                        Background="Transparent" BorderThickness="0"
+                        Content="{StaticResource tasmaDBListDeleteButton}"
+                        Click="OnDeleteButtonClicked"/>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="2">

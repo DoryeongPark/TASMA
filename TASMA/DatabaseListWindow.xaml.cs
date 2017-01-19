@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,17 +14,126 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using TASMA.Database;
 
 namespace TASMA
 {
     /// <summary>
-    /// DatabaseListWindow.xaml에 대한 상호 작용 논리
+    /// 선생님 계정의 데이터베이스 리스트를 불러옵니다.
     /// </summary>
-    public partial class DatabaseListWindow : Window
+    public partial class DatabaseListWindow : Window, INotifyPropertyChanged
     {
-        public DatabaseListWindow()
+
+        private AdminDAO adminDAO;
+        private string accountName;
+
+        private string determinedDBPath = null;
+        public string DeterminedDBPath
         {
+            get { return determinedDBPath; }
+            set { determinedDBPath = value; }
+        }
+        
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private ObservableCollection<string> dbListBoxItems;
+        public ObservableCollection<string> DBListBoxItems
+        {
+            get { return dbListBoxItems; }
+            set { dbListBoxItems = value; OnPropertyChanged("DBListBoxItems"); }
+        }
+
+        private string selectedListBoxItem;
+        public string SelectedListBoxItem
+        {
+            get { return selectedListBoxItem; }
+            set { selectedListBoxItem = value; OnPropertyChanged("SelectedListBoxItem"); }
+        }
+
+        public DatabaseListWindow(AdminDAO adminDAO, string accountName)
+        {
+            this.adminDAO = adminDAO;
+            this.accountName = accountName;
+
+            var dir = new DirectoryInfo(accountName);
+            var dbList = dir.GetFiles();
+
+            dbListBoxItems = new ObservableCollection<string>();
+            foreach(var dbFile in dbList)
+            {
+                var dbName = dbFile.Name;
+
+                if (dbName == "Authentication.db")
+                    continue;
+
+                dbName = dbName.Remove(dbName.Length - 3);
+
+                dbListBoxItems.Add(dbName);
+            }
+
+            DataContext = this;
             InitializeComponent();
         }
+
+        private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
+
+        private void OnAddButtonClicked(object sender, RoutedEventArgs e)
+        {
+            var cdd = new CreateDatabaseWindow();
+            cdd.ShowDialog();
+
+            if (cdd.IsDetermined)
+            {
+                
+                if(dbListBoxItems.Any(item => item == cdd.DBName) ||
+                    cdd.DBName == "Authentication")
+                {
+                    MessageBox.Show("Database already exists");
+                    return;
+                }
+
+                var path = accountName + "/" + cdd.DBName;
+                var metaData = new string[4] { cdd.SchoolName,
+                                               cdd.Year,
+                                               cdd.Region,
+                                               cdd.Address };
+                
+                if(adminDAO.CreateDatabase(path, metaData))
+                {
+                    DBListBoxItems.Add(cdd.DBName);
+                }
+                
+            }
+        }
+
+        private void OnModifyButtonClicked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void OnDeleteButtonClicked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void OnMinimizeButtonClicked(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void OnExitButtonClicked(object sender, RoutedEventArgs e)
+        {
+            determinedDBPath = null;
+            Close();
+        }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
     }
 }
