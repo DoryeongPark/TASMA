@@ -15,6 +15,7 @@
         <Image x:Key="tasmaModifyButton" Source="/Resources/Tasma_ModifyButton.png" Width="20" Height="20"/>
         <Image x:Key="tasmaBackButton" Source="/Resources/Tasma_BackButton.png" Width="20" Height="20"/>
         <Image x:Key="tasmaSortButton" Source="/Resources/Tasma_SortButton.png" Width="20" Height="20"/>
+        <Image x:Key="tasmaPrintButton" Source="/Resources/Tasma_PrintButton.png" Width="20" Height="20"/>
         <SolidColorBrush x:Key="tasmaDimGray" Color="#454545"/>
         <SolidColorBrush x:Key="tasmaDemiGray" Color="#555555" />
         <SolidColorBrush x:Key="tasmaNormalGray" Color="#666666"/>
