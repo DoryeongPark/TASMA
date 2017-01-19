@@ -139,6 +139,84 @@ namespace TASMA
                 currentSnum = -1;
             }
 
+            public bool RegisterAccount(string id, string password)
+            {
+                try
+                {
+                    if (Directory.Exists(id))
+                    {
+                        MessageBox.Show("ID already exists");
+                        return false;
+                    }
+
+                    Directory.CreateDirectory(id);
+                }
+                catch(Exception e)
+                {
+                    return false;
+                }
+
+                var connStr = @"Data Source=" + id + "/Authentication.db";
+                SQLiteConnection conn = new SQLiteConnection(connStr);
+
+                conn.Open();
+                conn.ChangePassword(password);
+                conn.Close();
+
+                connStr = @"Data Source=" + id + "/Authentication.db;Password=" + password + ";Foreign Keys=True";
+                conn = new SQLiteConnection(connStr);
+
+                conn.Open();
+                var cmd = new SQLiteCommand(conn);
+
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS CHECKPASSWORD("
+                               + "CHECKPASSWORD STRING NOT NULL, "
+                               + "PRIMARY KEY(CHECKPASSWORD) "
+                               + ");";
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }catch(SQLiteException se){
+                    return false;
+                }
+
+                cmd.Dispose();
+                conn.Close();
+
+                return true;
+            }
+
+            public bool Auth(string id, string password)
+            {
+                if (!Directory.Exists(id))
+                {
+                    MessageBox.Show("ID doesn't exist");
+                    return false;
+                }
+
+                var connStr = @"Data Source=" + id + "/Authentication.db;Password=" + password + ";Foreign Keys=True";
+                var conn = new SQLiteConnection(connStr);
+
+                conn.Open();
+                var cmd = new SQLiteCommand(conn);
+                cmd.CommandText = "UPDATE CHECKPASSWORD SET CHECKPASSWORD = '1' WHERE CHECKPASSWORD = '0'";
+
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException se)
+                {
+                    MessageBox.Show("Password doesn't match");
+                    return false;
+                }
+
+                cmd.Dispose();
+                conn.Close();
+
+                return true;
+            }
+
             /// <summary>
             /// 선생님의 새로운 계정을 등록합니다.
             /// </summary>
@@ -258,7 +336,6 @@ namespace TASMA
             /// <returns>매칭 여부</returns>
             public bool Authenticate(string id, string password)
             {
-
                 if (!new FileInfo(id + ".db").Exists)
                 {
                     MessageBox.Show("ID doesn't exist");
@@ -283,6 +360,7 @@ namespace TASMA
                     return false;
                 }
 
+                cmd.Dispose();
                 conn.Close();
                 return true;
 

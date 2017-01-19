@@ -48,18 +48,21 @@ namespace TASMA
 
         private void Login(object sender, RoutedEventArgs e)
         {
-            if(adminDAO.Authenticate(LoginWindow_ID.Text, LoginWindow_Password.Password))
+            if(adminDAO.Auth(LoginWindow_ID.Text, LoginWindow_Password.Password))
             {
-                adminDAO.LoginAs(LoginWindow_ID.Text, LoginWindow_Password.Password);                
+               
+               // adminDAO.LoginAs(LoginWindow_ID.Text, LoginWindow_Password.Password);                
             }else
             {
-                return;
+                
             }
 
-            Visibility = Visibility.Hidden;
-            var tw = new TasmaWindow(adminDAO);
-            tw.Owner = this;
-            tw.ShowDialog();
+            //Visibility = Visibility.Hidden;
+
+            ////데이터베이스 다이얼로그 띄우기
+            //var tw = new TasmaWindow(adminDAO);
+            //tw.Owner = this;
+            //tw.ShowDialog();
         }
 
         private void ChangePassword(object sender, RoutedEventArgs e)
@@ -80,7 +83,11 @@ namespace TASMA
 
             if (rd.IsDetermined)
             {
-                adminDAO.RegisterAdmin(rd.UserName, rd.Password);
+                adminDAO.RegisterAccount(rd.UserName, rd.Password);
+                if(adminDAO.Auth(rd.UserName, rd.Password))
+                {
+
+                }
             }
         }
 
