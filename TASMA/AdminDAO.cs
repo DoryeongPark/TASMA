@@ -574,6 +574,8 @@ namespace TASMA
                     result.Add(reader["GRADE"].ToString());
                 }
 
+                result.Sort();
+
                 cmd.Dispose();
                 conn.Close();
 
@@ -720,6 +722,8 @@ namespace TASMA
                 {
                     result.Add(reader["CLASS"].ToString());
                 }
+
+                result.Sort();
 
                 cmd.Dispose();
                 conn.Close();
@@ -1411,6 +1415,8 @@ namespace TASMA
                 {
                     result.Add(reader["SUBJECT"].ToString());
                 }
+
+                result.Sort();
 
                 conn.Close();
                 cmd.Dispose();
