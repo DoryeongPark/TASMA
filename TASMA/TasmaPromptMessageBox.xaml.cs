@@ -86,5 +86,13 @@ namespace TASMA
         {
             DragMove();
         }
+
+        private void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                OnOKButtonClicked(null, null);
+            }
+        }
     }
 }

@@ -5,12 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TASMA"
         mc:Ignorable="d"
-        Height="100" Width="200" AllowsTransparency="True" WindowStyle="None" Background="Honeydew" BorderBrush="DimGray" BorderThickness="1" Loaded="OnLoaded" MouseLeftButtonDown="OnLeftMouseButtonDown">
+        Height="100" Width="200" AllowsTransparency="True" 
+        WindowStyle="None" Background="{StaticResource tasmaDimGray}" 
+        BorderBrush="DimGray" BorderThickness="1" Loaded="OnLoaded" 
+        MouseLeftButtonDown="OnLeftMouseButtonDown"
+        FocusManager.FocusedElement="{Binding ElementName=TasmaPromptWindow_TextBox}">
     <Window.Resources>
         <Image x:Key="tasmaCloseButton" Source="/Resources/Tasma_CloseButton.png" Width="15" Height="15"/>
         <Style x:Key="promptButtonStyle">
-            <Setter Property="Button.Background" Value="Indigo" />
-            <Setter Property="Button.Foreground" Value="White" />
+            <Setter Property="Button.Background" Value="{StaticResource tasmaGreen}" />
+            <Setter Property="Button.Foreground" Value="{StaticResource tasmaWhite}" />
             <Setter Property="Button.Width" Value="50"/>
             <Setter Property="Button.Height" Value="18" />
             <Setter Property="Button.HorizontalContentAlignment" Value="Center"/>
@@ -27,13 +31,22 @@
             <RowDefinition Height="3*" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <Button Name="TasmaPromptWindow_CloseButton" Content="{StaticResource tasmaCloseButton}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,3,0" />
-            <TextBlock Name="TasmaPromptWindow_Title" Text="Input" FontSize="11" FontFamily="Segoe UI" FontWeight="Bold" Foreground="Indigo" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="4,0,0,0" />
+            <Button Name="TasmaPromptWindow_CloseButton" Content="{StaticResource tasmaCloseButton}"
+                    VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,3,0" 
+                    BorderThickness="0" Background="Transparent"/>
+            <TextBlock Name="TasmaPromptWindow_Title" Text="Input" FontSize="11" FontFamily="{StaticResource tasmaFont}" 
+                       FontWeight="Bold" Foreground="{StaticResource tasmaGreen}" 
+                       HorizontalAlignment="Left" VerticalAlignment="Center" Margin="4,0,0,0"/>
         </Grid>
         <Grid Grid.Row="1">
             <StackPanel VerticalAlignment="Center">
-                <TextBlock Name="TasmaPromptWindow_Message" FontWeight="Bold" FontSize="9" Text="Please input data" Margin="8,0,0,5"/>
-                <TextBox Name="TasmaPromptWindow_TextBox" MaxLength="15" Width="180" Height="15" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="10" />
+                <TextBlock Name="TasmaPromptWindow_Message" FontWeight="Bold" FontSize="9" Text="Please input data" Margin="8,0,0,5"
+                           Foreground="{StaticResource tasmaLightGray}"/>
+                <TextBox Name="TasmaPromptWindow_TextBox" MaxLength="15" Width="180" Height="15" HorizontalAlignment="Center" 
+                         VerticalAlignment="Center" FontSize="10" FontFamily="{StaticResource tasmaFont}"
+                         Background="{StaticResource tasmaDemiGray}" 
+                         Foreground="{StaticResource tasmaLightGray}"
+                         KeyDown="OnKeyDown"/>
             </StackPanel>
          </Grid>
         <Grid Grid.Row="2">
