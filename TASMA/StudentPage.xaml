@@ -26,7 +26,7 @@
             <StackPanel Orientation="Horizontal" 
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right"
-                        Margin="0,0,15,0">
+                        Margin="0,0,10,0">
                 <Button Name="StudentPage_PreviousButton" Content="BACK" VerticalAlignment="Center" HorizontalAlignment="Left" 
                         Width="50" Height="20"
                         Margin="0,0,5,0" Style="{StaticResource pageButtonStyle}"
