@@ -72,9 +72,11 @@ namespace TASMA
 
             if(!adminDAO.Authenticate(username, password))
             {
-                MessageBox.Show("Username and password are not matching");
+                MessageBox.Show("Username and password doesn't match");
                 return;
             }
+
+            adminDAO.LogoutAccount();
 
             if(newPassword != confirmNewPassword)
             {

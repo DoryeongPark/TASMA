@@ -118,7 +118,7 @@ namespace TASMA
         /// <param name="e"></param>
         private void OnLogoutButtonClicked(object sender, EventArgs e)
         {
-            adminDAO.Logout();
+            adminDAO.LogoutAccount();
             Close();
         }
 

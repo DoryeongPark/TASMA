@@ -17,12 +17,12 @@ namespace TASMA
             private static AdminDAO instance = new AdminDAO();
 
             //현재 로그인된 선생님 계정과 비밀번호 
-            private string currentId = null;
+            private string currentDB = null;
             private string currentPassword = null;
 
             public string CurrentId
             {
-                get { return currentId; }
+                get { return currentDB; }
             }
 
             //선생님 계정 로그인 상태
@@ -139,6 +139,12 @@ namespace TASMA
                 currentSnum = -1;
             }
 
+            /// <summary>
+            /// 계정 폴더를 생성하고 비밀번호를 등록합니다.
+            /// </summary>
+            /// <param name="id"></param>
+            /// <param name="password"></param>
+            /// <returns></returns>
             public bool RegisterAccount(string id, string password)
             {
                 try
@@ -225,7 +231,7 @@ namespace TASMA
             }
 
             /// <summary>
-            /// 새로운 데이터베이스를 등록합니다.
+            /// 새로운 데이터베이스를 생성합니다.
             /// </summary>
             /// <param name="path">DB생성 경로</param>
             /// <param name="password">비밀번호</param>
@@ -330,7 +336,68 @@ namespace TASMA
                 return true;
             }
 
-            
+            /// <summary>
+            /// 데이터베이스의 정보를 가져옵니다.
+            /// </summary>
+            /// <param name="dbPath">데이터베이스 경로</param>
+            /// <returns></returns>
+            public string[] GetDBInfo(string dbPath)
+            {
+                var connStr = @"Data Source=" + dbPath + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+
+                var cmdStr = "SELECT * FROM DBINFO";
+                var cmd = new SQLiteCommand(cmdStr, conn);
+                var reader = cmd.ExecuteReader();
+                var result = new string[4];
+
+                while (reader.Read())
+                {
+                    result[0] = reader["SCHOOLNAME"].ToString();
+                    result[1] = reader["YEAR"].ToString();
+                    result[2] = reader["REGION"].ToString();
+                    result[3] = reader["ADDRESS"].ToString();
+                }
+
+                cmd.Dispose();
+                conn.Close();
+
+                return result;
+            }
+
+            /// <summary>
+            /// 데이터베이스의 정보를 수정합니다.
+            /// </summary>
+            /// <param name="dbPath"></param>
+            /// <param name="metaData">적용할 데이터베이스 정보</param>
+            /// <returns></returns>
+            public bool ModifyDBInfo(string dbPath, string[] metaData)
+            {
+                var connStr = @"Data Source=" + dbPath + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+
+                var cmd = new SQLiteCommand(conn);
+
+                try
+                {
+                    cmd.CommandText = "DELETE FROM DBINFO;";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "INSERT INTO DBINFO VALUES('" + metaData[0] + "', '" + metaData[1] + "', '" + metaData[2] + "', '" + metaData[3] + "');";
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException)
+                {
+                    return false;
+                }
+
+                cmd.Dispose();
+                conn.Close();
+
+                return true;
+            }
+
             /// <summary>
             /// 계정의 비밀번호를 바꿉니다.
             /// </summary>
@@ -346,34 +413,26 @@ namespace TASMA
                     return false;
                 }
 
-                if (!new FileInfo(id + ".db").Exists)
+                if (!new DirectoryInfo(id).Exists)
                 {
                     MessageBox.Show("ID doesn't exist");
                     return false;
                 }
 
-                var connStr = @"Data Source=" + id + ".db;Password=" + oldPassword + ";Foreign Keys=True;";
-                var conn = new SQLiteConnection(connStr);
-                conn.Open();
+                var dir = new DirectoryInfo(id);
+                var fileList = dir.GetFiles();
+                foreach(var fileInfo in fileList)
+                {
+                    var dbPath = id + "/" + fileInfo.Name;
 
-                var cmd = new SQLiteCommand(conn);
-                cmd.CommandText = "UPDATE CHECKPASSWORD SET CHECKPASSWORD = '1' WHERE CHECKPASSWORD = '0'";
-                try
-                {
-                    cmd.ExecuteNonQuery();
-                }
-                catch (SQLiteException se)
-                {
-                    //Wrong password - Error code(26)
+                    var connStr = @"Data Source=" + dbPath + ";Password = " + oldPassword + ";Foreign Keys=True;";
+                    var conn = new SQLiteConnection(connStr);
+                    conn.Open();
+                    conn.ChangePassword(newPassword);
                     conn.Close();
-                    MessageBox.Show("Error code - " + se.ErrorCode.ToString());
-                    return false;
+                    MessageBox.Show("Password is successfully changed");
                 }
 
-                conn.ChangePassword(newPassword);
-                conn.Close();
-
-                MessageBox.Show("Password is successfully changed");
                 return true;
             }
 
@@ -417,12 +476,11 @@ namespace TASMA
 
                 cmd.Dispose();
                 conn.Close();
-                
-                GC.Collect();
+               
 
                 File.Delete(id + ".db");
 
-                MessageBox.Show("ID is successfully removed");
+                MessageBox.Show("ID is successfully deleted");
                 return true;
             }
 
@@ -433,7 +491,6 @@ namespace TASMA
             /// <param name="password">비밀번호</param>
             public void LoginDatabase(string dbPath)
             {
-
                 var connStr = @"Data Source=" + dbPath + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
 
                 var conn = new SQLiteConnection(connStr);
@@ -455,18 +512,18 @@ namespace TASMA
                 cmd.Dispose();
                 conn.Close();
 
-                currentId = dbPath;
+                currentDB = dbPath;
                 dbLoginState = true;
             }
 
             /// <summary>
             /// 현재 계정에서 로그아웃 합니다.
             /// </summary>
-            public void Logout()
+            public void LogoutAccount()
             {
                 if (dbLoginState == true)
                 {
-                    currentId = null;
+                    currentDB = null;
                     currentPassword = null;
                     dbLoginState = false;
                 }
@@ -515,7 +572,7 @@ namespace TASMA
                 if (!CheckLoginState())
                     return false;
 
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
 
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
@@ -549,7 +606,7 @@ namespace TASMA
                 if (!CheckLoginState())
                     return null;
 
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
 
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
@@ -580,7 +637,7 @@ namespace TASMA
                 if (!CheckLoginState())
                     return false;
 
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
                 var cmd = new SQLiteCommand(conn);
@@ -615,7 +672,7 @@ namespace TASMA
                 if (!CheckLoginState())
                     return false;
 
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
                 var cmd = new SQLiteCommand(conn);
@@ -664,7 +721,7 @@ namespace TASMA
                 if (!CheckGradeState())
                     return false;
 
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
                 var cmd = new SQLiteCommand(conn);
@@ -697,7 +754,7 @@ namespace TASMA
                 if (!CheckGradeState())
                     return null;
 
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
 
@@ -727,7 +784,7 @@ namespace TASMA
                 if (!CheckGradeState())
                     return false;
 
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
                 var cmd = new SQLiteCommand(conn);
@@ -760,7 +817,7 @@ namespace TASMA
                 if (!CheckGradeState())
                     return false;
 
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
                 var cmd = new SQLiteCommand(conn);
@@ -807,7 +864,7 @@ namespace TASMA
                 if (!CheckClassState())
                     return false;
 
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
                 var cmd = new SQLiteCommand(conn);
@@ -839,7 +896,7 @@ namespace TASMA
                 if (!CheckClassState())
                     return null;
 
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
 
@@ -872,7 +929,7 @@ namespace TASMA
                 if (!CheckClassState())
                     return false;
 
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
                 var cmd = new SQLiteCommand(conn);
@@ -906,7 +963,7 @@ namespace TASMA
                 if (!CheckClassState())
                     return false;
 
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
                 var cmd = new SQLiteCommand(conn);
@@ -965,7 +1022,7 @@ namespace TASMA
                 else
                     optionStr = ";";
 
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
 
@@ -990,7 +1047,7 @@ namespace TASMA
                 if (!CheckClassState())
                     return;
 
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
 
@@ -1014,7 +1071,7 @@ namespace TASMA
                 if (!CheckClassState())
                     return;
 
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
 
@@ -1033,7 +1090,7 @@ namespace TASMA
             /// <returns>실행 성공 여부</returns>
             public bool CreateSubject(string subjectName)
             {
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
                 var cmd = new SQLiteCommand(conn);
@@ -1080,7 +1137,7 @@ namespace TASMA
             /// <returns>실행 성공 여부</returns>
             public bool UpdateSubject(string oldSubjectName, string newSubjectName)
             {
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
                 var cmd = new SQLiteCommand(conn);
@@ -1110,7 +1167,7 @@ namespace TASMA
             /// <returns>실행 성공 여부</returns>
             public bool DeleteSubject(string subjectName)
             {
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
                 var cmd = new SQLiteCommand(conn);
@@ -1142,7 +1199,7 @@ namespace TASMA
             /// <returns>실행 성공 여부</returns>
             public bool CreateEvaluation(string subjectName, string evaluationName)
             {
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
                 var cmd = new SQLiteCommand(conn);
@@ -1176,7 +1233,7 @@ namespace TASMA
             {
                 var evaluationList = GetEvaluationList(subjectName);
 
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
                 var cmd = new SQLiteCommand(conn);
@@ -1261,7 +1318,7 @@ namespace TASMA
                 var evaluationList = GetEvaluationList(subjectName);
                 evaluationList.Remove(evaluationName);            
                 
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
                 var cmd = new SQLiteCommand(conn);
@@ -1332,7 +1389,7 @@ namespace TASMA
             /// <returns>실행 성공 여부</returns>
             public bool RegisterClassOnSubject(string subjectName, string gradeName, string className)
             {
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
                 var cmd = new SQLiteCommand(conn);
@@ -1361,7 +1418,7 @@ namespace TASMA
             /// <returns>실행 성공 여부</returns>
             public bool UnRegisterClassOnSubject(string subjectName, string gradeName, string className)
             {
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
                 var cmd = new SQLiteCommand(conn);
@@ -1388,7 +1445,7 @@ namespace TASMA
             /// <returns>과목 리스트</returns>
             public List<string> GetSubjectList()
             {
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
 
@@ -1415,7 +1472,7 @@ namespace TASMA
             /// <returns>평가 항목 리스트</returns>
             public List<string> GetEvaluationList(string subjectName)
             {
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
 
@@ -1460,7 +1517,7 @@ namespace TASMA
             /// <returns>등록된 과목 리스트</returns>
             public List<string> GetClassSubjects(string gradeName, string className)
             {
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
 
@@ -1487,7 +1544,7 @@ namespace TASMA
             /// <returns>등록된 반 데이터 테이블</returns>
             public DataTable GetSubjectClasses(string subjectName)
             {
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
 
@@ -1514,7 +1571,7 @@ namespace TASMA
                 if (!CheckClassState())
                     return null;
 
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
 
@@ -1545,7 +1602,7 @@ namespace TASMA
                 if (!CheckClassState())
                     return false;
 
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
                 var cmd = new SQLiteCommand(conn);
@@ -1588,7 +1645,7 @@ namespace TASMA
                 else
                     score = value.Value.ToString();    
 
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
                 var cmd = new SQLiteCommand(conn);
@@ -1620,7 +1677,7 @@ namespace TASMA
                 
                 var evaluationList = GetEvaluationList(subjectName);
                 
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
 
@@ -1672,7 +1729,7 @@ namespace TASMA
                         sqlPhase += "WHERE SNAME LIKE " + "'%" + studentName + "%'";    
                 }
                        
-                var connStr = @"Data Source=" + currentId + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
 

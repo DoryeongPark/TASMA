@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,20 +53,26 @@ namespace TASMA
             {
                 var dld = new DatabaseListWindow(adminDAO, LoginWindow_ID.Text);
                 dld.ShowDialog();
-                
+               
+                //데이터베이스 리스트에서 데이터를 선택하고 OK 버튼 클릭
+                if(dld.DeterminedDBPath != null)
+                {
+                    adminDAO.LoginDatabase(dld.DeterminedDBPath);
+                    var td = new TasmaWindow(adminDAO);
+                    this.Visibility = Visibility.Hidden;
+                    td.Owner = this;
+                    td.ShowDialog();
 
-               // adminDAO.LoginAs(LoginWindow_ID.Text, LoginWindow_Password.Password);                
+                }else//데이터베이스 리스트에서 취소 버튼 클릭
+                {
+                    adminDAO.LogoutAccount();
+                }
+                         
             }else
             {
-                
+                MessageBox.Show("Password doesn't match");
             }
 
-            //Visibility = Visibility.Hidden;
-
-            ////데이터베이스 다이얼로그 띄우기
-            //var tw = new TasmaWindow(adminDAO);
-            //tw.Owner = this;
-            //tw.ShowDialog();
         }
 
         private void ChangePassword(object sender, RoutedEventArgs e)
@@ -86,11 +93,13 @@ namespace TASMA
 
             if (rd.IsDetermined)
             {
-                adminDAO.RegisterAccount(rd.UserName, rd.Password);
-                if(adminDAO.Authenticate(rd.UserName, rd.Password))
+                //계정 중복 검사
+                if(new DirectoryInfo(rd.UserName).Exists)
                 {
-
+                    MessageBox.Show("User already exists");
+                    return;
                 }
+                adminDAO.RegisterAccount(rd.UserName, rd.Password);
             }
         }
 

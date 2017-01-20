@@ -87,8 +87,8 @@
     <Compile Include="ClassPage.xaml.cs">
       <DependentUpon>ClassPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CreateDatabaseWindow.xaml.cs">
-      <DependentUpon>CreateDatabaseWindow.xaml</DependentUpon>
+    <Compile Include="InputDatabaseWindow.xaml.cs">
+      <DependentUpon>InputDatabaseWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="DatabaseListWindow.xaml.cs">
       <DependentUpon>DatabaseListWindow.xaml</DependentUpon>
@@ -141,7 +141,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CreateDatabaseWindow.xaml">
+    <Page Include="InputDatabaseWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

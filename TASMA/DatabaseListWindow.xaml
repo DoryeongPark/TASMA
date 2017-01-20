@@ -74,7 +74,8 @@
                         Style="{StaticResource textButtonStyle}" 
                         Content="OK"
                         HorizontalContentAlignment="Center"
-                        VerticalContentAlignment="Center"/>
+                        VerticalContentAlignment="Center"
+                        Click="OnOKButtonClicked"/>
 
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
@@ -97,7 +98,7 @@
         <Grid Grid.Row="2">
             <ListBox ItemContainerStyle="{StaticResource listBoxItemStyle}"
                      Margin="8,0,8,8" ItemsSource="{Binding DBListBoxItems}"
-                     SelectedItem="{Binding SelectedDBListBoxItem}"/>
+                     SelectedItem="{Binding SelectedDBListBoxItem, Mode=TwoWay}"/>
         </Grid>
     </Grid>
 </Window>
