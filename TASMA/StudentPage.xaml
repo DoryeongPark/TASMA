@@ -28,15 +28,25 @@
                         HorizontalAlignment="Right"
                         Margin="0,0,15,0">
                 <Button Name="StudentPage_PreviousButton" Content="BACK" VerticalAlignment="Center" HorizontalAlignment="Left" 
-                        Width="30" Height="30"
-                        Margin="0,0,5,0"/>
+                        Width="50" Height="20"
+                        Margin="0,0,5,0" Style="{StaticResource pageButtonStyle}"
+                        Background="{StaticResource tasmaDimGray}">
+                    <Button.Tag>
+                        <ImageSource>Resources/Tasma_BackButton.png</ImageSource>
+                    </Button.Tag>
+                </Button>
                 <Button Name="StudentPage_SortButton" Content="SORT" VerticalAlignment="Center" HorizontalAlignment="Right"
-                        Width="30" Height="30" />
+                        Width="50" Height="20" Style="{StaticResource pageButtonStyle}"
+                        Background="{StaticResource tasmaDimGray}">
+                    <Button.Tag>
+                        <ImageSource>Resources/Tasma_SortButton.png</ImageSource>
+                    </Button.Tag>
+                </Button>
             </StackPanel>
             <StackPanel Orientation="Vertical"
                         VerticalAlignment="Bottom"
                         HorizontalAlignment="Left"
-                        Margin="15,0,0,3">
+                        Margin="10,0,0,3">
                 <TextBlock Name="StudentPage_Student" Text="STUDENT" 
                            VerticalAlignment="Bottom" HorizontalAlignment="Left" 
                            FontFamily="{StaticResource tasmaFont}" 

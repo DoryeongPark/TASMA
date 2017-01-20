@@ -37,15 +37,15 @@ namespace TASMA
             set { subjectTreeViewItems = value; OnPropertyChanged("SubjectTreeViewItems"); }
         }
 
-        private ObservableCollection<EvaluationListBoxItem> evaluationListBoxItems;
-        public ObservableCollection<EvaluationListBoxItem> EvaluationListBoxItems
+        private ObservableCollection<string> evaluationListBoxItems;
+        public ObservableCollection<string> EvaluationListBoxItems
         {
             get { return evaluationListBoxItems; }
             set { evaluationListBoxItems = value; OnPropertyChanged("EvaluationListBoxItems"); }
         }
 
-        private EvaluationListBoxItem selectedListBoxItem;
-        public EvaluationListBoxItem SelectedListBoxItem
+        private string selectedListBoxItem;
+        public string SelectedListBoxItem
         {
             get { return selectedListBoxItem; }
             set { selectedListBoxItem = value; OnPropertyChanged("SelectedListBoxItem"); }
@@ -112,17 +112,14 @@ namespace TASMA
 
             //리스트박스 데이터 로드(ViewModel)
             var evaluationList = adminDAO.GetEvaluationList(subjectName);
-            evaluationListBoxItems = new ObservableCollection<EvaluationListBoxItem>();
+            evaluationListBoxItems = new ObservableCollection<string>();
 
             foreach (var evaluationData in evaluationList)
             {
-                var evaluationItem = new EvaluationListBoxItem()
-                {
-                    Name = evaluationData
-                };
-                evaluationListBoxItems.Add(evaluationItem);
+                evaluationListBoxItems.Add(evaluationData);
             }
 
+            /* 트리 뷰 이벤트 추가 */
             foreach (var gradeItem in subjectTreeViewItems)
             {
                 gradeItem.PropertyChanged += OnSubjectTreeViewItemPropertyChanged;
@@ -136,15 +133,11 @@ namespace TASMA
                 }
             }
 
-            foreach (var evaluationItem in evaluationListBoxItems)
-            {
-                evaluationItem.PropertyChanged += OnEvaluationListBoxItemPropertyChanged;
-            }
 
             DataContext = this;
             InitializeComponent();
 
-            EvaluationPage_Subject.Content = subjectName;
+            EvaluationPage_Subject.Text = subjectName;
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -212,12 +205,12 @@ namespace TASMA
             {
                 //Check Duplication
                 foreach (var evaluationItem in evaluationListBoxItems)
-                    if (evaluationItem.Name.ToUpper() == dialog.Input.ToUpper())
+                    if (evaluationItem.ToUpper() == dialog.Input.ToUpper())
                     {
                         MessageBox.Show("Evaluations are duplicated");
                         return;
                     }
-                evaluationListBoxItems.Add(new EvaluationListBoxItem { Name = dialog.Input });
+                evaluationListBoxItems.Add(dialog.Input);
             }
         }
 
@@ -228,24 +221,24 @@ namespace TASMA
         /// <param name="e"></param>
         private void OnModifyListBoxItem(object sender, RoutedEventArgs e)
         {
-            if (selectedListBoxItem == null)
+            if (SelectedListBoxItem == null)
                 return;
 
-            var dialog = new TasmaPromptMessageBox("Modify evaluation", "Input evaluation name", selectedListBoxItem.Name);
+            var dialog = new TasmaPromptMessageBox("Modify evaluation", "Input evaluation name", SelectedListBoxItem);
             dialog.ShowDialog();
 
             if (dialog.IsDetermined)
             {
                 //Check Duplication
                 foreach (var evaluationItem in evaluationListBoxItems)
-                    if (evaluationItem.Name.ToUpper() == dialog.Input.ToUpper())
+                    if (evaluationItem.ToUpper() == dialog.Input.ToUpper())
                     {
                         MessageBox.Show("Evaluations are duplicated");
                         return;
                     }
 
-                adminDAO.UpdateEvaluation(subjectName, selectedListBoxItem.Name, dialog.Input);
-                selectedListBoxItem.Name = dialog.Input;
+                adminDAO.UpdateEvaluation(subjectName, SelectedListBoxItem, dialog.Input);
+                SelectedListBoxItem = dialog.Input;
             }
         }
 
@@ -256,14 +249,14 @@ namespace TASMA
         /// <param name="e"></param>
         private void OnDeleteListBoxItem(object sender, RoutedEventArgs e)
         {
-            if (selectedListBoxItem == null)
+            if (SelectedListBoxItem == null)
                 return;
 
-            var dialog = new TasmaConfirmationMessageBox("Delete evaluation", "Are you sure delete evaluation? - " + selectedListBoxItem.Name);
+            var dialog = new TasmaConfirmationMessageBox("Delete evaluation", "Are you sure delete evaluation? - " + SelectedListBoxItem);
             dialog.ShowDialog();
 
             if (dialog.Yes)
-                evaluationListBoxItems.Remove(selectedListBoxItem);
+                evaluationListBoxItems.Remove(SelectedListBoxItem);
         }
 
 
@@ -278,7 +271,7 @@ namespace TASMA
 
             var newEvaluations = new List<string>();
             foreach (var evaluationItem in evaluationListBoxItems)
-                newEvaluations.Add(evaluationItem.Name);
+                newEvaluations.Add(evaluationItem);
 
             //반 등록 - 현재 데이터베이스에 ViewModel 상태 반영
             foreach (var gradeItem in subjectTreeViewItems)

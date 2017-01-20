@@ -16,16 +16,24 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row ="0">
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Label Name="EvaluationPage_Subject" Foreground="Indigo" FontSize="18" FontWeight="Bold" FontFamily="Segoe UI"></Label>
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center"
+                        Margin="10,0,0,0">
+                <TextBlock Name="EvaluationPage_Subject" 
+                           Foreground="{StaticResource tasmaDeepGreen}" 
+                           FontSize="18" FontWeight="Bold" 
+                           FontFamily="{StaticResource tasmaFont}"></TextBlock>
             </StackPanel>
-            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8,0,8,0">
-                <Button Width="30" Height="30" Click="OnPreviousButtonClicked"/>
+            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" 
+                        Margin="0,0,10,0">
+                <Button Width="50" Height="20" Click="OnPreviousButtonClicked"
+                        BorderThickness="0" Background="{StaticResource tasmaDimGray}"
+                        Style="{StaticResource pageButtonStyle}"
+                        Content="BACK">
+                    <Button.Tag>
+                        <ImageSource>Resources/Tasma_BackButton.png</ImageSource>
+                    </Button.Tag>
+                </Button>
             </StackPanel>
-            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="8,0,8,0">
-                
-            </StackPanel>
-            
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -39,15 +47,21 @@
                     <RowDefinition Height="10*"/>
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="8,0,8,0">
-                        <TextBlock FontSize="14" Foreground="Indigo" FontFamily="Segoe UI" FontWeight="SemiBold">Class</TextBlock>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" 
+                                VerticalAlignment="Bottom" Margin="10,0,0,0">
+                        <TextBlock FontSize="14" Foreground="{StaticResource tasmaDeepGreen}" 
+                                   FontFamily="{StaticResource tasmaFont}" FontWeight="Bold">Class</TextBlock>
                     </StackPanel>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <TreeView Margin="8" ItemsSource="{Binding SubjectTreeViewItems}">
+                    <TreeView Margin="10,4,10,10" ItemsSource="{Binding SubjectTreeViewItems}">
                         <TreeView.ItemContainerStyle>
                             <Style TargetType="TreeViewItem">
                                 <Setter Property="IsExpanded" Value="True"></Setter>
+                                <Setter Property="FontSize" Value="11"></Setter>
+                                <Setter Property="Foreground" Value="{StaticResource tasmaDeepGreen}"></Setter>
+                                <Setter Property="FontWeight" Value="DemiBold"/>
+                                <Setter Property="FontFamily" Value="{StaticResource tasmaFont}"></Setter>
                             </Style>
                         </TreeView.ItemContainerStyle>
                         <TreeView.ItemTemplate>
@@ -66,29 +80,43 @@
                     <RowDefinition Height="10*"/>
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="8,0,8,0">
-                        <Button Width="15" Height="15" VerticalAlignment="Bottom" Margin="2,0,0,0" Click="OnAddListBoxItem"/>
-                        <Button Width="15" Height="15" VerticalAlignment="Bottom" Margin="2,0,0,0" Click="OnModifyListBoxItem"/>
-                        <Button Width="15" Height="15" VerticalAlignment="Bottom" Margin="2,0,0,0" Click="OnDeleteListBoxItem"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="8,0,10,0">
+                        <Button Width="20" Height="20" VerticalAlignment="Bottom" 
+                                Margin="2,0,0,0" Click="OnAddListBoxItem"
+                                Style="{StaticResource imageButtonStyle}">
+                            <Button.Tag>
+                                <ImageSource>Resources/Tasma_AddButton.png</ImageSource>
+                            </Button.Tag>
+                        </Button>
+                        <Button Width="20" Height="20" VerticalAlignment="Bottom" 
+                                Margin="2,0,0,0" 
+                                Click="OnModifyListBoxItem"
+                                Style="{StaticResource imageButtonStyle}">
+                            <Button.Tag>
+                                <ImageSource>Resources/Tasma_ModifyButton.png</ImageSource>
+                            </Button.Tag>
+                        </Button>
+                        <Button Width="20" Height="20" VerticalAlignment="Bottom" 
+                                Margin="2,0,0,0" 
+                                Click="OnDeleteListBoxItem"
+                                Style="{StaticResource imageButtonStyle}">
+                            <Button.Tag>
+                                <ImageSource>Resources/Tasma_DeleteButton.png</ImageSource>
+                            </Button.Tag>
+                        </Button>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="8,0,8,0">
-                        <TextBlock FontSize="14" Foreground="Indigo" FontFamily="Segoe UI" FontWeight="SemiBold">Evaluation</TextBlock>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" 
+                                VerticalAlignment="Bottom" Margin="10,0,0,0">
+                        <TextBlock FontSize="14" Foreground="{StaticResource tasmaDeepGreen}" 
+                                   FontFamily="{StaticResource tasmaFont}" FontWeight="Bold">
+                            Evaluation</TextBlock>
                     </StackPanel>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <ListBox Margin="8" ItemsSource="{Binding EvaluationListBoxItems}" SelectedItem="{Binding SelectedListBoxItem}">
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem">
-
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                <TextBlock Text="{Binding Name}"></TextBlock>
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
+                    <ListBox Margin="10,4,10,10" ItemsSource="{Binding EvaluationListBoxItems}" 
+                             SelectedItem="{Binding SelectedListBoxItem}"
+                             ItemContainerStyle="{StaticResource listBoxItemStyle}"
+                             FontWeight="DemiBold">
                     </ListBox>
                 </Grid>
             </Grid>

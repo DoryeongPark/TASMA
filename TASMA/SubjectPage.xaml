@@ -17,7 +17,7 @@
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
                     <Label Content="SUBJECT" VerticalAlignment="Center" HorizontalAlignment="Left" 
-                           Margin="15,0,0,0"
+                           Margin="10,0,0,0"
                            FontFamily="{StaticResource tasmaFont}" 
                            FontWeight="Bold" FontSize="18" 
                            Foreground="{StaticResource tasmaDeepGreen}"/>
