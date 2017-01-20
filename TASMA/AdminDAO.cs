@@ -436,54 +436,7 @@ namespace TASMA
                 return true;
             }
 
-            /// <summary>
-            /// 데이터베이스를 지웁니다.
-            /// </summary>
-            /// <param name="id">선생님 계정</param>
-            /// <param name="password">계정 비밀번호</param>
-            /// <returns>실행 성공 여부</returns>
-            public bool DeleteDatabase(string id, string password)
-            {
-                if (dbLoginState == true)
-                {
-                    MessageBox.Show("You should logout first");
-                    return false;
-                }
-
-                if (!new FileInfo(id + ".db").Exists)
-                {
-                    MessageBox.Show("ID doesn't exist");
-                    return false;
-                }
-
-                var connStr = @"Data Source=" + id + ".db;Password=" + password + ";Foreign Keys=True;";
-                var conn = new SQLiteConnection(connStr);
-                conn.Open();
-                
-                var cmd = new SQLiteCommand(conn);
-                cmd.CommandText = "UPDATE CHECKPASSWORD SET CHECKPASSWORD = '1' WHERE CHECKPASSWORD = '0'";
-                try
-                {
-                    cmd.ExecuteNonQuery();
-                }
-                catch (SQLiteException se)
-                {
-                    //비밀번호 틀렸을 시의 SQLite 에러코드 알아볼 것
-                    conn.Close();
-                    MessageBox.Show("Error code - " + se.ErrorCode.ToString());
-                    return false;
-                }
-
-                cmd.Dispose();
-                conn.Close();
-               
-
-                File.Delete(id + ".db");
-
-                MessageBox.Show("ID is successfully deleted");
-                return true;
-            }
-
+           
             /// <summary>
             /// 데이터베이스로 로그인 합니다.
             /// </summary>

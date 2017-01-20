@@ -84,6 +84,7 @@ namespace TASMA
             var cdd = new InputDatabaseWindow();
             cdd.ShowDialog();
 
+            /* 데이터베이스 생성 루틴 */
             if (cdd.IsDetermined)
             {   
                 if(dbListBoxItems.Any(item => item == cdd.DBName) ||
@@ -121,6 +122,7 @@ namespace TASMA
              
             cdd.ShowDialog();
 
+            /* 파일 이름, 데이터베이스 정보 수정 루틴 */
             if (cdd.IsDetermined)
             {
                 var newDBPath = accountName + "/" + cdd.DBName;
