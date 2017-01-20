@@ -35,7 +35,7 @@ namespace TASMA
             this.adminDAO = adminDAO;
 
             gradeName = adminDAO.CurrentGrade;
-            ClassPage_Grade.Content = "GRADE " + gradeName;
+            ClassPage_Grade.Text = "GRADE: " + gradeName;
 
             columns = new List<StackPanel>();
             columns.Add(ClassPage_Column0);

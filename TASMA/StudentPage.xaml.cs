@@ -33,6 +33,8 @@ namespace TASMA
             InitializeComponent();
             this.adminDAO = adminDAO;
 
+            StudentPage_Class.Text = "GRADE: " + adminDAO.CurrentGrade + "  CLASS: " + adminDAO.CurrentClass;
+
             StudentPage_PreviousButton.Click += OnPreviousButtonClicked;
             StudentPage_SortButton.Click += OnSortButtonClicked;
         }
@@ -76,7 +78,6 @@ namespace TASMA
 
         private void OnLoad(object sender, RoutedEventArgs e)
         {
-            StudentPage_Class.Content = "GRADE " + adminDAO.CurrentGrade + " - CLASS " + adminDAO.CurrentClass;
             dataTable = adminDAO.GetStudentDataTable(StudentTableOption.AscByNumber);
             dataTable.AcceptChanges();
 

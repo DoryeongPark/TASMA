@@ -11,8 +11,8 @@
         <Style x:Key="guideTextStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="FontFamily" Value="Segoe UI" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="Foreground" Value="DimGray" />
+            <Setter Property="FontWeight" Value="DemiBold" />
+            <Setter Property="Foreground" Value="{StaticResource tasmaDimGray}" />
         </Style>
        
     </Page.Resources>
@@ -23,10 +23,33 @@
             <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <Button Name="StudentPage_PreviousButton" Content="BACK" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="30" Height="30" />
-            <Label Name="StudentPage_Class" Content="STUDENTS" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Segoe UI" FontWeight="Bold" FontSize="18" Foreground="Indigo"/>
-            <Button Name="StudentPage_SortButton" Content="Sort" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" Width="30" Height="30" />
-        </Grid>
+            <StackPanel Orientation="Horizontal" 
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        Margin="0,0,15,0">
+                <Button Name="StudentPage_PreviousButton" Content="BACK" VerticalAlignment="Center" HorizontalAlignment="Left" 
+                        Width="30" Height="30"
+                        Margin="0,0,5,0"/>
+                <Button Name="StudentPage_SortButton" Content="SORT" VerticalAlignment="Center" HorizontalAlignment="Right"
+                        Width="30" Height="30" />
+            </StackPanel>
+            <StackPanel Orientation="Vertical"
+                        VerticalAlignment="Bottom"
+                        HorizontalAlignment="Left"
+                        Margin="15,0,0,3">
+                <TextBlock Name="StudentPage_Student" Text="STUDENT" 
+                           VerticalAlignment="Bottom" HorizontalAlignment="Left" 
+                           FontFamily="{StaticResource tasmaFont}" 
+                           FontWeight="Bold" FontSize="18" 
+                           Foreground="{StaticResource tasmaDeepGreen}"/>
+                <TextBlock Name="StudentPage_Class"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Bottom" 
+                           FontWeight="DemiBold"
+                           FontSize="9"
+                           Foreground="{StaticResource tasmaNormalGray}"/>
+            </StackPanel>
+            </Grid>
         <Grid Grid.Row="1">
             <DataGrid HeadersVisibility="Column" Margin="8,0,8,0" FontFamily="{StaticResource tasmaFont}" FontSize="10" Foreground="Gray" Background="{StaticResource tasmaWhite}" AutoGenerateColumns="False" CanUserResizeRows="False" CanUserDeleteRows="False" CanUserAddRows="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="StudentDataTable">
                 <DataGrid.Columns>
@@ -61,12 +84,12 @@
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource guideTextStyle}">
-                    <TextBlock Foreground="Indigo">Create Student:</TextBlock> Ctrl + ↓
+                    <TextBlock Foreground="{StaticResource tasmaDeepGreen}">Create Student:</TextBlock> Ctrl + ↓
                 </TextBlock>
             </Grid>
             <Grid Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource guideTextStyle}">
-                    <TextBlock Foreground="Indigo">Delete Student:</TextBlock> Ctrl + ↑
+                    <TextBlock Foreground="{StaticResource tasmaDeepGreen}">Delete Student:</TextBlock> Ctrl + ↑
                 </TextBlock>
             </Grid>
         </Grid>

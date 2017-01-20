@@ -15,10 +15,18 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
-                    <Label Name="ClassPage_Grade" Content="CLASS" 
-                            VerticalAlignment="Center" HorizontalAlignment="Left" FontFamily="{StaticResource tasmaFont}" 
-                            FontWeight="Bold" FontSize="18" Foreground="{StaticResource tasmaDeepGreen}"
-                            Margin="15,0,0,0"/>
+                    <StackPanel Orientation="Vertical" Margin="15,0,0,3"
+                                VerticalAlignment="Bottom">
+                    <TextBlock Name="ClassPage_Class" Text="CLASS" 
+                            VerticalAlignment="Bottom" HorizontalAlignment="Left" FontFamily="{StaticResource tasmaFont}" 
+                            FontWeight="Bold" FontSize="18" Foreground="{StaticResource tasmaDeepGreen}"/>
+                    <TextBlock Name="ClassPage_Grade"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom" 
+                                FontWeight="DemiBold"
+                                FontSize="9"
+                                Foreground="{StaticResource tasmaNormalGray}"/>
+                    </StackPanel>
                     <StackPanel HorizontalAlignment="Right" Margin="0,0,15,0"
                                 Orientation="Horizontal">
                         <Button Name="ClassPage_PreviousButton" 

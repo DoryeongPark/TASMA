@@ -26,6 +26,11 @@ namespace TASMA
 
         private AdminDAO adminDAO;
         private string accountName;
+        public string AccountName
+        {
+            get { return accountName; }
+            set { accountName = value; OnPropertyChanged("AccountName"); }
+        }
 
         private string determinedDBPath = null;
         public string DeterminedDBPath
@@ -79,6 +84,11 @@ namespace TASMA
             DragMove();
         }
 
+        /// <summary>
+        /// 새 데이터베이스를 추가합니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnAddButtonClicked(object sender, RoutedEventArgs e)
         {
             var cdd = new InputDatabaseWindow();
@@ -104,10 +114,14 @@ namespace TASMA
                 {
                     DBListBoxItems.Add(cdd.DBName);
                 }
-                
             }
         }
 
+        /// <summary>
+        /// 선택한 데이터베이스를 수정합니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnModifyButtonClicked(object sender, RoutedEventArgs e)
         {
             if (SelectedDBListBoxItem == null)
@@ -137,6 +151,11 @@ namespace TASMA
             }
         }
 
+        /// <summary>
+        /// 선택한 데이터베이스를 삭제합니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnDeleteButtonClicked(object sender, RoutedEventArgs e)
         {
             /* 인증 루틴 */

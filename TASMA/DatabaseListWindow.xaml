@@ -65,7 +65,11 @@
                 <Button Width="20" Height="20" Content="{StaticResource tasmaDBListCloseButton}"
                         Background="Transparent" BorderThickness="0"
                         Click="OnExitButtonClicked"/>
-            </StackPanel>
+             </StackPanel>
+            <TextBlock Text="{Binding AccountName}"
+                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                       FontFamily="{StaticResource tasmaFont}" FontSize="11"
+                       Foreground="{StaticResource tasmaWhite}" FontWeight="DemiBold"/>
         </Grid>
         <Grid Grid.Row="1">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" 
@@ -98,7 +102,8 @@
         <Grid Grid.Row="2">
             <ListBox ItemContainerStyle="{StaticResource listBoxItemStyle}"
                      Margin="8,0,8,8" ItemsSource="{Binding DBListBoxItems}"
-                     SelectedItem="{Binding SelectedDBListBoxItem, Mode=TwoWay}"/>
+                     SelectedItem="{Binding SelectedDBListBoxItem, Mode=TwoWay}"
+                     FontWeight="DemiBold"/>
         </Grid>
     </Grid>
 </Window>
