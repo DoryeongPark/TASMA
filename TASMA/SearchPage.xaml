@@ -70,7 +70,8 @@
                             Height="20" 
                             Margin="5,0,0,0"
                             Style="{StaticResource pageButtonStyle}"
-                            Content="Print">
+                            Content="Print"
+                            Background="{StaticResource tasmaDeepGreen}">
                         <Button.Tag>
                             <ImageSource>/Resources/Tasma_PrintButton.png</ImageSource>
                         </Button.Tag>

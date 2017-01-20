@@ -121,18 +121,17 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Name="border"
-                            Background="{StaticResource tasmaDeepGreen}"
+                            Background="{TemplateBinding Background}"
                             Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
                             <Grid>
                                 <ContentPresenter HorizontalAlignment="Left"
-                                        VerticalAlignment="Center" Name="content">
+                                        VerticalAlignment="Center" Name="content" Margin="20,0,0,3">
                                     <ContentPresenter.Style>
                                         <Style TargetType="ContentPresenter">
                                             <Setter Property="Control.Foreground" Value="{StaticResource tasmaWhite}" />
                                             <Setter Property="Control.FontFamily" Value="Segoe UI" />
                                             <Setter Property="Control.FontSize" Value="10" />
                                             <Setter Property="Control.FontWeight" Value="DemiBold" />
-                                            <Setter Property="Control.Margin" Value="20,0,5,0" />
                                         </Style>
                                     </ContentPresenter.Style>
                                     <ContentPresenter.RenderTransform>

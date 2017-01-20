@@ -42,11 +42,21 @@ namespace TASMA
             WindowState = WindowState.Minimized;
         }
 
+        /// <summary>
+        /// 프로그램을 종료합니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ExitRoutine(object sender, EventArgs e)
         {
             Close();
         }
 
+        /// <summary>
+        /// 선생님 계정으로 로그인합니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Login(object sender, RoutedEventArgs e)
         {
             if(adminDAO.Authenticate(LoginWindow_ID.Text, LoginWindow_Password.Password))
@@ -75,6 +85,11 @@ namespace TASMA
 
         }
 
+        /// <summary>
+        /// 계정의 비밀번호를 바꿉니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ChangePassword(object sender, RoutedEventArgs e)
         {
             var cpd = new ChangePasswordDialog(adminDAO);
@@ -86,6 +101,11 @@ namespace TASMA
             }
         }
 
+        /// <summary>
+        /// 선생님 계정을 등록합니다.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RegisterAdmin(object sender, RoutedEventArgs e)
         {
             var rd = new RegistrationDialog();
