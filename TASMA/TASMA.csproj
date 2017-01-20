@@ -123,6 +123,9 @@
       <DependentUpon>SubjectPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="SubjectTreeViewItemType.cs" />
+    <Compile Include="TasmaAlertMessageBox.xaml.cs">
+      <DependentUpon>TasmaAlertMessageBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TasmaMenuButtons.cs" />
     <Compile Include="TasmaConfirmationMessageBox.xaml.cs">
       <DependentUpon>TasmaConfirmationMessageBox.xaml</DependentUpon>
@@ -187,6 +190,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SubjectPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TasmaAlertMessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

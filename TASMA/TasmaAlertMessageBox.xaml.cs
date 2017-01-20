@@ -26,6 +26,11 @@ namespace TASMA
             InitializeComponent();
         }
 
+        private void OnLeftMouseButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
+
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             if (Application.Current.Windows.Count == 1)

@@ -494,19 +494,16 @@ namespace TASMA
                 if (currentSnum != -1)
                 {
                     currentSnum = -1;
-                    MessageBox.Show("Return to student selection display");
                     return true;
 
                 } else if (currentSnum == -1 && currentClass != null)
                 {
                     currentClass = null;
-                    MessageBox.Show("Return to class selection display");
                     return true;
 
                 } else if (currentSnum == -1 && currentClass == null && currentGrade != null)
                 {
                     currentGrade = null;
-                    MessageBox.Show("Return to grade selection display");
                     return true;
                 }
 
@@ -544,7 +541,6 @@ namespace TASMA
                 cmd.Dispose();
                 conn.Close();
 
-                MessageBox.Show("Grade is successfully created");
                 return true;
             }
 
@@ -696,7 +692,6 @@ namespace TASMA
                 cmd.Dispose();
                 conn.Close();
 
-                MessageBox.Show("Class is successfully created");
                 return true;
             }
 
