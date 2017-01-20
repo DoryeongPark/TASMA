@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:TASMA"
       mc:Ignorable="d" 
-      Title="MarkingPage" Background="White" 
+      Title="MarkingPage" Background="{StaticResource tasmaWhite}" 
       HorizontalAlignment="Stretch" VerticalAlignment="Stretch" d:DesignWidth="500" d:DesignHeight="350" Loaded="OnLoaded">
     <Page.Resources>
     </Page.Resources>
