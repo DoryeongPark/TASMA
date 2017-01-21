@@ -18,7 +18,7 @@ namespace TASMA
     /// <summary>
     /// TASMA Main Window
     /// </summary>
-    public partial class TasmaWindow : Window
+    public partial class TasmaWindow : System.Windows.Window
     {
         private AdminDAO adminDAO;
 

@@ -17,7 +17,7 @@ namespace TASMA
     /// <summary>
     /// 알람 메시지 박스 입니다.
     /// </summary>
-    public partial class TasmaAlertMessageBox: Window
+    public partial class TasmaAlertMessageBox: System.Windows.Window
     {
         public TasmaAlertMessageBox(string title, string message)
         {

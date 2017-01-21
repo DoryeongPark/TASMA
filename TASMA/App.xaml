@@ -6,6 +6,8 @@
     <Application.Resources>
         <Image x:Key="tasmaCloseButton" Source="/Resources/Tasma_CloseButton.png" Width="15" Height="15"/>
         <Image x:Key="tasmaMinimizeButton" Source="/Resources/Tasma_MinimizeButton.png" Width="15" Height="15"/>
+        <Image x:Key="tasmaCloseButton2" Source="/Resources/Tasma_CloseButton.png" Width="15" Height="15"/>
+        <Image x:Key="tasmaMinimizeButton2" Source="/Resources/Tasma_MinimizeButton.png" Width="15" Height="15"/>
         <Image x:Key="tasmaDBListCloseButton" Source="/Resources/Tasma_CloseButton.png" Width="15" Height="15"/>
         <Image x:Key="tasmaDBListMinimizeButton" Source="/Resources/Tasma_MinimizeButton.png" Width="15" Height="15"/>
         <Image x:Key="tasmaStudentMenuButton" Source="/Resources/Tasma_StudentMenuButton.png" Width="20" Height="20"/>

@@ -17,7 +17,7 @@ namespace TASMA
     /// <summary>
     /// Tasma 디자인의 확인 메세지 박스
     /// </summary>
-    public partial class TasmaConfirmationMessageBox : Window
+    public partial class TasmaConfirmationMessageBox : System.Windows.Window
     {
         private bool yes = false;
         public bool Yes

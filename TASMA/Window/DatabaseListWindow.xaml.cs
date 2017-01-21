@@ -21,7 +21,7 @@ namespace TASMA
     /// <summary>
     /// 선생님 계정의 데이터베이스 리스트를 불러옵니다.
     /// </summary>
-    public partial class DatabaseListWindow : Window, INotifyPropertyChanged
+    public partial class DatabaseListWindow : System.Windows.Window, INotifyPropertyChanged
     {
 
         private AdminDAO adminDAO;
@@ -190,8 +190,11 @@ namespace TASMA
 
         private void OnOKButtonClicked(object sender, RoutedEventArgs e)
         {
-            determinedDBPath = accountName + "/" + SelectedDBListBoxItem;
-            Close();
+            if (SelectedDBListBoxItem != null)
+            {
+                determinedDBPath = accountName + "/" + SelectedDBListBoxItem;
+                Close();
+            }
         }
 
         protected void OnPropertyChanged(string propertyName)

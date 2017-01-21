@@ -18,7 +18,7 @@ namespace TASMA
     /// <summary>
     /// 선생님 계정 비밀번호 수정 다이얼로그
     /// </summary>
-    public partial class ChangePasswordDialog : Window
+    public partial class ChangePasswordDialog : System.Windows.Window
     {
         private AdminDAO adminDAO;
         private bool isDetermined = false;

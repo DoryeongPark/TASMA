@@ -20,14 +20,14 @@ namespace TASMA
     /// <summary>
     /// MainWindow.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class LoginWindow : Window
+    public partial class LoginWindow : System.Windows.Window
     {
         private AdminDAO adminDAO;
 
         public LoginWindow()
         {
             InitializeComponent();
-            Style = (Style)FindResource(typeof(Window));
+            Style = (Style)FindResource(typeof(System.Windows.Window));
             adminDAO = AdminDAO.GetDAO();
             LoginWindow_ID.Focus();
         }

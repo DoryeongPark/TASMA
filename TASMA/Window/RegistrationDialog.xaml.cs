@@ -19,7 +19,7 @@ namespace TASMA
     /// <summary>
     /// 선생님 계정 등록 다이얼로그
     /// </summary>
-    public partial class RegistrationDialog : Window
+    public partial class RegistrationDialog : System.Windows.Window
     {
         private bool isDetermined = false;
 
@@ -47,7 +47,7 @@ namespace TASMA
         public RegistrationDialog()
         {
             InitializeComponent();
-            Style = (Style)FindResource(typeof(Window));
+            Style = (Style)FindResource(typeof(System.Windows.Window));
         }
 
        

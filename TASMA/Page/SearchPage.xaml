@@ -71,7 +71,8 @@
                             Margin="5,0,0,0"
                             Style="{StaticResource pageButtonStyle}"
                             Content="Print"
-                            Background="{StaticResource tasmaDeepGreen}">
+                            Background="{StaticResource tasmaDeepGreen}"
+                            Click="OnPrintButtonClicked">
                         <Button.Tag>
                             <ImageSource>/Resources/Tasma_PrintButton.png</ImageSource>
                         </Button.Tag>

@@ -18,7 +18,7 @@ namespace TASMA
     /// <summary>
     /// 데이터베이스 생성 다이얼로그입니다.
     /// </summary>
-    public partial class InputDatabaseWindow : Window, INotifyPropertyChanged
+    public partial class InputDatabaseWindow : System.Windows.Window, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

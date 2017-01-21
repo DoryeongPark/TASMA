@@ -184,11 +184,16 @@ namespace TASMA
             NavigationService.Navigate(new MarkingViewPage(adminDAO, gradeName, className));
         }
 
+        private void OnPrintButtonClicked(object sender, RoutedEventArgs e)
+        {
+            var pd = new Window.PrintDialog(adminDAO, SearchTable);
+            pd.ShowDialog();
+        }
+
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        
     }
 }

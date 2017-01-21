@@ -17,7 +17,7 @@ namespace TASMA
     /// <summary>
     /// Tasma 디자인의 프롬프트 박스
     /// </summary>
-    public partial class TasmaPromptMessageBox : Window
+    public partial class TasmaPromptMessageBox : System.Windows.Window
     {
         private bool isDetermined = false;
         

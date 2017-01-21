@@ -1,0 +1,60 @@
+﻿<Window x:Class="TASMA.Window.PrintDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TASMA.Window"
+        mc:Ignorable="d"
+        Title="PrintDialog" Height="500" Width="500"
+        WindowStyle="None" AllowsTransparency="True" 
+        MouseLeftButtonDown="OnLeftMouseButtonDown"
+        BorderBrush="{StaticResource tasmaLightGray}"
+        Background="{StaticResource tasmaWhite}"
+        BorderThickness="1">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="{StaticResource tasmaDimGray}">
+            <StackPanel HorizontalAlignment="Right" 
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal"
+                        Margin="2">
+                <Button Width="20" Height="20"
+                        Background="Transparent" BorderThickness="0"
+                        Content="{StaticResource tasmaMinimizeButton2}"
+                        Click="OnMinimizeButtonClicked"/>
+                <Button Width="20" Height="20"
+                        Background="Transparent" BorderThickness="0"
+                        Content="{StaticResource tasmaCloseButton2}"
+                        Click="OnCloseButtonClicked"/>
+            </StackPanel> 
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <ListBox>
+                    
+                </ListBox>
+            </Grid>
+            <Grid Grid.Column="1">
+                <DocumentViewer x:Name="PrintDialog_DocumentViewer">
+                    <DocumentViewer.Document>
+                        <FixedDocument>
+                            <PageContent>
+                                <FixedPage>
+                                    <TextBlock Text="zzz"></TextBlock>
+                                </FixedPage>
+                            </PageContent>
+                        </FixedDocument>
+                    </DocumentViewer.Document>
+                </DocumentViewer>
+            </Grid>
+        </Grid>
+        
+    </Grid>
+</Window>
