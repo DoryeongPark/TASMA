@@ -80,132 +80,132 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ChangePasswordDialog.xaml.cs">
+    <Compile Include="Window\ChangePasswordDialog.xaml.cs">
       <DependentUpon>ChangePasswordDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Class.cs" />
-    <Compile Include="ClassPage.xaml.cs">
+    <Compile Include="Model\Class.cs" />
+    <Compile Include="Page\ClassPage.xaml.cs">
       <DependentUpon>ClassPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="InputDatabaseWindow.xaml.cs">
+    <Compile Include="Window\InputDatabaseWindow.xaml.cs">
       <DependentUpon>InputDatabaseWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DatabaseListWindow.xaml.cs">
+    <Compile Include="Window\DatabaseListWindow.xaml.cs">
       <DependentUpon>DatabaseListWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EvaluationListBoxItem.cs" />
-    <Compile Include="Grade.cs" />
-    <Compile Include="MarkingViewPage.xaml.cs">
+    <Compile Include="Model\EvaluationListBoxItem.cs" />
+    <Compile Include="Model\Grade.cs" />
+    <Compile Include="Page\MarkingViewPage.xaml.cs">
       <DependentUpon>MarkingViewPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SearchPage.xaml.cs">
+    <Compile Include="Page\SearchPage.xaml.cs">
       <DependentUpon>SearchPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Semester.cs" />
-    <Compile Include="Subject.cs" />
-    <Compile Include="SubjectTreeViewItem.cs" />
-    <Compile Include="DataRectangleManager.cs" />
-    <Compile Include="EvaluationPage.xaml.cs">
+    <Compile Include="Model\Semester.cs" />
+    <Compile Include="Model\Subject.cs" />
+    <Compile Include="Model\SubjectTreeViewItem.cs" />
+    <Compile Include="Model\DataRectangleManager.cs" />
+    <Compile Include="Page\EvaluationPage.xaml.cs">
       <DependentUpon>EvaluationPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GradePage.xaml.cs">
+    <Compile Include="Page\GradePage.xaml.cs">
       <DependentUpon>GradePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DataRectangle.cs" />
-    <Compile Include="RegistrationDialog.xaml.cs">
+    <Compile Include="Model\DataRectangle.cs" />
+    <Compile Include="Window\RegistrationDialog.xaml.cs">
       <DependentUpon>RegistrationDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StudentPage.xaml.cs">
+    <Compile Include="Page\StudentPage.xaml.cs">
       <DependentUpon>StudentPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StudentTableOption.cs" />
-    <Compile Include="SubjectPage.xaml.cs">
+    <Compile Include="Database\StudentTableOption.cs" />
+    <Compile Include="Page\SubjectPage.xaml.cs">
       <DependentUpon>SubjectPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SubjectTreeViewItemType.cs" />
-    <Compile Include="TasmaAlertMessageBox.xaml.cs">
+    <Compile Include="Model\SubjectTreeViewItemType.cs" />
+    <Compile Include="Dialog\TasmaAlertMessageBox.xaml.cs">
       <DependentUpon>TasmaAlertMessageBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TasmaMenuButtons.cs" />
-    <Compile Include="TasmaConfirmationMessageBox.xaml.cs">
+    <Compile Include="Window\TasmaMenuButtons.cs" />
+    <Compile Include="Dialog\TasmaConfirmationMessageBox.xaml.cs">
       <DependentUpon>TasmaConfirmationMessageBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TasmaPromptMessageBox.xaml.cs">
+    <Compile Include="Dialog\TasmaPromptMessageBox.xaml.cs">
       <DependentUpon>TasmaPromptMessageBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TasmaWindow.xaml.cs">
+    <Compile Include="Window\TasmaWindow.xaml.cs">
       <DependentUpon>TasmaWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="ChangePasswordDialog.xaml">
+    <Page Include="Window\ChangePasswordDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ClassPage.xaml">
+    <Page Include="Page\ClassPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="InputDatabaseWindow.xaml">
+    <Page Include="Window\InputDatabaseWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DatabaseListWindow.xaml">
+    <Page Include="Window\DatabaseListWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EvaluationPage.xaml">
+    <Page Include="Page\EvaluationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GradePage.xaml">
+    <Page Include="Page\GradePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LoginWindow.xaml">
+    <Page Include="Window\LoginWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="AdminDAO.cs" />
+    <Compile Include="Database\AdminDAO.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LoginWindow.xaml.cs">
+    <Compile Include="Window\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="MarkingViewPage.xaml">
+    <Page Include="Page\MarkingViewPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="RegistrationDialog.xaml">
+    <Page Include="Window\RegistrationDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SearchPage.xaml">
+    <Page Include="Page\SearchPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="StudentPage.xaml">
+    <Page Include="Page\StudentPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SubjectPage.xaml">
+    <Page Include="Page\SubjectPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TasmaAlertMessageBox.xaml">
+    <Page Include="Dialog\TasmaAlertMessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TasmaConfirmationMessageBox.xaml">
+    <Page Include="Dialog\TasmaConfirmationMessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TasmaPromptMessageBox.xaml">
+    <Page Include="Dialog\TasmaPromptMessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TasmaWindow.xaml">
+    <Page Include="Window\TasmaWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -271,6 +271,7 @@
   <ItemGroup>
     <Resource Include="Resources\Tasma_GreenAddButton.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.104.0\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.104.0\build\net451\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -31,7 +31,7 @@
                         Style="{StaticResource pageButtonStyle}"
                         Content="BACK">
                     <Button.Tag>
-                        <ImageSource>Resources/Tasma_BackButton.png</ImageSource>
+                        <ImageSource>/Resources/Tasma_BackButton.png</ImageSource>
                     </Button.Tag>
                 </Button>
             </StackPanel>

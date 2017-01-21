@@ -37,7 +37,7 @@
                                 Style="{StaticResource pageButtonStyle}"
                                 Width="55" Height="20" Margin="0,0,5,0" >
                             <Button.Tag>
-                                <ImageSource>Resources/Tasma_BackButton.png</ImageSource>
+                                <ImageSource>/Resources/Tasma_BackButton.png</ImageSource>
                             </Button.Tag>
                         </Button>
                         <Button Name="ClassPage_AddButton" Content="CLASS" 
@@ -47,7 +47,7 @@
                                 Background="{StaticResource tasmaDimGray}"
                                 Style="{StaticResource pageButtonStyle}">
                             <Button.Tag>
-                                <ImageSource>Resources/Tasma_AddButton.png</ImageSource>
+                                <ImageSource>/Resources/Tasma_AddButton.png</ImageSource>
                             </Button.Tag>
                         </Button>
                     </StackPanel>

@@ -32,14 +32,14 @@
                         Margin="0,0,5,0" Style="{StaticResource pageButtonStyle}"
                         Background="{StaticResource tasmaDimGray}">
                     <Button.Tag>
-                        <ImageSource>Resources/Tasma_BackButton.png</ImageSource>
+                        <ImageSource>/Resources/Tasma_BackButton.png</ImageSource>
                     </Button.Tag>
                 </Button>
                 <Button Name="StudentPage_SortButton" Content="SORT" VerticalAlignment="Center" HorizontalAlignment="Right"
                         Width="50" Height="20" Style="{StaticResource pageButtonStyle}"
                         Background="{StaticResource tasmaDimGray}">
                     <Button.Tag>
-                        <ImageSource>Resources/Tasma_SortButton.png</ImageSource>
+                        <ImageSource>/Resources/Tasma_SortButton.png</ImageSource>
                     </Button.Tag>
                 </Button>
             </StackPanel>
