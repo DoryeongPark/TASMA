@@ -1710,6 +1710,46 @@ namespace TASMA
                 return dataTable;
             }
 
+            public DataTable GetFilteredStudentDataTable(DataTable filter, string gradeName, string className = null)
+            {
+                string classPhase = ";";
+
+                if(className != null)
+                {
+                    classPhase = " AND CLASS = '" + className + "';";
+                }
+
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+
+                var cmdStr = "SELECT * FROM STUDENT WHERE GRADE = '" + gradeName + "'" + classPhase;
+
+                var cmd = new SQLiteCommand(cmdStr, conn);
+                var reader = cmd.ExecuteReader();
+
+                var dataTable = new DataTable();
+                dataTable.Load(reader);
+
+                for(int i = 0; i < dataTable.Rows.Count; ++i)
+                {
+                    var contains = filter.AsEnumerable().Any(
+                        p => (string)dataTable.Rows[i]["GRADE"] == p.Field<string>("GRADE") &&
+                             (string)dataTable.Rows[i]["CLASS"] == p.Field<string>("CLASS") &&
+                             (string)dataTable.Rows[i]["SNAME"] == p.Field<string>("SNAME"));
+                    if (!contains)
+                    {
+                        dataTable.Rows.RemoveAt(i);
+                        i = -1;
+                    }
+                }
+
+                cmd.Dispose();
+                conn.Close();
+
+                return dataTable;
+            }
+
         }
     }
 }

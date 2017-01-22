@@ -327,20 +327,44 @@ namespace TASMA.Window
             cellStyle.BasedOn = this.TryFindResource("printCellStyle") as Style;
             dataGrid.CellStyle = cellStyle;
             
+            if(SelectedNameSheetClassComboBoxItem == null)
+            {
+                var classColumn = new DataGridTextColumn();
+                classColumn.Header = "CLASS";
+                classColumn.Width = new DataGridLength(80);
+                classColumn.Binding = new Binding("CLASS");
+                dataGrid.Columns.Add(classColumn);
+            }
+
             var noColumn = new DataGridTextColumn();
             noColumn.Header = "NO";
             noColumn.Width = new DataGridLength(40);
-            noColumn.Binding = new Binding("GRADE");
+            noColumn.Binding = new Binding("SNUM");
             dataGrid.Columns.Add(noColumn);
-
 
             var nameColumn = new DataGridTextColumn();
             nameColumn.Header = "STUDENT NAME";
-            nameColumn.Width = new DataGridLength(250);
+            nameColumn.Width = new DataGridLength(200);
             nameColumn.Binding = new Binding("SNAME");
             dataGrid.Columns.Add(nameColumn);
 
-            dataGrid.ItemsSource = originalDataTable.AsDataView();
+            var phoneColumn = new DataGridTextColumn();
+            phoneColumn.Header = "PHONE";
+            phoneColumn.Width = new DataGridLength(100);
+            phoneColumn.Binding = new Binding("PNUM");
+            dataGrid.Columns.Add(phoneColumn);
+
+            var adrColumn = new DataGridTextColumn();
+            adrColumn.Header = "ADDRESS";
+            adrColumn.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
+            adrColumn.Binding = new Binding("ADDRESS");
+            dataGrid.Columns.Add(adrColumn);
+
+            /* 데이터 추출 */
+            var studentDataTable = adminDAO.GetFilteredStudentDataTable(originalDataTable, 
+                                                                    SelectedNameSheetGradeComboBoxItem, 
+                                                                    SelectedNameSheetClassComboBoxItem);
+            dataGrid.ItemsSource = studentDataTable.AsDataView();
             
             tableArea.Children.Add(dataGrid);
 
