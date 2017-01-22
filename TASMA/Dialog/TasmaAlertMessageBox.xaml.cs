@@ -21,9 +21,10 @@ namespace TASMA
     {
         public TasmaAlertMessageBox(string title, string message)
         {
+            InitializeComponent();
+
             TasmaAlert_Title.Text = title;
             TasmaAlert_Message.Text = message;
-            InitializeComponent();
         }
 
         private void OnLeftMouseButtonDown(object sender, MouseButtonEventArgs e)

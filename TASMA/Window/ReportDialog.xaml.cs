@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
@@ -33,38 +34,182 @@ namespace TASMA.Window
         private string year;
         private string region;
         private string address;
-        
-        public ReportDialog(AdminDAO adminDAO, DataTable originalDataTable)
+
+        /* ReportListBox Properties */
+        private ObservableCollection<string> reportListBoxItems;
+        public ObservableCollection<string> ReportListBoxItems
+        {
+            get { return reportListBoxItems; }
+            set { reportListBoxItems = value;
+                OnPropertyChanged("ReportListBoxItems"); }
+        }
+
+        private string selectedReportListBoxItem;
+        public string SelectedReportListBoxItem
+        {
+            get { return selectedReportListBoxItem; }
+            set { selectedReportListBoxItem = value;
+                OnPropertyChanged("SelectedReportListBoxItem"); }
+        }
+
+
+        /* NameSheetOption Properties */
+        private ObservableCollection<string> nameSheetGradeComboBoxItems;
+        public ObservableCollection<string> NameSheetGradeComboBoxItems
+        {
+            get { return nameSheetGradeComboBoxItems; }
+            set
+            {
+                nameSheetGradeComboBoxItems = value;
+                OnPropertyChanged("NameSheetGradeComboBoxItems");
+            }
+        }
+
+        private string selectedNameSheetGradeComboBoxItem;
+        public string SelectedNameSheetGradeComboBoxItem
+        {
+            get { return selectedNameSheetGradeComboBoxItem; }
+            set
+            {
+                selectedNameSheetGradeComboBoxItem = value;
+                OnPropertyChanged("SelectedNameSheetGradeComboBoxItem");
+            }
+        }
+
+        private ObservableCollection<string> nameSheetClassComboBoxItems;
+        public ObservableCollection<string> NameSheetClassComboBoxItems
+        {
+            get { return nameSheetClassComboBoxItems; }
+            set
+            {
+                nameSheetClassComboBoxItems = value;
+                OnPropertyChanged("NameSheetClassComboBoxItems");
+            }
+        }
+
+        private string selectedNameSheetClassComboBoxItem;
+        public string SelectedNameSheetClassComboBoxItem
+        {
+            get { return selectedNameSheetClassComboBoxItem; }
+            set
+            {
+                selectedNameSheetClassComboBoxItem = value;
+                OnPropertyChanged("SelectedNameSheetClassComboBoxItem");
+            }
+        }
+
+
+        public ReportDialog(AdminDAO adminDAO, DataTable dataTable)
         {
             this.adminDAO = adminDAO;
 
             /* 데이터 테이블 복사 및 필터링 처리 루틴 */
-            object copiedDataTable = originalDataTable.Clone() as object;
-            originalDataTable = copiedDataTable as DataTable;
-            
+            object copiedDataTable = dataTable.Copy() as object;
+            this.originalDataTable = copiedDataTable as DataTable;
+
             for (int i = 0; i < originalDataTable.Rows.Count; ++i)
             {
-                if((bool)originalDataTable.Rows[i]["Print"] == false)
+                if ((bool)originalDataTable.Rows[i]["Print"] == false)
                 {
                     originalDataTable.Rows.RemoveAt(i);
                     i = -1;
                 }
             }
-                        
-            /* 메타 데이터 루틴 */
+
+            /* 메타 데이터 획득 루틴 */
             var metaData = adminDAO.GetDBInfo();
-            
-            
-            
-            
+            schoolName = metaData[0];
+            year = metaData[1];
+            region = metaData[2];
+            address = metaData[3];
+
+
+            DataContext = this;
             InitializeComponent();
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
+            
+            /* Datatable 예외처리 */
+            if (originalDataTable == null ||
+                originalDataTable.Rows.Count == 0)
+            {
+                var alert = new TasmaAlertMessageBox("Alert", "There are no records to print");
+                alert.ShowDialog();
+                Close();
+            }
+            /* 데이터 바인딩 객체 초기화 */
+            NameSheetGradeComboBoxItems = new ObservableCollection<string>();
+            NameSheetClassComboBoxItems = new ObservableCollection<string>();
+
+            /* Report 리스트박스 초기화 */
+            ReportListBoxItems = new ObservableCollection<string>();
+            ReportListBoxItems.Add("NameSheet");
+            ReportListBoxItems.Add("Subject");
+            ReportListBoxItems.Add("Student");
+
+            SelectedReportListBoxItem = "NameSheet";
+
             PrintDialog_DocumentViewer.FitToWidth();
             OnStudentListReportSelected();
         }
+
+        private void OnSubjectListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (SelectedReportListBoxItem == "NameSheet")
+            {
+                NameSheetOption.Visibility = Visibility.Visible;
+                SubjectReportOption.Visibility = Visibility.Hidden;
+                StudentReportOption.Visibility = Visibility.Hidden;
+
+                /* 바인딩 상태 초기화 */
+                NameSheetGradeComboBoxItems.Clear();
+                SelectedNameSheetGradeComboBoxItem = null;
+
+                NameSheetClassComboBoxItems.Clear();
+                SelectedNameSheetClassComboBoxItem = null; 
+
+                /* Grade ComboBox 초기화 */
+                var gradeList = originalDataTable.AsEnumerable().Select(r => r.Field<string>("GRADE")).Distinct().ToList();
+                foreach (var gradeName in gradeList)
+                    NameSheetGradeComboBoxItems.Add(gradeName);
+
+            }
+            else if (SelectedReportListBoxItem == "Subject")
+            {
+                NameSheetOption.Visibility = Visibility.Hidden;
+                SubjectReportOption.Visibility = Visibility.Visible;
+                StudentReportOption.Visibility = Visibility.Hidden;
+            }
+            else if(SelectedReportListBoxItem == "Student")
+            {
+                NameSheetOption.Visibility = Visibility.Hidden;
+                SubjectReportOption.Visibility = Visibility.Hidden;
+                StudentReportOption.Visibility = Visibility.Visible;
+            }
+        }
+
+        /* Namesheet Option Methods */
+        private void NameSheetGradeComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            /* Make & Show FixedDocument */
+
+
+            /* class ComboBox 초기화 */
+            var classList = (from DataRow row in originalDataTable.Rows
+                          where (string)row["GRADE"] == SelectedNameSheetGradeComboBoxItem
+                          select (string)row["CLASS"]).Distinct().ToList();
+            foreach (var className in classList)
+                NameSheetClassComboBoxItems.Add(className);
+        }
+
+        private void NameSheetClassComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            /* Make & Show FixedDocument */
+        }
+
+
 
         private void OnStudentListReportSelected()
         {
@@ -91,7 +236,7 @@ namespace TASMA.Window
             layout.HorizontalAlignment = HorizontalAlignment.Center;
             background.Children.Add(layout);
             
-            //타이틀 영역
+            /* 타이틀 영역 */
             var titleArea = new StackPanel();
             titleArea.HorizontalAlignment = HorizontalAlignment.Center;
             titleArea.VerticalAlignment = VerticalAlignment.Center;
@@ -99,13 +244,13 @@ namespace TASMA.Window
             titleArea.Background = Brushes.Transparent;
             layout.Children.Add(titleArea);
 
-            //분급 영역
+            /* 분급 영역 */
             var descArea = new StackPanel();
             descArea.Height = 30;
             descArea.HorizontalAlignment = HorizontalAlignment.Center;
             layout.Children.Add(descArea);
 
-            //표 영역
+            /* 표 영역 */
             var tableArea = new StackPanel();
             tableArea.HorizontalAlignment = HorizontalAlignment.Center;
             layout.Children.Add(tableArea);
@@ -186,6 +331,11 @@ namespace TASMA.Window
             return fixedDoc;
         }
 
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
+        
     }
 }
