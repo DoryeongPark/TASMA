@@ -186,7 +186,7 @@ namespace TASMA
 
         private void OnPrintButtonClicked(object sender, RoutedEventArgs e)
         {
-            var pd = new Window.PrintDialog(adminDAO, SearchTable);
+            var pd = new Window.ReportDialog(adminDAO, SearchTable);
             pd.ShowDialog();
         }
 

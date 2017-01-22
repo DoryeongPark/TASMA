@@ -20,7 +20,7 @@ namespace TASMA
             private string currentDB = null;
             private string currentPassword = null;
 
-            public string CurrentId
+            public string CurrentDB
             {
                 get { return currentDB; }
             }
@@ -341,8 +341,13 @@ namespace TASMA
             /// </summary>
             /// <param name="dbPath">데이터베이스 경로</param>
             /// <returns></returns>
-            public string[] GetDBInfo(string dbPath)
+            public string[] GetDBInfo(string dbPath = null)
             {
+                if(dbPath == null)
+                {
+                    dbPath = currentDB;
+                }
+
                 var connStr = @"Data Source=" + dbPath + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
