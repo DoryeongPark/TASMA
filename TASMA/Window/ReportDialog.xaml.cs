@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -152,10 +153,9 @@ namespace TASMA.Window
             SelectedReportListBoxItem = "NameSheet";
 
             PrintDialog_DocumentViewer.FitToWidth();
-            OnStudentListReportSelected();
         }
 
-        private void OnSubjectListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnReportListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (SelectedReportListBoxItem == "NameSheet")
             {
@@ -174,6 +174,8 @@ namespace TASMA.Window
                 var gradeList = originalDataTable.AsEnumerable().Select(r => r.Field<string>("GRADE")).Distinct().ToList();
                 foreach (var gradeName in gradeList)
                     NameSheetGradeComboBoxItems.Add(gradeName);
+                if (gradeList.Count != 0)
+                    SelectedNameSheetGradeComboBoxItem = gradeList[0];
 
             }
             else if (SelectedReportListBoxItem == "Subject")
@@ -193,25 +195,30 @@ namespace TASMA.Window
         /* Namesheet Option Methods */
         private void NameSheetGradeComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            /* 바인딩 상태 초기화 */
+            NameSheetClassComboBoxItems.Clear();
+            SelectedNameSheetClassComboBoxItem = null;
+
             /* Make & Show FixedDocument */
+            DisplayNameSheet();
 
-
-            /* class ComboBox 초기화 */
+            /* Class ComboBox 초기화 */
             var classList = (from DataRow row in originalDataTable.Rows
                           where (string)row["GRADE"] == SelectedNameSheetGradeComboBoxItem
                           select (string)row["CLASS"]).Distinct().ToList();
             foreach (var className in classList)
                 NameSheetClassComboBoxItems.Add(className);
+           
         }
 
         private void NameSheetClassComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             /* Make & Show FixedDocument */
+            DisplayNameSheet();
         }
 
 
-
-        private void OnStudentListReportSelected()
+        private void DisplayNameSheet()
         {
             /* 전체 레이아웃 */
             var background = new Grid();
@@ -234,39 +241,109 @@ namespace TASMA.Window
             var layout = new StackPanel();
             layout.Orientation = Orientation.Vertical;
             layout.HorizontalAlignment = HorizontalAlignment.Center;
+            layout.Width = 750;
             background.Children.Add(layout);
-            
+
             /* 타이틀 영역 */
             var titleArea = new StackPanel();
             titleArea.HorizontalAlignment = HorizontalAlignment.Center;
             titleArea.VerticalAlignment = VerticalAlignment.Center;
             titleArea.Height = 120;
             titleArea.Background = Brushes.Transparent;
+            titleArea.Margin = new Thickness(0, 0, 0, 15);
             layout.Children.Add(titleArea);
 
             /* 분급 영역 */
-            var descArea = new StackPanel();
+            var descArea = new Grid();
             descArea.Height = 30;
-            descArea.HorizontalAlignment = HorizontalAlignment.Center;
             layout.Children.Add(descArea);
 
             /* 표 영역 */
             var tableArea = new StackPanel();
             tableArea.HorizontalAlignment = HorizontalAlignment.Center;
             layout.Children.Add(tableArea);
-            
+
+            /* 타이틀 텍스트 */
             var title = new TextBlock();
-            title.Text = "TITLE";
+            title.TextAlignment = TextAlignment.Center;
+            title.FontSize = 20;
+            title.FontWeight = FontWeights.Bold;
+            title.Text = "\n" + region + " CITY COUNCIL\n"
+                       + schoolName + "\n"
+                       + "STUDENT NAMESHEET";
             titleArea.Children.Add(title);
 
-            var desc = new TextBlock();
-            desc.Text = "DESC";
-            descArea.Children.Add(desc);
+            /* 분급 텍스트 */
+            var master = new TextBlock();
+            master.TextAlignment = TextAlignment.Left;
+            master.FontSize = 12;
+            master.Text = Space(5) + "MASTER: ";
+            descArea.Children.Add(master);
 
-            var table = new TextBlock();
-            table.Text = "TABLE";
-            tableArea.Children.Add(table);
+            var year = new TextBlock();
+            year.TextAlignment = TextAlignment.Right;
+            year.FontSize = 12;
+            year.Text = "YEAR:" + Space(5) + this.year + Space(5);
+            descArea.Children.Add(year);
+
+            if (SelectedNameSheetClassComboBoxItem == null)
+            {
+                var grade = new TextBlock();
+                grade.TextAlignment = TextAlignment.Right;
+                grade.FontSize = 12;
+                grade.Text = "GRADE:" + Space(3) + SelectedNameSheetGradeComboBoxItem + Space(40);
+                descArea.Children.Add(grade);
+            }
+            else
+            {
+                var classText = new TextBlock();
+                classText.HorizontalAlignment = HorizontalAlignment.Right;
+                classText.TextAlignment = TextAlignment.Right;
+                classText.FontSize = 12;
+                classText.Text = "CLASS:" + Space(3) + SelectedNameSheetClassComboBoxItem + Space(40);
+                descArea.Children.Add(classText);
+
+                var grade = new TextBlock();
+                grade.TextAlignment = TextAlignment.Right;
+                grade.FontSize = 12;
+                grade.Text = "GRADE:" + Space(3) + SelectedNameSheetGradeComboBoxItem + Space(65);
+                descArea.Children.Add(grade);
+            }
+
+            /* 학생 테이블 */
+            DataGrid dataGrid = new DataGrid();
+            dataGrid.HeadersVisibility = DataGridHeadersVisibility.Column;
+            dataGrid.Width = 720;
+            dataGrid.BorderBrush = Brushes.Black;
+            dataGrid.Foreground = Brushes.Black;
+            dataGrid.Background = Brushes.White;
+            dataGrid.AutoGenerateColumns = false;
+            dataGrid.CanUserAddRows = false;
+            dataGrid.Visibility = Visibility.Visible;
+            var headerStyle = new Style(typeof(DataGridColumnHeader));
+            headerStyle.BasedOn = this.TryFindResource("printHeaderStyle") as Style;
+            dataGrid.ColumnHeaderStyle = headerStyle;
+            var cellStyle = new Style(typeof(DataGridCell));
+            cellStyle.BasedOn = this.TryFindResource("printCellStyle") as Style;
+            dataGrid.CellStyle = cellStyle;
             
+            var noColumn = new DataGridTextColumn();
+            noColumn.Header = "NO";
+            noColumn.Width = new DataGridLength(40);
+            noColumn.Binding = new Binding("GRADE");
+            dataGrid.Columns.Add(noColumn);
+
+
+            var nameColumn = new DataGridTextColumn();
+            nameColumn.Header = "STUDENT NAME";
+            nameColumn.Width = new DataGridLength(250);
+            nameColumn.Binding = new Binding("SNAME");
+            dataGrid.Columns.Add(nameColumn);
+
+            dataGrid.ItemsSource = originalDataTable.AsDataView();
+            
+            tableArea.Children.Add(dataGrid);
+
             var fixedDocument = GetFixedDocument(background, new PrintDialog());
             PrintDialog_DocumentViewer.Document = fixedDocument;
         }
@@ -329,6 +406,15 @@ namespace TASMA.Window
                 yOffset += visibleSize.Height;
             }
             return fixedDoc;
+        }
+
+        private string Space(int count)
+        {
+            var result = "";
+            for (int i = 0; i < count; ++i)
+                result += " ";
+
+            return result;
         }
 
         protected void OnPropertyChanged(string propertyName)

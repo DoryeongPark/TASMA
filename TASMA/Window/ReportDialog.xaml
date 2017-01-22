@@ -11,6 +11,29 @@
         BorderBrush="{StaticResource tasmaLightGray}"
         Background="White"
         BorderThickness="1" Loaded="OnLoaded">
+    <Window.Resources>
+        <Style x:Key="printHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Height" Value="25" />
+        </Style>
+        <Style x:Key="printCellStyle" TargetType="{x:Type DataGridCell}">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="0.3"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Height" Value="25" />
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
@@ -58,7 +81,7 @@
                                  FontWeight="DemiBold"
                                  ItemsSource="{Binding ReportListBoxItems}"
                                  SelectedItem="{Binding SelectedReportListBoxItem}"
-                                 SelectionChanged="OnSubjectListBoxSelectionChanged"/>
+                                 SelectionChanged="OnReportListBoxSelectionChanged"/>
                     </StackPanel>
                 </Grid>
                 <Grid Grid.Row="1">
