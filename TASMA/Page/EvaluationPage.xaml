@@ -123,8 +123,8 @@
                              BorderBrush="{StaticResource tasmaNormalGray}"
                              SelectedItem="{Binding SelectedListBoxItem}"
                              ItemContainerStyle="{StaticResource listBoxItemStyle}"
+                             DisplayMemberPath="Value" SelectedValuePath="Key"
                              FontWeight="DemiBold">
-                        
                     </ListBox>
                 </Grid>
             </Grid>

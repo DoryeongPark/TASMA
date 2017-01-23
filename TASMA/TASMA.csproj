@@ -114,6 +114,9 @@
       <DependentUpon>GradePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\DataRectangle.cs" />
+    <Compile Include="Window\InputEvaluationDialog.xaml.cs">
+      <DependentUpon>InputEvaluationDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Window\ReportDialog.xaml.cs">
       <DependentUpon>ReportDialog.xaml</DependentUpon>
     </Compile>
@@ -162,6 +165,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Page\GradePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Window\InputEvaluationDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

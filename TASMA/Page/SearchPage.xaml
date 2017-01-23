@@ -95,7 +95,8 @@
                     VerticalContentAlignment="Center">
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="1*" Header="Grade" 
-                                            Binding="{Binding GRADE}" CanUserResize="False"/>
+                                            Binding="{Binding GRADE}" CanUserResize="False"
+                                            IsReadOnly="True"/>
                         <DataGridTextColumn Width="1*" Header="Class" Binding="{Binding CLASS}" 
                                             IsReadOnly="True"/>
                         <DataGridTextColumn Width="30" Header="No" Binding="{Binding SNUM}" 

@@ -37,12 +37,14 @@ namespace TASMA
             set { subjectTreeViewItems = value; OnPropertyChanged("SubjectTreeViewItems"); }
         }
 
-        private ObservableCollection<string> evaluationListBoxItems;
-        public ObservableCollection<string> EvaluationListBoxItems
+        private ObservableCollection<KeyValuePair<string, string>> evaluationListBoxItems;
+        public ObservableCollection<KeyValuePair<string, string>> EvaluationListBoxItems
         {
             get { return evaluationListBoxItems; }
             set { evaluationListBoxItems = value; OnPropertyChanged("EvaluationListBoxItems"); }
         }
+
+        private List<int> currentRatio;
 
         private string selectedListBoxItem;
         public string SelectedListBoxItem
@@ -111,12 +113,15 @@ namespace TASMA
 
 
             //리스트박스 데이터 로드(ViewModel)
-            var evaluationList = adminDAO.GetEvaluationList(subjectName);
-            evaluationListBoxItems = new ObservableCollection<string>();
+            var evaluationList = adminDAO.GetEvaluationAndRatio(subjectName);
+            evaluationListBoxItems = new ObservableCollection<KeyValuePair<string, string>>();
+            currentRatio = new List<int>();
 
             foreach (var evaluationData in evaluationList)
             {
-                evaluationListBoxItems.Add(evaluationData);
+                evaluationListBoxItems.Add(new KeyValuePair<string, string>(evaluationData.Item1,
+                                                                            evaluationData.Item1 + "(" + evaluationData.Item2 + "%)"));
+                currentRatio.Add(evaluationData.Item2);
             }
 
             /* 트리 뷰 이벤트 추가 */
@@ -198,20 +203,75 @@ namespace TASMA
         /// <param name="e"></param>
         private void OnAddListBoxItem(object sender, RoutedEventArgs e)
         {
-            var dialog = new TasmaPromptMessageBox("Add evaluation", "Input evaluation name");
-            dialog.ShowDialog();
+            var evaluationNameDialog = new TasmaPromptMessageBox("Add evaluation", "Input evaluation name");
+            evaluationNameDialog.ShowDialog();
 
-            if (dialog.IsDetermined)
+            if (evaluationNameDialog.IsDetermined)
             {
                 //Check Duplication
                 foreach (var evaluationItem in evaluationListBoxItems)
-                    if (evaluationItem.ToUpper() == dialog.Input.ToUpper())
+                    if (evaluationItem.Key.ToUpper() == evaluationNameDialog.Input.ToUpper())
                     {
                         MessageBox.Show("Evaluations are duplicated");
                         return;
                     }
-                evaluationListBoxItems.Add(dialog.Input);
+            }else
+            {
+                return;
             }
+
+            var ratioDialog = new TasmaPromptMessageBox("Input ratio", "Input evaluation ratio (0 ~ 100)%");
+            ratioDialog.ShowDialog();
+
+            int ratio = 0;
+
+            if (ratioDialog.IsDetermined)
+            {
+                try
+                {
+                    ratio = int.Parse(ratioDialog.Input);
+                }
+                catch (Exception)
+                {
+                    var alert = new TasmaAlertMessageBox("Incorrect value", "Please input number");
+                    alert.ShowDialog();
+                    return;
+                }
+
+                if(ratio < 0 && 100 < ratio)
+                {
+                    var alert = new TasmaAlertMessageBox("Incorrect number", "Please input number between 0 and 100");
+                    alert.ShowDialog();
+                    return;
+                }
+                
+            }else
+            {
+                return;
+            }
+
+            int currentSum = 0;
+            foreach(var num in currentRatio)
+                currentSum += num;
+
+            if(currentSum + ratio > 100)
+            {
+                var ratioCount = currentRatio.Count;
+                var newRatio = (100 - ratio) / ratioCount;
+              
+                currentRatio.Clear();
+                for (int i = 0; i < ratioCount; ++i)
+                {
+                    currentRatio.Add(newRatio);
+                    EvaluationListBoxItems[i] = new KeyValuePair<string, string>(EvaluationListBoxItems[i].Key, 
+                                                          EvaluationListBoxItems[i].Key + "(" + newRatio + "%)");
+
+                }
+            }
+
+            currentRatio.Add(ratio);
+            EvaluationListBoxItems.Add(new KeyValuePair<string, string>(evaluationNameDialog.Input, 
+                                                    evaluationNameDialog.Input + "(" + ratio + "%)"));    
         }
 
         /// <summary>
@@ -231,15 +291,17 @@ namespace TASMA
             {
                 //Check Duplication
                 foreach (var evaluationItem in evaluationListBoxItems)
-                    if (evaluationItem.ToUpper() == dialog.Input.ToUpper())
+                    if (evaluationItem.Key.ToUpper() == dialog.Input.ToUpper())
                     {
                         MessageBox.Show("Evaluations are duplicated");
                         return;
                     }
-
-                adminDAO.UpdateEvaluation(subjectName, SelectedListBoxItem, dialog.Input);
-                SelectedListBoxItem = dialog.Input;
             }
+
+
+
+            //adminDAO.UpdateEvaluation(subjectName, SelectedListBoxItem, dialog.Input);
+            //SelectedListBoxItem = dialog.Input;
         }
 
         /// <summary>
@@ -255,8 +317,9 @@ namespace TASMA
             var dialog = new TasmaConfirmationMessageBox("Delete evaluation", "Are you sure delete evaluation? - " + SelectedListBoxItem);
             dialog.ShowDialog();
 
-            if (dialog.Yes)
-                evaluationListBoxItems.Remove(SelectedListBoxItem);
+
+            //if (dialog.Yes)
+            //    evaluationListBoxItems.Remove(SelectedListBoxItem);
         }
 
 
@@ -269,9 +332,9 @@ namespace TASMA
             var currentClasses = adminDAO.GetSubjectClasses(subjectName);
             var currentEvaluations = adminDAO.GetEvaluationList(subjectName);
 
-            var newEvaluations = new List<string>();
-            foreach (var evaluationItem in evaluationListBoxItems)
-                newEvaluations.Add(evaluationItem);
+            //var newEvaluations = new List<string>();
+            //foreach (var evaluationItem in evaluationListBoxItems)
+            //    newEvaluations.Add(evaluationItem);
 
             //반 등록 - 현재 데이터베이스에 ViewModel 상태 반영
             foreach (var gradeItem in subjectTreeViewItems)
@@ -305,23 +368,23 @@ namespace TASMA
                 }
             }
 
-            //평가 항목 등록 - 현재 데이터베이스에 ViewModel 상태 반영
-            foreach (var newEvaluation in newEvaluations)
-            {
-                //현재 리스트에 존재하지 않지만, 새 리스트에 포함 -> 추가
-                if (!currentEvaluations.Contains(newEvaluation))
-                {
-                    adminDAO.CreateEvaluation(subjectName, newEvaluation);
-                }
-            }
-            foreach (var currentEvaluation in currentEvaluations)
-            {
-                //현재 리스트에 존재하지만, 새 리스트에 포함되지 않음 -> 삭제
-                if (!newEvaluations.Contains(currentEvaluation))
-                {
-                    adminDAO.DeleteEvaluation(subjectName, currentEvaluation);
-                }
-            }
+            ////평가 항목 등록 - 현재 데이터베이스에 ViewModel 상태 반영
+            //foreach (var newEvaluation in newEvaluations)
+            //{
+            //    //현재 리스트에 존재하지 않지만, 새 리스트에 포함 -> 추가
+            //    if (!currentEvaluations.Contains(newEvaluation))
+            //    {
+            //        adminDAO.CreateEvaluation(subjectName, newEvaluation);
+            //    }
+            //}
+            //foreach (var currentEvaluation in currentEvaluations)
+            //{
+            //    //현재 리스트에 존재하지만, 새 리스트에 포함되지 않음 -> 삭제
+            //    if (!newEvaluations.Contains(currentEvaluation))
+            //    {
+            //        adminDAO.DeleteEvaluation(subjectName, currentEvaluation);
+            //    }
+            //}
 
         }
 

@@ -1,0 +1,79 @@
+﻿<Window x:Class="TASMA.TasmaPromptMessageBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TASMA"
+        mc:Ignorable="d"
+        Height="150" Width="200" AllowsTransparency="True" 
+        WindowStyle="None" Background="{StaticResource tasmaDimGray}" 
+        BorderBrush="DimGray" BorderThickness="1" Loaded="OnLoaded" 
+        MouseLeftButtonDown="OnLeftMouseButtonDown"
+        FocusManager.FocusedElement="{Binding ElementName=TasmaPromptWindow_TextBox}">
+    <Window.Resources>
+        <Image x:Key="tasmaCloseButton" Source="/Resources/Tasma_CloseButton.png" Width="15" Height="15"/>
+        <Style x:Key="promptButtonStyle">
+            <Setter Property="Button.Background" Value="{StaticResource tasmaGreen}" />
+            <Setter Property="Button.Foreground" Value="{StaticResource tasmaWhite}" />
+            <Setter Property="Button.Width" Value="50"/>
+            <Setter Property="Button.Height" Value="18" />
+            <Setter Property="Button.HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Button.VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Button.FontFamily" Value="Segoe UI"/>
+            <Setter Property="Button.Margin" Value="5,2,5,0"/>
+            <Setter Property="Button.FontSize" Value="10" />
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="3*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Button Content="{StaticResource tasmaCloseButton}"
+                    VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,3,0" 
+                    BorderThickness="0" Background="Transparent" />
+            <TextBlock Text="Input Evaluation" FontSize="11" FontFamily="{StaticResource tasmaFont}" 
+                       FontWeight="Bold" Foreground="{StaticResource tasmaGreen}" 
+                       HorizontalAlignment="Left" VerticalAlignment="Center" Margin="4,0,0,0"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <StackPanel VerticalAlignment="Center" Margin="10,0,10,0">
+                <TextBlock FontWeight="Bold" FontSize="9" 
+                           Text="Evaluation name" 
+                           Margin="0,0,0,5"
+                           Foreground="{StaticResource tasmaLightGray}"/>
+                <TextBox Name="InputEvaluationDialog_EvaluationName" MaxLength="15" 
+                         Width="177" Height="15" 
+                         HorizontalAlignment="Center" 
+                         VerticalAlignment="Center" FontSize="10" FontFamily="{StaticResource tasmaFont}"
+                         Background="{StaticResource tasmaDemiGray}" 
+                         Foreground="{StaticResource tasmaLightGray}"
+                         KeyDown="OnKeyDown"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="2">
+            <StackPanel VerticalAlignment="Center" Margin="10,0,10,0">
+                <TextBlock FontWeight="Bold" FontSize="9" 
+                           Text="Ratio - (0 ~ 100)%" 
+                           Margin="0,0,0,5"
+                           Foreground="{StaticResource tasmaLightGray}"/>
+                <TextBox Name="InputEvaluationDialog_Ratio" MaxLength="15" 
+                         Width="177" Height="15" 
+                         HorizontalAlignment="Center" 
+                         VerticalAlignment="Center" FontSize="10" FontFamily="{StaticResource tasmaFont}"
+                         Background="{StaticResource tasmaDemiGray}" 
+                         Foreground="{StaticResource tasmaLightGray}"
+                         KeyDown="OnKeyDown"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="3">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" >
+                <Button Content="OK" Style="{StaticResource promptButtonStyle}"/>
+                <Button Content="Cancel" Style= "{StaticResource promptButtonStyle}"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

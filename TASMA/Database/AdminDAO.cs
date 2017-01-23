@@ -310,6 +310,7 @@ namespace TASMA
                 cmd.CommandText = "CREATE TABLE IF NOT EXISTS EVALUATION("
                                 + "SUBJECT STRING NOT NULL, "
                                 + "EVALUATION STRING NOT NULL, "
+                                + "RATIO INTEGER, "
                                 + "PRIMARY KEY(SUBJECT, EVALUATION), "
                                 + "FOREIGN KEY(SUBJECT) REFERENCES SUBJECT(SUBJECT) "
                                 + "ON DELETE CASCADE "
@@ -1056,9 +1057,9 @@ namespace TASMA
                 {
                     cmd.CommandText = "INSERT INTO SUBJECT VALUES('" + subjectName + "');";
                     cmd.ExecuteNonQuery();
-                    cmd.CommandText = "INSERT INTO EVALUATION VALUES('" + subjectName + "', " + "'Midterm');";
+                    cmd.CommandText = "INSERT INTO EVALUATION VALUES('" + subjectName + "', " + "'Midterm', 50);";
                     cmd.ExecuteNonQuery();
-                    cmd.CommandText = "INSERT INTO EVALUATION VALUES('" + subjectName + "', " + "'Final');";
+                    cmd.CommandText = "INSERT INTO EVALUATION VALUES('" + subjectName + "', " + "'Final', 50);";
                     cmd.ExecuteNonQuery();
                     cmd.CommandText = "CREATE TABLE IF NOT EXISTS " + subjectName + "("
                                     + "SEMESTER INTEGER NOT NULL, "
@@ -1176,6 +1177,68 @@ namespace TASMA
                 cmd.Dispose();
                 conn.Close();
                 return true;
+            }
+
+            /// <summary>
+            /// 평가 항목에 반영 비율을 추가합니다.
+            /// </summary>
+            /// <param name="subjectName">과목</param>
+            /// <param name="evaluationName">평가 항목</param>
+            /// <param name="ratio">반영 비율</param>
+            /// <returns>실행 성공 여부</returns>
+            public bool InsertRatio(string subjectName, string evaluationName, int ratio)
+            {
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+                var cmd = new SQLiteCommand(conn);
+
+                try
+                {
+                    cmd.CommandText = "UPDATE EVALUATION SET RATIO = " + ratio + " WHERE SUBJECT = '" + subjectName + "' AND EVALUATION = '" + evaluationName + "';";
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException se)
+                {
+                    MessageBox.Show(se.Message);
+                    return false;
+                }
+
+                cmd.Dispose();
+                conn.Close();
+                return true;
+            }
+
+
+            /// <summary>
+            /// 평가 항목과 반영 비율 리스트를 가져옵니다.
+            /// </summary>
+            /// <param name="subjectName">과목 이름</param>
+            /// <returns>실행 성공 여부</returns>
+            public List<Tuple<string, int>> GetEvaluationAndRatio(string subjectName)
+            {
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+
+                var cmdStr = "SELECT EVALUATION, RATIO FROM EVALUATION WHERE SUBJECT = '" + subjectName + "';";
+                var cmd = new SQLiteCommand(cmdStr, conn);
+                var reader = cmd.ExecuteReader();
+                var result = new List<Tuple<string, int>>();
+
+                while (reader.Read())
+                {
+                    int ratio = (int)((long)reader["RATIO"]);
+                    string evaluation = null;
+
+                    if (reader["EVALUATION"] != null)
+                        evaluation = (string)reader["EVALUATION"];
+
+                    result.Add(new Tuple<string, int>(evaluation, ratio));
+                }
+
+                conn.Close();
+                return result;
             }
 
 
