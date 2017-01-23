@@ -209,6 +209,11 @@ namespace TASMA
             {
                 textBox.Text = (-1.0f * float.Parse(newValueText)).ToString();
             }
+
+            if(Math.Abs(newValue) > 100)
+            {
+                textBox.Text = "100";
+            }
            
         }
 

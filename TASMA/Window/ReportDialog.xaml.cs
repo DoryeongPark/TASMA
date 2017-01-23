@@ -111,7 +111,7 @@ namespace TASMA.Window
         public KeyValuePair<int, string> SelectedSubjectSemesterComboBoxItem
         {
             get { return selectedSubjectSemesterComboBoxItem; }
-            set { selectedSubjectSemesterComboBoxItem = value; OnPropertyChanged("SelectedSemesterComboBoxItem"); }
+            set { selectedSubjectSemesterComboBoxItem = value; OnPropertyChanged("SelectedSubjectSemesterComboBoxItem"); }
         }
 
         private ObservableCollection<string> subjectComboBoxItems;
@@ -228,8 +228,7 @@ namespace TASMA.Window
 
                 /* 바인딩 상태 초기화 */
                 SubjectComboBoxItems.Clear();
-                SelectedSubjectComboBoxItem = null;
-
+               
                 /* Subject ComboBox 초기화 */
                 var allClasses = originalDataTable.AsEnumerable().Select
                                                    (row => new {
