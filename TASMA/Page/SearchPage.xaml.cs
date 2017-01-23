@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TASMA.Database;
+using TASMA.Dialog;
 
 namespace TASMA
 {
@@ -186,7 +187,7 @@ namespace TASMA
 
         private void OnPrintButtonClicked(object sender, RoutedEventArgs e)
         {
-            var pd = new Window.ReportDialog(adminDAO, SearchTable);
+            var pd = new ReportDialog(adminDAO, SearchTable);
             pd.ShowDialog();
         }
 

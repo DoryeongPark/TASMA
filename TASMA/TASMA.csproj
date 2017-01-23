@@ -82,17 +82,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Window\ChangePasswordDialog.xaml.cs">
+    <Compile Include="Dialog\ChangePasswordDialog.xaml.cs">
       <DependentUpon>ChangePasswordDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog\InputEvaluationDialog.xaml.cs">
+      <DependentUpon>InputEvaluationDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\Class.cs" />
     <Compile Include="Page\ClassPage.xaml.cs">
       <DependentUpon>ClassPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Window\InputDatabaseWindow.xaml.cs">
+    <Compile Include="Dialog\InputDatabaseWindow.xaml.cs">
       <DependentUpon>InputDatabaseWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Window\DatabaseListWindow.xaml.cs">
+    <Compile Include="Dialog\DatabaseListWindow.xaml.cs">
       <DependentUpon>DatabaseListWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\EvaluationListBoxItem.cs" />
@@ -114,13 +117,10 @@
       <DependentUpon>GradePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\DataRectangle.cs" />
-    <Compile Include="Window\InputEvaluationDialog.xaml.cs">
-      <DependentUpon>InputEvaluationDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Window\ReportDialog.xaml.cs">
+    <Compile Include="Dialog\ReportDialog.xaml.cs">
       <DependentUpon>ReportDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Window\RegistrationDialog.xaml.cs">
+    <Compile Include="Dialog\RegistrationDialog.xaml.cs">
       <DependentUpon>RegistrationDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Page\StudentPage.xaml.cs">
@@ -131,20 +131,24 @@
       <DependentUpon>SubjectPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\SubjectTreeViewItemType.cs" />
-    <Compile Include="Dialog\TasmaAlertMessageBox.xaml.cs">
+    <Compile Include="MessageBox\TasmaAlertMessageBox.xaml.cs">
       <DependentUpon>TasmaAlertMessageBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Window\TasmaMenuButtons.cs" />
-    <Compile Include="Dialog\TasmaConfirmationMessageBox.xaml.cs">
+    <Compile Include="Dialog\TasmaMenuButtons.cs" />
+    <Compile Include="MessageBox\TasmaConfirmationMessageBox.xaml.cs">
       <DependentUpon>TasmaConfirmationMessageBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialog\TasmaPromptMessageBox.xaml.cs">
+    <Compile Include="MessageBox\TasmaPromptMessageBox.xaml.cs">
       <DependentUpon>TasmaPromptMessageBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Window\TasmaWindow.xaml.cs">
+    <Compile Include="Dialog\TasmaWindow.xaml.cs">
       <DependentUpon>TasmaWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="Window\ChangePasswordDialog.xaml">
+    <Page Include="Dialog\ChangePasswordDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialog\InputEvaluationDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -152,11 +156,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Window\InputDatabaseWindow.xaml">
+    <Page Include="Dialog\InputDatabaseWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Window\DatabaseListWindow.xaml">
+    <Page Include="Dialog\DatabaseListWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -168,11 +172,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Window\InputEvaluationDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Window\LoginWindow.xaml">
+    <Page Include="Dialog\LoginWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -181,7 +181,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Window\LoginWindow.xaml.cs">
+    <Compile Include="Dialog\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -189,11 +189,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Window\ReportDialog.xaml">
+    <Page Include="Dialog\ReportDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Window\RegistrationDialog.xaml">
+    <Page Include="Dialog\RegistrationDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -209,19 +209,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dialog\TasmaAlertMessageBox.xaml">
+    <Page Include="MessageBox\TasmaAlertMessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dialog\TasmaConfirmationMessageBox.xaml">
+    <Page Include="MessageBox\TasmaConfirmationMessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dialog\TasmaPromptMessageBox.xaml">
+    <Page Include="MessageBox\TasmaPromptMessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Window\TasmaWindow.xaml">
+    <Page Include="Dialog\TasmaWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

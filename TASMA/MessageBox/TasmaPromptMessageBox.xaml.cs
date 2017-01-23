@@ -11,13 +11,13 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-namespace TASMA
 
+namespace TASMA
 {
     /// <summary>
     /// Tasma 디자인의 프롬프트 박스
     /// </summary>
-    public partial class TasmaPromptMessageBox : System.Windows.Window
+    public partial class TasmaPromptMessageBox : Window
     {
         private bool isDetermined = false;
         

@@ -19,7 +19,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using TASMA.Database;
 
-namespace TASMA.Window
+namespace TASMA.Dialog
 {
     /// <summary>
     /// PrintDialog.xaml에 대한 상호 작용 논리
