@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TASMA.Database;
+using TASMA.Dialog;
 using TASMA.Model;
 
 namespace TASMA
@@ -37,21 +38,22 @@ namespace TASMA
             set { subjectTreeViewItems = value; OnPropertyChanged("SubjectTreeViewItems"); }
         }
 
-        private ObservableCollection<KeyValuePair<string, string>> evaluationListBoxItems;
-        public ObservableCollection<KeyValuePair<string, string>> EvaluationListBoxItems
+        private ObservableCollection<Evaluation> evaluationListBoxItems;
+        public ObservableCollection<Evaluation> EvaluationListBoxItems
         {
             get { return evaluationListBoxItems; }
             set { evaluationListBoxItems = value; OnPropertyChanged("EvaluationListBoxItems"); }
         }
 
-        private List<int> currentRatio;
-
-        private string selectedListBoxItem;
-        public string SelectedListBoxItem
+        private Evaluation selectedListBoxItem;
+        public Evaluation SelectedListBoxItem
         {
             get { return selectedListBoxItem; }
             set { selectedListBoxItem = value; OnPropertyChanged("SelectedListBoxItem"); }
         }
+
+        private List<int> currentRatio;
+
 
         /// <summary>
         /// 현재 데이터베이스의 상태를 컨트롤에 반영합니다.
@@ -114,15 +116,18 @@ namespace TASMA
 
             //리스트박스 데이터 로드(ViewModel)
             var evaluationList = adminDAO.GetEvaluationAndRatio(subjectName);
-            evaluationListBoxItems = new ObservableCollection<KeyValuePair<string, string>>();
+            evaluationListBoxItems = new ObservableCollection<Evaluation>(); 
             currentRatio = new List<int>();
 
             foreach (var evaluationData in evaluationList)
             {
-                evaluationListBoxItems.Add(new KeyValuePair<string, string>(evaluationData.Item1,
-                                                                            evaluationData.Item1 + "(" + evaluationData.Item2 + "%)"));
-                currentRatio.Add(evaluationData.Item2);
-            }
+                evaluationListBoxItems.Add(new Evaluation
+                {
+                    Key = evaluationData.Item1,
+                    Value = evaluationData.Item1 + "(" + evaluationData.Item2 + "%)",
+                    Ratio = evaluationData.Item2
+                });
+             }
 
             /* 트리 뷰 이벤트 추가 */
             foreach (var gradeItem in subjectTreeViewItems)
@@ -203,75 +208,43 @@ namespace TASMA
         /// <param name="e"></param>
         private void OnAddListBoxItem(object sender, RoutedEventArgs e)
         {
-            var evaluationNameDialog = new TasmaPromptMessageBox("Add evaluation", "Input evaluation name");
-            evaluationNameDialog.ShowDialog();
+            var evaluationList = new List<string>();
+            foreach (var evaluationItem in evaluationListBoxItems)
+                evaluationList.Add(evaluationItem.Key);
 
-            if (evaluationNameDialog.IsDetermined)
-            {
-                //Check Duplication
-                foreach (var evaluationItem in evaluationListBoxItems)
-                    if (evaluationItem.Key.ToUpper() == evaluationNameDialog.Input.ToUpper())
-                    {
-                        MessageBox.Show("Evaluations are duplicated");
-                        return;
-                    }
-            }else
-            {
+            var ied = new InputEvaluationDialog(evaluationList);
+            ied.ShowDialog();
+
+            if (!ied.IsDetermined)
                 return;
-            }
 
-            var ratioDialog = new TasmaPromptMessageBox("Input ratio", "Input evaluation ratio (0 ~ 100)%");
-            ratioDialog.ShowDialog();
-
-            int ratio = 0;
-
-            if (ratioDialog.IsDetermined)
-            {
-                try
-                {
-                    ratio = int.Parse(ratioDialog.Input);
-                }
-                catch (Exception)
-                {
-                    var alert = new TasmaAlertMessageBox("Incorrect value", "Please input number");
-                    alert.ShowDialog();
-                    return;
-                }
-
-                if(ratio < 0 && 100 < ratio)
-                {
-                    var alert = new TasmaAlertMessageBox("Incorrect number", "Please input number between 0 and 100");
-                    alert.ShowDialog();
-                    return;
-                }
-                
-            }else
-            {
-                return;
-            }
+            var evaluation = ied.Evaluation;
+            var ratio = ied.Ratio;
 
             int currentSum = 0;
-            foreach(var num in currentRatio)
-                currentSum += num;
+            foreach (var evaluationItem in EvaluationListBoxItems)
+                currentSum += evaluationItem.Ratio;
 
-            if(currentSum + ratio > 100)
+            if (currentSum + ratio > 100)
             {
-                var ratioCount = currentRatio.Count;
+                var ratioCount = EvaluationListBoxItems.Count;
                 var newRatio = (100 - ratio) / ratioCount;
-              
-                currentRatio.Clear();
+
                 for (int i = 0; i < ratioCount; ++i)
                 {
-                    currentRatio.Add(newRatio);
-                    EvaluationListBoxItems[i] = new KeyValuePair<string, string>(EvaluationListBoxItems[i].Key, 
-                                                          EvaluationListBoxItems[i].Key + "(" + newRatio + "%)");
-
+                    EvaluationListBoxItems[i] = new Evaluation { Key = EvaluationListBoxItems[i].Key,
+                                                                 Value = EvaluationListBoxItems[i].Key + "(" + newRatio + "%)",
+                                                                 Ratio = newRatio
+                                                               };                                      
                 }
             }
 
-            currentRatio.Add(ratio);
-            EvaluationListBoxItems.Add(new KeyValuePair<string, string>(evaluationNameDialog.Input, 
-                                                    evaluationNameDialog.Input + "(" + ratio + "%)"));    
+            EvaluationListBoxItems.Add(new Evaluation{
+                                                        Key = ied.Evaluation,
+                                                        Value = ied.Evaluation + "(" + ied.Ratio + "%)",
+                                                        Ratio = ied.Ratio
+                                                     });
+
         }
 
         /// <summary>
@@ -284,21 +257,15 @@ namespace TASMA
             if (SelectedListBoxItem == null)
                 return;
 
-            var dialog = new TasmaPromptMessageBox("Modify evaluation", "Input evaluation name", SelectedListBoxItem);
-            dialog.ShowDialog();
+            var evaluationList = new List<string>();
+            foreach (var evaluationItem in evaluationListBoxItems)
+                evaluationList.Add(evaluationItem.Key);
 
-            if (dialog.IsDetermined)
-            {
-                //Check Duplication
-                foreach (var evaluationItem in evaluationListBoxItems)
-                    if (evaluationItem.Key.ToUpper() == dialog.Input.ToUpper())
-                    {
-                        MessageBox.Show("Evaluations are duplicated");
-                        return;
-                    }
-            }
+            var ied = new InputEvaluationDialog(evaluationList, SelectedListBoxItem.Key, SelectedListBoxItem.Ratio);
+            ied.ShowDialog();
 
-
+            if (!ied.IsDetermined)
+                return;
 
             //adminDAO.UpdateEvaluation(subjectName, SelectedListBoxItem, dialog.Input);
             //SelectedListBoxItem = dialog.Input;

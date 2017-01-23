@@ -89,6 +89,7 @@
       <DependentUpon>InputEvaluationDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\Class.cs" />
+    <Compile Include="Model\Evaluation.cs" />
     <Compile Include="Page\ClassPage.xaml.cs">
       <DependentUpon>ClassPage.xaml</DependentUpon>
     </Compile>
@@ -98,7 +99,6 @@
     <Compile Include="Dialog\DatabaseListWindow.xaml.cs">
       <DependentUpon>DatabaseListWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\EvaluationListBoxItem.cs" />
     <Compile Include="Model\Grade.cs" />
     <Compile Include="Page\MarkingViewPage.xaml.cs">
       <DependentUpon>MarkingViewPage.xaml</DependentUpon>
