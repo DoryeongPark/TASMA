@@ -99,6 +99,34 @@ namespace TASMA.Window
             }
         }
 
+        /* SubjectOption Properties */
+        private ObservableCollection<KeyValuePair<int, string>> subjectSemesterComboBoxItems;
+        public ObservableCollection<KeyValuePair<int, string>> SubjectSemesterComboBoxItems
+        {
+            get { return subjectSemesterComboBoxItems; }
+            set { subjectSemesterComboBoxItems = value; OnPropertyChanged("SubjectSemesterComboBoxItems"); }
+        }
+
+        private KeyValuePair<int, string> selectedSubjectSemesterComboBoxItem;
+        public KeyValuePair<int, string> SelectedSubjectSemesterComboBoxItem
+        {
+            get { return selectedSubjectSemesterComboBoxItem; }
+            set { selectedSubjectSemesterComboBoxItem = value; OnPropertyChanged("SelectedSemesterComboBoxItem"); }
+        }
+
+        private ObservableCollection<string> subjectComboBoxItems;
+        public ObservableCollection<string> SubjectComboBoxItems
+        {
+            get { return subjectComboBoxItems; }
+            set { subjectComboBoxItems = value; OnPropertyChanged("SubjectComboBoxItems"); }
+        }
+
+        private string selectedSubjectComboBoxItem;
+        public string SelectedSubjectComboBoxItem
+        {
+            get { return selectedSubjectComboBoxItem; }
+            set { selectedSubjectComboBoxItem = value; OnPropertyChanged("SelectedSubjectComboBoxItem"); }
+        }
 
         public ReportDialog(AdminDAO adminDAO, DataTable dataTable)
         {
@@ -124,7 +152,6 @@ namespace TASMA.Window
             region = metaData[2];
             address = metaData[3];
 
-
             DataContext = this;
             InitializeComponent();
         }
@@ -144,11 +171,26 @@ namespace TASMA.Window
             NameSheetGradeComboBoxItems = new ObservableCollection<string>();
             NameSheetClassComboBoxItems = new ObservableCollection<string>();
 
+            SubjectSemesterComboBoxItems = new ObservableCollection<KeyValuePair<int, string>>();
+            SubjectSemesterComboBoxItems.Add(new KeyValuePair<int, string>(0, "1st"));
+            SubjectSemesterComboBoxItems.Add(new KeyValuePair<int, string>(1, "2nd"));
+
+            SubjectComboBoxItems = new ObservableCollection<string>();
+
             /* Report 리스트박스 초기화 */
             ReportListBoxItems = new ObservableCollection<string>();
             ReportListBoxItems.Add("NameSheet");
             ReportListBoxItems.Add("Subject");
             ReportListBoxItems.Add("Student");
+
+            /* Semester 초기화 */
+            if(1 < DateTime.Now.Month && DateTime.Now.Month <= 7)
+            {
+                SelectedSubjectSemesterComboBoxItem = SubjectSemesterComboBoxItems[0];
+            }else
+            {
+                SelectedSubjectSemesterComboBoxItem = SubjectSemesterComboBoxItems[1];
+            }
 
             SelectedReportListBoxItem = "NameSheet";
 
@@ -168,7 +210,7 @@ namespace TASMA.Window
                 SelectedNameSheetGradeComboBoxItem = null;
 
                 NameSheetClassComboBoxItems.Clear();
-                SelectedNameSheetClassComboBoxItem = null; 
+                SelectedNameSheetClassComboBoxItem = null;
 
                 /* Grade ComboBox 초기화 */
                 var gradeList = originalDataTable.AsEnumerable().Select(r => r.Field<string>("GRADE")).Distinct().ToList();
@@ -183,6 +225,26 @@ namespace TASMA.Window
                 NameSheetOption.Visibility = Visibility.Hidden;
                 SubjectReportOption.Visibility = Visibility.Visible;
                 StudentReportOption.Visibility = Visibility.Hidden;
+
+                /* 바인딩 상태 초기화 */
+                SubjectComboBoxItems.Clear();
+                SelectedSubjectComboBoxItem = null;
+
+                /* Subject ComboBox 초기화 */
+                var allClasses = originalDataTable.AsEnumerable().Select
+                                                   (row => new {
+                                                       GradeName = row.Field<string>("GRADE"),
+                                                       ClassName = row.Field<string>("CLASS") }).Distinct();
+
+                var finalSubjectList = new List<string>();
+                foreach (var pair in allClasses)
+                {
+                    var subjectList = adminDAO.GetClassSubjects(pair.GradeName, pair.ClassName);
+                    finalSubjectList = finalSubjectList.Union(subjectList).ToList();
+                }
+
+                
+
             }
             else if(SelectedReportListBoxItem == "Student")
             {
@@ -215,6 +277,18 @@ namespace TASMA.Window
         {
             /* Make & Show FixedDocument */
             DisplayNameSheet();
+        }
+
+        private void SubjectSemesterComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            /* Make & Show FixedDocuments */
+        }
+
+        private void SubjectComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            /* 바인딩 상태 초기화 */
+
+            /* Make & Show FixedDocuments */
         }
 
 
@@ -368,7 +442,7 @@ namespace TASMA.Window
             
             tableArea.Children.Add(dataGrid);
 
-            var fixedDocument = GetFixedDocument(background, new PrintDialog());
+            var fixedDocument = GetFixedDocument(background, new PrintDialog());            
             PrintDialog_DocumentViewer.Document = fixedDocument;
         }
 

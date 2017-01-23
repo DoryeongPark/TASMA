@@ -125,18 +125,14 @@
                                    FontWeight="DemiBold"
                                    Margin="0,5,0,10"/>
 
-                        <TextBlock Text="Grade"
+                        <TextBlock Text="Semester"
                                    Style="{StaticResource tasmaLabelStyle}"
                                    Margin="0,0,0,3"/>
 
                         <ComboBox Style="{StaticResource tasmaComboBoxStyle}"
-                                  Margin="0,0,0,8"/>
-
-                        <TextBlock Text="Class"
-                                   Style="{StaticResource tasmaLabelStyle}"
-                                   Margin="0,0,0,3"/>
-
-                        <ComboBox Style="{StaticResource tasmaComboBoxStyle}"
+                                  ItemsSource="{Binding SubjectSemesterComboBoxItems}"
+                                  SelectedItem="{Binding SelectedSubjectSemesterComboBoxItem}"
+                                  SelectionChanged="SubjectSemesterComboBoxSelectionChanged"
                                   Margin="0,0,0,8"/>
 
                         <TextBlock Text="Subject"
@@ -144,19 +140,23 @@
                                    Margin="0,0,0,3"/>
 
                         <ComboBox Style="{StaticResource tasmaComboBoxStyle}"
+                                  ItemsSource="{Binding SubjectComboBoxItems}"
+                                  SelectedItem="{Binding SelectedSubjectComboBoxItem}"
+                                  SelectionChanged="SubjectComboBoxSelectionChanged"
                                   Margin="0,0,0,8"/>
+                        
+                        
                         
                     </StackPanel>
                     <StackPanel Name="StudentReportOption"
                                 Width="100"
                                 Visibility="Hidden">
-                        
+
                         <TextBlock Text="Option" 
                                    FontFamily="{StaticResource tasmaFont}"
                                    FontSize="15"
                                    FontWeight="DemiBold"
                                    Margin="0,5,0,10"/>
-
 
                         <TextBlock Text="Grade"
                                    Style="{StaticResource tasmaLabelStyle}"
