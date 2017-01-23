@@ -19,6 +19,8 @@ namespace TASMA.Dialog
     /// </summary>
     public partial class InputEvaluationDialog : Window
     {
+        private bool modificationMode = false;
+
         private bool isDetermined = false;
         public bool IsDetermined
         {
@@ -54,6 +56,7 @@ namespace TASMA.Dialog
                 InputEvaluationDialog_EvaluationName.Text = evaluation;
                 InputEvaluationDialog_Ratio.Text = ratio.ToString();
                 InputEvaluationDialog_EvaluationName.SelectAll();
+                modificationMode = true;
             }
 
         }
@@ -79,17 +82,20 @@ namespace TASMA.Dialog
             var evaluationUnchecked = InputEvaluationDialog_EvaluationName.Text;
             var ratioUnchecked = InputEvaluationDialog_Ratio.Text;
 
-            /* Check Duplication */
-            foreach(var evaluationName in evaluationList)
+            if (!modificationMode)
             {
-                if(evaluationUnchecked.ToUpper() == evaluationName.ToUpper())
+                /* Check Duplication */
+                foreach (var evaluationName in evaluationList)
                 {
-                    var alert = new TasmaAlertMessageBox("Alert Duplication", 
-                        "Evaluation name is duplicated");
-                    alert.ShowDialog();
-                    InputEvaluationDialog_EvaluationName.Focus();
-                    InputEvaluationDialog_EvaluationName.SelectAll();
-                    return;
+                    if (evaluationUnchecked.ToUpper() == evaluationName.ToUpper())
+                    {
+                        var alert = new TasmaAlertMessageBox("Alert Duplication",
+                            "Evaluation name is duplicated");
+                        alert.ShowDialog();
+                        InputEvaluationDialog_EvaluationName.Focus();
+                        InputEvaluationDialog_EvaluationName.SelectAll();
+                        return;
+                    }
                 }
             }
 
