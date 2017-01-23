@@ -1164,7 +1164,7 @@ namespace TASMA
 
                 try
                 {
-                    cmd.CommandText = "INSERT INTO EVALUATION VALUES('" + subjectName + "', '" + evaluationName + "');";
+                    cmd.CommandText = "INSERT INTO EVALUATION(SUBJECT, EVALUATION) VALUES('" + subjectName + "', '" + evaluationName + "');";
                     cmd.ExecuteNonQuery();
                     cmd.CommandText = "ALTER TABLE " + subjectName + " ADD COLUMN " + evaluationName + " INTEGER;";
                     cmd.ExecuteNonQuery();
@@ -1186,7 +1186,7 @@ namespace TASMA
             /// <param name="evaluationName">평가 항목</param>
             /// <param name="ratio">반영 비율</param>
             /// <returns>실행 성공 여부</returns>
-            public bool InsertRatio(string subjectName, string evaluationName, int ratio)
+            public bool UpdateRatio(string subjectName, string evaluationName, int ratio)
             {
                 var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);

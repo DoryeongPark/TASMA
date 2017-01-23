@@ -235,7 +235,8 @@ namespace TASMA
                     EvaluationListBoxItems[i] = new Evaluation { Key = EvaluationListBoxItems[i].Key,
                                                                  Value = EvaluationListBoxItems[i].Key + "(" + newRatio + "%)",
                                                                  Ratio = newRatio
-                                                               };                                      
+                                                               };
+                    adminDAO.UpdateRatio(this.subjectName, EvaluationListBoxItems[i].Key, newRatio);                                     
                 }
             }
 
@@ -244,7 +245,8 @@ namespace TASMA
                                                         Value = ied.Evaluation + "(" + ied.Ratio + "%)",
                                                         Ratio = ied.Ratio
                                                      });
-
+            adminDAO.CreateEvaluation(this.subjectName, ied.Evaluation);
+            adminDAO.UpdateRatio(this.subjectName, ied.Evaluation, ied.Ratio);
         }
 
         /// <summary>
@@ -267,6 +269,37 @@ namespace TASMA
             if (!ied.IsDetermined)
                 return;
 
+            adminDAO.UpdateEvaluation(this.subjectName, SelectedListBoxItem.Key, ied.Evaluation);
+            adminDAO.UpdateRatio(this.subjectName, ied.Evaluation, ied.Ratio);
+            SelectedListBoxItem = new Evaluation { Key = ied.Evaluation, Value = ied.Evaluation + "(" + ied.Ratio + "%)", Ratio = ied.Ratio };
+            
+            var ratio = ied.Ratio;
+
+            int currentSum = 0;
+            foreach (var evaluationItem in EvaluationListBoxItems)
+            {
+                currentSum += evaluationItem.Ratio;
+            }
+
+            if (currentSum > 100)
+            {
+                var ratioCount = EvaluationListBoxItems.Count - 1;
+                var newRatio = (100 - ratio) / ratioCount;
+
+                for (int i = 0; i < ratioCount; ++i)
+                {
+                    if (EvaluationListBoxItems[i].Key == SelectedListBoxItem.Key)
+                        continue;
+
+                    EvaluationListBoxItems[i] = new Evaluation
+                    {
+                        Key = EvaluationListBoxItems[i].Key,
+                        Value = EvaluationListBoxItems[i].Key + "(" + newRatio + "%)",
+                        Ratio = newRatio
+                    };
+                    adminDAO.UpdateRatio(this.subjectName, EvaluationListBoxItems[i].Key, newRatio);
+                }
+            }
             //adminDAO.UpdateEvaluation(subjectName, SelectedListBoxItem, dialog.Input);
             //SelectedListBoxItem = dialog.Input;
         }
