@@ -120,7 +120,7 @@ namespace TASMA
             semesterComboBoxItems.Add(new KeyValuePair<int, string>(0, "1st"));
             semesterComboBoxItems.Add(new KeyValuePair<int, string>(1, "2nd"));
 
-            if (DateTime.Today.Month <= 6)
+            if (1 < DateTime.Today.Month && DateTime.Today.Month <= 7)
                 selectedSemesterComboBoxItem = semesterComboBoxItems[0];
             else
                 selectedSemesterComboBoxItem = semesterComboBoxItems[1];

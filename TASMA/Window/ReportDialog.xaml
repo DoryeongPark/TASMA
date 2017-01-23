@@ -133,6 +133,7 @@
                                   ItemsSource="{Binding SubjectSemesterComboBoxItems}"
                                   SelectedItem="{Binding SelectedSubjectSemesterComboBoxItem}"
                                   SelectionChanged="SubjectSemesterComboBoxSelectionChanged"
+                                  SelectedValuePath="Key" DisplayMemberPath="Value"
                                   Margin="0,0,0,8"/>
 
                         <TextBlock Text="Subject"
