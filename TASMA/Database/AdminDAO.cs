@@ -1359,7 +1359,7 @@ namespace TASMA
                     for (int i = 0; i < evaluationList.Count; ++i)
                         cmdStr += evaluationList[i] + " REAL, ";    
           
-                    cmdStr += "PRIMARY KEY(GRADE, CLASS, SNUM), ";
+                    cmdStr += "PRIMARY KEY(SEMESTER, GRADE, CLASS, SNUM), ";
                     cmdStr += "FOREIGN KEY(GRADE, CLASS, SNUM) REFERENCES STUDENT(GRADE, CLASS, SNUM) ";
                     cmdStr += "ON DELETE CASCADE ";
                     cmdStr += "ON UPDATE CASCADE ";

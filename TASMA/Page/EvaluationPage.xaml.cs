@@ -49,7 +49,8 @@ namespace TASMA
         public Evaluation SelectedListBoxItem
         {
             get { return selectedListBoxItem; }
-            set { selectedListBoxItem = value; OnPropertyChanged("SelectedListBoxItem"); }
+            set { selectedListBoxItem = value;
+                OnPropertyChanged("SelectedListBoxItem"); }
         }
 
         private List<int> currentRatio;
@@ -247,6 +248,7 @@ namespace TASMA
                                                      });
             adminDAO.CreateEvaluation(this.subjectName, ied.Evaluation);
             adminDAO.UpdateRatio(this.subjectName, ied.Evaluation, ied.Ratio);
+            SelectedListBoxItem = EvaluationListBoxItems[EvaluationListBoxItems.Count - 1];
         }
 
         /// <summary>
@@ -271,7 +273,19 @@ namespace TASMA
 
             adminDAO.UpdateEvaluation(this.subjectName, SelectedListBoxItem.Key, ied.Evaluation);
             adminDAO.UpdateRatio(this.subjectName, ied.Evaluation, ied.Ratio);
-            SelectedListBoxItem = new Evaluation { Key = ied.Evaluation, Value = ied.Evaluation + "(" + ied.Ratio + "%)", Ratio = ied.Ratio };
+
+            int selectedIndex = -1;
+
+            for (int i = 0; i < EvaluationListBoxItems.Count; ++i)
+            {
+                if(SelectedListBoxItem.Key == EvaluationListBoxItems[i].Key)
+                {
+                    EvaluationListBoxItems[i] = new Evaluation { Key = ied.Evaluation, Value = ied.Evaluation + "(" + ied.Ratio + "%)", Ratio = ied.Ratio };
+                    SelectedListBoxItem = EvaluationListBoxItems[i];
+                    selectedIndex = i;
+                    break;
+                }
+            }
             
             var ratio = ied.Ratio;
 
@@ -288,7 +302,7 @@ namespace TASMA
 
                 for (int i = 0; i < ratioCount; ++i)
                 {
-                    if (EvaluationListBoxItems[i].Key == SelectedListBoxItem.Key)
+                    if (i == selectedIndex)
                         continue;
 
                     EvaluationListBoxItems[i] = new Evaluation
@@ -300,8 +314,6 @@ namespace TASMA
                     adminDAO.UpdateRatio(this.subjectName, EvaluationListBoxItems[i].Key, newRatio);
                 }
             }
-            //adminDAO.UpdateEvaluation(subjectName, SelectedListBoxItem, dialog.Input);
-            //SelectedListBoxItem = dialog.Input;
         }
 
         /// <summary>
@@ -314,14 +326,16 @@ namespace TASMA
             if (SelectedListBoxItem == null)
                 return;
 
-            var dialog = new TasmaConfirmationMessageBox("Delete evaluation", "Are you sure delete evaluation? - " + SelectedListBoxItem);
+            var dialog = new TasmaConfirmationMessageBox("Delete evaluation", "Are you sure delete evaluation?");
             dialog.ShowDialog();
 
 
-            //if (dialog.Yes)
-            //    evaluationListBoxItems.Remove(SelectedListBoxItem);
+            if (dialog.Yes)
+            {
+                adminDAO.DeleteEvaluation(this.subjectName, SelectedListBoxItem.Key);
+                evaluationListBoxItems.Remove(SelectedListBoxItem);
+            }
         }
-
 
 
         /// <summary>

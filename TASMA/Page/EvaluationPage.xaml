@@ -121,7 +121,7 @@
                     <ListBox Margin="10,4,10,10" ItemsSource="{Binding EvaluationListBoxItems}"
                              BorderThickness="1"
                              BorderBrush="{StaticResource tasmaNormalGray}"
-                             SelectedItem="{Binding SelectedListBoxItem}"
+                             SelectedItem="{Binding SelectedListBoxItem, Mode=TwoWay}"
                              ItemContainerStyle="{StaticResource listBoxItemStyle}"
                              DisplayMemberPath="Value" SelectedValuePath="Key"
                              FontWeight="DemiBold">
