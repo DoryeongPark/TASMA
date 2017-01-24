@@ -24,12 +24,14 @@ namespace TASMA.Dialog
     /// <summary>
     /// PrintDialog.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class ReportDialog : System.Windows.Window, INotifyPropertyChanged
+    public partial class ReportDialog : Window, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
         private AdminDAO adminDAO;
         private DataTable originalDataTable;
+
+        private List<Tuple<string, string>> classList;
 
         private string schoolName;
         private string year;
@@ -145,6 +147,18 @@ namespace TASMA.Dialog
                 }
             }
 
+            /* Class 리스트 초기화 */
+            var allClasses = originalDataTable.AsEnumerable().Select
+                                               (row => new {
+                                                   GradeName = row.Field<string>("GRADE"),
+                                                   ClassName = row.Field<string>("CLASS")
+                                               }).Distinct();
+
+            classList = new List<Tuple<string, string>>();
+            foreach(var classItem in allClasses)
+                classList.Add(new Tuple<string, string>(classItem.GradeName, classItem.ClassName));
+       
+
             /* 메타 데이터 획득 루틴 */
             var metaData = adminDAO.GetDBInfo();
             schoolName = metaData[0];
@@ -176,21 +190,22 @@ namespace TASMA.Dialog
             SubjectSemesterComboBoxItems.Add(new KeyValuePair<int, string>(1, "2nd"));
 
             SubjectComboBoxItems = new ObservableCollection<string>();
-
+            var tempSubjectList = new List<string>();
+            foreach(var classItem in classList)
+            {
+                var subjectList = adminDAO.GetClassSubjects(classItem.Item1, classItem.Item2);
+                foreach (var subject in subjectList)
+                    tempSubjectList.Add(subject);
+            }
+            tempSubjectList = tempSubjectList.Distinct().ToList();
+            foreach(var subjectName in tempSubjectList)
+                SubjectComboBoxItems.Add(subjectName);
+            
             /* Report 리스트박스 초기화 */
             ReportListBoxItems = new ObservableCollection<string>();
             ReportListBoxItems.Add("NameSheet");
             ReportListBoxItems.Add("Subject");
             ReportListBoxItems.Add("Student");
-
-            /* Semester 초기화 */
-            if(1 < DateTime.Now.Month && DateTime.Now.Month <= 7)
-            {
-                SelectedSubjectSemesterComboBoxItem = SubjectSemesterComboBoxItems[0];
-            }else
-            {
-                SelectedSubjectSemesterComboBoxItem = SubjectSemesterComboBoxItems[1];
-            }
 
             SelectedReportListBoxItem = "NameSheet";
 
@@ -226,23 +241,20 @@ namespace TASMA.Dialog
                 SubjectReportOption.Visibility = Visibility.Visible;
                 StudentReportOption.Visibility = Visibility.Hidden;
 
-                /* 바인딩 상태 초기화 */
-                SubjectComboBoxItems.Clear();
-               
-                /* Subject ComboBox 초기화 */
-                var allClasses = originalDataTable.AsEnumerable().Select
-                                                   (row => new {
-                                                       GradeName = row.Field<string>("GRADE"),
-                                                       ClassName = row.Field<string>("CLASS") }).Distinct();
-
-                var finalSubjectList = new List<string>();
-                foreach (var pair in allClasses)
+                /* Semester 초기화 */
+                if (1 < DateTime.Now.Month && DateTime.Now.Month <= 7)
                 {
-                    var subjectList = adminDAO.GetClassSubjects(pair.GradeName, pair.ClassName);
-                    finalSubjectList = finalSubjectList.Union(subjectList).ToList();
+                    SelectedSubjectSemesterComboBoxItem = SubjectSemesterComboBoxItems[0];
+                }
+                else
+                {
+                    SelectedSubjectSemesterComboBoxItem = SubjectSemesterComboBoxItems[1];
                 }
 
-                
+                if(SubjectComboBoxItems.Count != 0)
+                {
+                    SelectedSubjectComboBoxItem = SubjectComboBoxItems[0];
+                }
 
             }
             else if(SelectedReportListBoxItem == "Student")
@@ -280,16 +292,17 @@ namespace TASMA.Dialog
 
         private void SubjectSemesterComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            /* Make & Show FixedDocuments */
+            if (SubjectComboBoxItems.Count != 0)
+            {
+                SelectedSubjectComboBoxItem = SubjectComboBoxItems[0];      
+            } 
         }
 
         private void SubjectComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            /* 바인딩 상태 초기화 */
-
             /* Make & Show FixedDocuments */
+            DisplaySubjectReport();
         }
-
 
         private void DisplayNameSheet()
         {
@@ -443,6 +456,145 @@ namespace TASMA.Dialog
 
             var fixedDocument = GetFixedDocument(background, new PrintDialog());            
             PrintDialog_DocumentViewer.Document = fixedDocument;
+        }
+
+        private void DisplaySubjectReport()
+        {
+            var fixedDocuments = new FixedDocumentSequence();
+
+            foreach (var classItem in classList)
+            {
+                /* 전체 레이아웃 */
+                var background = new Grid();
+                background.Width = 750;
+                background.Margin = new Thickness(20);
+                background.Background = Brushes.Transparent;
+
+                Image image = new Image();
+                BitmapImage bit = new BitmapImage();
+                bit.BeginInit();
+                bit.UriSource = new Uri("pack://application:,,,/Tasma;component/Resources/Tasma_DepartmentMark.png");
+                bit.EndInit();
+                image.Source = bit;
+                image.VerticalAlignment = VerticalAlignment.Top;
+                image.HorizontalAlignment = HorizontalAlignment.Left;
+                image.Width = 120;
+                image.Height = 120;
+                background.Children.Add(image);
+
+                var layout = new StackPanel();
+                layout.Orientation = Orientation.Vertical;
+                layout.HorizontalAlignment = HorizontalAlignment.Center;
+                layout.Width = 750;
+                background.Children.Add(layout);
+
+                /* 타이틀 영역 */
+                var titleArea = new StackPanel();
+                titleArea.HorizontalAlignment = HorizontalAlignment.Center;
+                titleArea.VerticalAlignment = VerticalAlignment.Center;
+                titleArea.Height = 120;
+                titleArea.Background = Brushes.Transparent;
+                titleArea.Margin = new Thickness(0, 0, 0, 15);
+                layout.Children.Add(titleArea);
+
+                /* 분급 영역 */
+                var descArea = new Grid();
+                descArea.Height = 30;
+                layout.Children.Add(descArea);
+
+                /* 표 영역 */
+                var tableArea = new StackPanel();
+                tableArea.HorizontalAlignment = HorizontalAlignment.Center;
+                layout.Children.Add(tableArea);
+
+                /* 타이틀 텍스트 */
+                var title = new TextBlock();
+                title.TextAlignment = TextAlignment.Center;
+                title.FontSize = 20;
+                title.FontWeight = FontWeights.Bold;
+                title.Text = "\n" + region + " CITY COUNCIL\n"
+                           + schoolName + "\n"
+                           + SelectedSubjectComboBoxItem + " SCORE TABLE";
+                titleArea.Children.Add(title);
+
+                /* 분급 텍스트 */
+                var master = new TextBlock();
+                master.TextAlignment = TextAlignment.Left;
+                master.FontSize = 12;
+                master.Text = Space(5) + "MASTER:";
+                descArea.Children.Add(master);
+
+                var subjectText = new TextBlock();
+                subjectText.TextAlignment = TextAlignment.Left;
+                subjectText.FontSize = 12;
+                subjectText.Text = Space(50) + "SUBJECT:" + Space(3) + SelectedSubjectComboBoxItem;
+                descArea.Children.Add(subjectText);
+
+                var gradeText = new TextBlock();
+                gradeText.TextAlignment = TextAlignment.Left;
+                gradeText.FontSize = 12;
+                gradeText.Text = Space(85) + "GRADE:" + Space(3) + classItem.Item1;
+                descArea.Children.Add(gradeText);
+
+                var classText = new TextBlock();
+                classText.TextAlignment = TextAlignment.Left;
+                classText.FontSize = 12;
+                classText.Text = Space(120) + "CLASS:" + Space(3) + classItem.Item2;
+                descArea.Children.Add(classText);
+
+                var yearText = new TextBlock();
+                yearText.TextAlignment = TextAlignment.Left;
+                yearText.FontSize = 12;
+                yearText.Text = Space(155) + "YEAR:" + Space(3) + year;
+                descArea.Children.Add(yearText);
+
+                /* 학생 테이블 */
+                DataGrid dataGrid = new DataGrid();
+                dataGrid.HeadersVisibility = DataGridHeadersVisibility.Column;
+                dataGrid.Width = 720;
+                dataGrid.BorderBrush = Brushes.Black;
+                dataGrid.Foreground = Brushes.Black;
+                dataGrid.Background = Brushes.White;
+                dataGrid.AutoGenerateColumns = false;
+                dataGrid.CanUserAddRows = false;
+                dataGrid.Visibility = Visibility.Visible;
+                var headerStyle = new Style(typeof(DataGridColumnHeader));
+                headerStyle.BasedOn = this.TryFindResource("printHeaderStyle") as Style;
+                dataGrid.ColumnHeaderStyle = headerStyle;
+                var cellStyle = new Style(typeof(DataGridCell));
+                cellStyle.BasedOn = this.TryFindResource("printCellStyle") as Style;
+                dataGrid.CellStyle = cellStyle;
+
+                var noColumn = new DataGridTextColumn();
+                noColumn.Header = "NO";
+                noColumn.Width = new DataGridLength(40);
+                noColumn.Binding = new Binding("SNUM");
+                dataGrid.Columns.Add(noColumn);
+
+                var nameColumn = new DataGridTextColumn();
+                nameColumn.Header = "Student name";
+                nameColumn.Width = new DataGridLength(120);
+                nameColumn.Binding = new Binding("SNAME");
+                dataGrid.Columns.Add(nameColumn);
+
+                tableArea.Children.Add(dataGrid);
+
+                var dataTable = adminDAO.GetFilteredSubjectTable(originalDataTable,
+                                                                 SelectedSubjectSemesterComboBoxItem.Key,
+                                                                 classItem.Item1,
+                                                                 classItem.Item2,
+                                                                 SelectedSubjectComboBoxItem);
+                dataGrid.ItemsSource = dataTable.AsDataView();
+
+                /* 문서 생성 */
+                var fixedDocument = GetFixedDocument(background, new PrintDialog());
+                var documentReference = new DocumentReference();
+                documentReference.SetDocument(fixedDocument);
+                fixedDocuments.References.Add(documentReference);
+            }
+
+            PrintDialog_DocumentViewer.Document = fixedDocuments;
+
         }
 
         private void OnCloseButtonClicked(object sender, RoutedEventArgs e)

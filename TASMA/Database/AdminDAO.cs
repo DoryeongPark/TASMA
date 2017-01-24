@@ -849,16 +849,25 @@ namespace TASMA
             /// 학생번호 리스트 항목을 불러옵니다.
             /// </summary>
             /// <returns>실행 성공 여부</returns>
-            public List<Tuple<int, string>> GetStudentList() {
+            public List<Tuple<int, string>> GetStudentList(string gradeName = null, string className = null) {
 
-                if (!CheckClassState())
-                    return null;
+                string cmdStr = "";
+                if (gradeName == null && className == null)
+                {
+                    if (!CheckClassState())
+                        return null;
+
+                    cmdStr = "SELECT SNUM, SNAME FROM STUDENT WHERE GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "';";
+                }
+                else
+                {
+                    cmdStr = "SELECT SNUM, SNAME FROM STUDENT WHERE GRADE = '" + gradeName + "' AND CLASS = '" + className + "';";
+                }
 
                 var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
 
-                var cmdStr = "SELECT SNUM, SNAME FROM STUDENT WHERE GRADE = '" + currentGrade + "' AND CLASS = '" + currentClass + "';";
                 var cmd = new SQLiteCommand(cmdStr, conn);
                 var reader = cmd.ExecuteReader();
                 var result = new List<Tuple<int, string>>();
@@ -1799,7 +1808,7 @@ namespace TASMA
                     var contains = filter.AsEnumerable().Any(
                         p => (string)dataTable.Rows[i]["GRADE"] == p.Field<string>("GRADE") &&
                              (string)dataTable.Rows[i]["CLASS"] == p.Field<string>("CLASS") &&
-                             (string)dataTable.Rows[i]["SNAME"] == p.Field<string>("SNAME"));
+                             (long)dataTable.Rows[i]["SNUM"] == p.Field<long>("SNUM"));
                     if (!contains)
                     {
                         dataTable.Rows.RemoveAt(i);
@@ -1813,6 +1822,70 @@ namespace TASMA
                 return dataTable;
             }
 
+
+            public DataTable GetFilteredSubjectTable(DataTable filter, int semester, string gradeName, string className, 
+                                                     string subjectName)
+            {
+                var evaluationList = GetEvaluationAndRatio(subjectName);
+                
+                var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+                var conn = new SQLiteConnection(connStr);
+                conn.Open();
+
+                var cmdStr = "SELECT GRADE, CLASS, SNUM, ";
+                for(int i = 0; i < evaluationList.Count; ++i)
+                {
+                    if (i == evaluationList.Count - 1)
+                        cmdStr += evaluationList[i].Item1 + " ";
+                    else
+                        cmdStr += evaluationList[i].Item1 + ", ";
+                }
+                cmdStr += "FROM " + subjectName;
+                cmdStr += " WHERE SEMESTER = " + semester;
+                cmdStr += " AND GRADE = '" + gradeName + "' ";
+                cmdStr += " AND CLASS = '" + className + "' ";
+
+                var cmd = new SQLiteCommand(cmdStr, conn);
+                var reader = cmd.ExecuteReader();
+
+                var dataTable = new DataTable();
+                dataTable.Load(reader);
+
+                /* 필터링 루틴 */
+                for (int i = 0; i < dataTable.Rows.Count; ++i)
+                {
+                    var contains = filter.AsEnumerable().Any(
+                        p => (string)dataTable.Rows[i]["GRADE"] == p.Field<string>("GRADE") &&
+                             (string)dataTable.Rows[i]["CLASS"] == p.Field<string>("CLASS") &&
+                             (long)dataTable.Rows[i]["SNUM"] == p.Field<long>("SNUM"));
+                    if (!contains)
+                    {
+                        dataTable.Rows.RemoveAt(i);
+                        i = -1;
+                    }
+                }
+
+                /* 컬럼 삽입 */
+                dataTable.Columns.Add("SNAME", typeof(string));
+                dataTable.Columns.Add("AVERAGE", typeof(float));
+                dataTable.Columns.Add("RATING", typeof(string));
+                dataTable.Columns.Add("POSITION", typeof(int));
+
+                /* 이름 삽입 */
+                for (int i = 0; i < dataTable.Rows.Count; ++i)
+                {
+                    var foundRows = filter.Select("GRADE = '" + (string)dataTable.Rows[i]["GRADE"] + "' and " +
+                                                  "CLASS = '" + (string)dataTable.Rows[i]["CLASS"] + "' and " +
+                                                  "SNUM = " + ((long)dataTable.Rows[i]["SNUM"]).ToString());
+                    if (foundRows.Length != 0) 
+                        dataTable.Rows[i]["SNAME"] = foundRows[0]["SNAME"];
+                }
+
+                return dataTable;
+
+            }
         }
+
+        
     }
 }
