@@ -1881,6 +1881,78 @@ namespace TASMA
                         dataTable.Rows[i]["SNAME"] = foundRows[0]["SNAME"];
                 }
 
+                /* 평균 계산 및 평가 등급 */
+                var ratioList = GetEvaluationAndRatio(subjectName);
+                
+                for(int i = 0; i < dataTable.Rows.Count; ++i)
+                {
+                    var currentRow = dataTable.Rows[i];
+                    double average = 0.0;
+
+                    foreach(var evaluationItem in ratioList)
+                    {
+                        double score;
+
+                        if (currentRow[evaluationItem.Item1] == DBNull.Value)
+                            score = 0.0f;
+                        else
+                            score = (double)currentRow[evaluationItem.Item1];
+
+                        var value = score * ((double)evaluationItem.Item2) / 100.0f;
+                        average += value;
+                    }
+                    currentRow["AVERAGE"] = average;
+
+                    if(0 < average && average <= 20)
+                    {
+                        currentRow["RATING"] = "F";
+                    }else if(20 < average && average <= 40)
+                    {
+                        currentRow["RATING"] = "D";
+                    }
+                    else if(40 < average && average <= 60)
+                    {
+                        currentRow["RATING"] = "C";
+                    }
+                    else if(60 < average && average <= 80)
+                    {
+                        currentRow["RATING"] = "B";
+                    }
+                    else if(80 < average && average <= 100)
+                    {
+                        currentRow["RATING"] = "A";
+                    }
+                    else
+                    {
+                        currentRow["RATING"] = "-";
+                    }    
+                }
+
+                var dataView = dataTable.DefaultView;
+                dataView.Sort = "AVERAGE desc";
+                dataTable = dataView.ToTable();
+
+                int position = 1;
+
+                for(int i = 0; i < dataTable.Rows.Count; ++i)
+                {
+                    if (i == 0)
+                    {
+                        dataTable.Rows[i]["POSITION"] = position;
+                        continue;
+                    }
+                    
+                    if (dataTable.Rows[i]["AVERAGE"] !=
+                        dataTable.Rows[i - 1]["AVERAGE"])
+                        ++position;
+                    
+                    dataTable.Rows[i]["POSITION"] = position;    
+                }
+
+                dataView = dataTable.DefaultView;
+                dataView.Sort = "SNUM asc";
+                dataTable = dataView.ToTable();
+
                 return dataTable;
 
             }

@@ -294,8 +294,11 @@ namespace TASMA.Dialog
         {
             if (SubjectComboBoxItems.Count != 0)
             {
+                if (SelectedSubjectComboBoxItem == SubjectComboBoxItems[0])
+                    SubjectComboBoxSelectionChanged(null, null);
+
                 SelectedSubjectComboBoxItem = SubjectComboBoxItems[0];      
-            } 
+            }
         }
 
         private void SubjectComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -524,28 +527,28 @@ namespace TASMA.Dialog
                 master.Text = Space(5) + "MASTER:";
                 descArea.Children.Add(master);
 
-                var subjectText = new TextBlock();
-                subjectText.TextAlignment = TextAlignment.Left;
-                subjectText.FontSize = 12;
-                subjectText.Text = Space(50) + "SUBJECT:" + Space(3) + SelectedSubjectComboBoxItem;
-                descArea.Children.Add(subjectText);
+                var semText = new TextBlock();
+                semText.TextAlignment = TextAlignment.Left;
+                semText.FontSize = 12;
+                semText.Text = Space(50) + "SEMESTER:" + Space(3) + SelectedSubjectSemesterComboBoxItem.Value;
+                descArea.Children.Add(semText);
 
                 var gradeText = new TextBlock();
                 gradeText.TextAlignment = TextAlignment.Left;
                 gradeText.FontSize = 12;
-                gradeText.Text = Space(85) + "GRADE:" + Space(3) + classItem.Item1;
+                gradeText.Text = Space(80) + "GRADE:" + Space(3) + classItem.Item1;
                 descArea.Children.Add(gradeText);
 
                 var classText = new TextBlock();
                 classText.TextAlignment = TextAlignment.Left;
                 classText.FontSize = 12;
-                classText.Text = Space(120) + "CLASS:" + Space(3) + classItem.Item2;
+                classText.Text = Space(110) + "CLASS:" + Space(3) + classItem.Item2;
                 descArea.Children.Add(classText);
 
                 var yearText = new TextBlock();
                 yearText.TextAlignment = TextAlignment.Left;
                 yearText.FontSize = 12;
-                yearText.Text = Space(155) + "YEAR:" + Space(3) + year;
+                yearText.Text = Space(140) + "YEAR:" + Space(3) + year;
                 descArea.Children.Add(yearText);
 
                 /* 학생 테이블 */
@@ -572,10 +575,39 @@ namespace TASMA.Dialog
                 dataGrid.Columns.Add(noColumn);
 
                 var nameColumn = new DataGridTextColumn();
-                nameColumn.Header = "Student name";
-                nameColumn.Width = new DataGridLength(120);
+                nameColumn.Header = "STUDENT NAME";
+                nameColumn.Width = new DataGridLength(200);
                 nameColumn.Binding = new Binding("SNAME");
                 dataGrid.Columns.Add(nameColumn);
+
+                var evaluationList = adminDAO.GetEvaluationList(SelectedSubjectComboBoxItem);
+           
+                foreach(var evaluation in evaluationList)
+                {
+                    var evalColumn = new DataGridTextColumn();
+                    evalColumn.Header = evaluation.ToUpper();
+                    evalColumn.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
+                    evalColumn.Binding = new Binding(evaluation);
+                    dataGrid.Columns.Add(evalColumn);
+                }
+
+                var avgColumn = new DataGridTextColumn();
+                avgColumn.Header = "AVERAGE";
+                avgColumn.Width = new DataGridLength(60);
+                avgColumn.Binding = new Binding("AVERAGE");
+                dataGrid.Columns.Add(avgColumn);
+
+                var ratingColumn = new DataGridTextColumn();
+                ratingColumn.Header = "GRADE";
+                ratingColumn.Width = new DataGridLength(60);
+                ratingColumn.Binding = new Binding("RATING");
+                dataGrid.Columns.Add(ratingColumn);
+
+                var posColumn = new DataGridTextColumn();
+                posColumn.Header = "POSITION";
+                posColumn.Width = new DataGridLength(60);
+                posColumn.Binding = new Binding("POSITION");
+                dataGrid.Columns.Add(posColumn);
 
                 tableArea.Children.Add(dataGrid);
 
