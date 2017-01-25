@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TASMA.Dialog"
         mc:Ignorable="d"
-        Title="PrintDialog" Height="550" Width="500"
+        Title="PrintDialog" Height="570" Width="500"
         WindowStyle="None" AllowsTransparency="True" 
         MouseLeftButtonDown="OnLeftMouseButtonDown"
         BorderBrush="{StaticResource tasmaLightGray}"
@@ -159,19 +159,17 @@
                                    FontWeight="DemiBold"
                                    Margin="0,5,0,10"/>
 
-                        <TextBlock Text="Grade"
+                        <TextBlock Text="Semester"
                                    Style="{StaticResource tasmaLabelStyle}"
                                    Margin="0,0,0,3"/>
 
                         <ComboBox Style="{StaticResource tasmaComboBoxStyle}"
+                                  ItemsSource="{Binding StudentSemesterComboBoxItems}"
+                                  SelectedItem="{Binding StudentSubjectSemesterComboBoxItem}"
+                                  SelectionChanged="StudentSemesterComboBoxSelectionChanged"
+                                  SelectedValuePath="Key" DisplayMemberPath="Value"
                                   Margin="0,0,0,8"/>
 
-                        <TextBlock Text="Class"
-                                   Style="{StaticResource tasmaLabelStyle}"
-                                   Margin="0,0,0,3"/>
-
-                        <ComboBox Style="{StaticResource tasmaComboBoxStyle}"
-                                  Margin="0,0,0,8"/>
 
                     </StackPanel>
                 </Grid>

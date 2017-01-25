@@ -32,6 +32,7 @@ namespace TASMA.Dialog
         private DataTable originalDataTable;
 
         private List<Tuple<string, string>> classList;
+        private List<Tuple<string, string, long, string>> studentList;
 
         private string schoolName;
         private string year;
@@ -56,7 +57,7 @@ namespace TASMA.Dialog
         }
 
 
-        /* NameSheetOption Properties */
+        /* NameSheet Option Properties */
         private ObservableCollection<string> nameSheetGradeComboBoxItems;
         public ObservableCollection<string> NameSheetGradeComboBoxItems
         {
@@ -101,7 +102,7 @@ namespace TASMA.Dialog
             }
         }
 
-        /* SubjectOption Properties */
+        /* Subject Option Properties */
         private ObservableCollection<KeyValuePair<int, string>> subjectSemesterComboBoxItems;
         public ObservableCollection<KeyValuePair<int, string>> SubjectSemesterComboBoxItems
         {
@@ -128,6 +129,21 @@ namespace TASMA.Dialog
         {
             get { return selectedSubjectComboBoxItem; }
             set { selectedSubjectComboBoxItem = value; OnPropertyChanged("SelectedSubjectComboBoxItem"); }
+        }
+
+        /* Student Option Properties */
+        private ObservableCollection<KeyValuePair<int, string>> studentSemesterComboBoxItems;
+        public ObservableCollection<KeyValuePair<int, string>> StudentSemesterComboBoxItems
+        {
+            get { return studentSemesterComboBoxItems; }
+            set { studentSemesterComboBoxItems = value; OnPropertyChanged("StudentSemesterComboBoxItems"); }
+        }
+
+        private KeyValuePair<int, string> selectedStudentSemesterComboBoxItem;
+        public KeyValuePair<int, string> SelectedStudentSemesterComboBoxItem
+        {
+            get { return selectedStudentSemesterComboBoxItem; }
+            set { selectedStudentSemesterComboBoxItem = value; OnPropertyChanged("SelectedStudentSemesterComboBoxItem"); }
         }
 
         public ReportDialog(AdminDAO adminDAO, DataTable dataTable)
@@ -157,7 +173,23 @@ namespace TASMA.Dialog
             classList = new List<Tuple<string, string>>();
             foreach(var classItem in allClasses)
                 classList.Add(new Tuple<string, string>(classItem.GradeName, classItem.ClassName));
-       
+
+            /* Student 리스트 초기화 */
+            var allStudents = originalDataTable.AsEnumerable().Select
+                                                (row => new
+                                                {
+                                                    GradeName = row.Field<string>("GRADE"),
+                                                    ClassName = row.Field<string>("CLASS"),
+                                                    StudentNum = row.Field<long>("SNUM"),
+                                                    StudentName = row.Field<string>("SNAME")
+                                                }).Distinct();
+
+            studentList = new List<Tuple<string, string, long, string>>();
+            foreach (var studentItem in allStudents)
+                studentList.Add(new Tuple<string, string, long, string>(studentItem.GradeName, 
+                                                                studentItem.ClassName, 
+                                                                studentItem.StudentNum,
+                                                                studentItem.StudentName));            
 
             /* 메타 데이터 획득 루틴 */
             var metaData = adminDAO.GetDBInfo();
@@ -181,6 +213,7 @@ namespace TASMA.Dialog
                 alert.ShowDialog();
                 Close();
             }
+
             /* 데이터 바인딩 객체 초기화 */
             NameSheetGradeComboBoxItems = new ObservableCollection<string>();
             NameSheetClassComboBoxItems = new ObservableCollection<string>();
@@ -188,6 +221,10 @@ namespace TASMA.Dialog
             SubjectSemesterComboBoxItems = new ObservableCollection<KeyValuePair<int, string>>();
             SubjectSemesterComboBoxItems.Add(new KeyValuePair<int, string>(0, "1st"));
             SubjectSemesterComboBoxItems.Add(new KeyValuePair<int, string>(1, "2nd"));
+
+            StudentSemesterComboBoxItems = new ObservableCollection<KeyValuePair<int, string>>();
+            StudentSemesterComboBoxItems.Add(new KeyValuePair<int, string>(0, "1st"));
+            StudentSemesterComboBoxItems.Add(new KeyValuePair<int, string>(1, "2nd"));
 
             SubjectComboBoxItems = new ObservableCollection<string>();
             var tempSubjectList = new List<string>();
@@ -254,6 +291,9 @@ namespace TASMA.Dialog
                 if(SubjectComboBoxItems.Count != 0)
                 {
                     SelectedSubjectComboBoxItem = SubjectComboBoxItems[0];
+
+                    if (SelectedSubjectComboBoxItem == SubjectComboBoxItems[0])
+                        SubjectComboBoxSelectionChanged(null, null);
                 }
 
             }
@@ -262,6 +302,18 @@ namespace TASMA.Dialog
                 NameSheetOption.Visibility = Visibility.Hidden;
                 SubjectReportOption.Visibility = Visibility.Hidden;
                 StudentReportOption.Visibility = Visibility.Visible;
+
+                /* Semester 초기화 */
+                if (1 < DateTime.Now.Month && DateTime.Now.Month <= 7)
+                {
+                    SelectedStudentSemesterComboBoxItem = SubjectSemesterComboBoxItems[0];
+                }
+                else
+                {
+                    SelectedStudentSemesterComboBoxItem = SubjectSemesterComboBoxItems[1];
+                }
+
+                DisplayStudentReport();
             }
         }
 
@@ -305,6 +357,12 @@ namespace TASMA.Dialog
         {
             /* Make & Show FixedDocuments */
             DisplaySubjectReport();
+        }
+
+        private void StudentSemesterComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            /* Make & Show FixedDocuments */
+            DisplayStudentReport();
         }
 
         private void DisplayNameSheet()
@@ -629,6 +687,108 @@ namespace TASMA.Dialog
 
         }
 
+        private void DisplayStudentReport()
+        {
+            var fixedDocuments = new FixedDocumentSequence();
+
+            foreach (var studentItem in studentList)
+            {
+                /* 전체 레이아웃 */
+                var background = new Grid();
+                background.Width = 750;
+                background.Margin = new Thickness(20);
+                background.Background = Brushes.Transparent;
+
+                Image image = new Image();
+                BitmapImage bit = new BitmapImage();
+                bit.BeginInit();
+                bit.UriSource = new Uri("pack://application:,,,/Tasma;component/Resources/Tasma_DepartmentMark.png");
+                bit.EndInit();
+                image.Source = bit;
+                image.VerticalAlignment = VerticalAlignment.Top;
+                image.HorizontalAlignment = HorizontalAlignment.Left;
+                image.Width = 120;
+                image.Height = 120;
+                background.Children.Add(image);
+
+                var layout = new StackPanel();
+                layout.Orientation = Orientation.Vertical;
+                layout.HorizontalAlignment = HorizontalAlignment.Center;
+                layout.Width = 750;
+                background.Children.Add(layout);
+
+                /* 타이틀 영역 */
+                var titleArea = new StackPanel();
+                titleArea.HorizontalAlignment = HorizontalAlignment.Center;
+                titleArea.VerticalAlignment = VerticalAlignment.Center;
+                titleArea.Height = 120;
+                titleArea.Background = Brushes.Transparent;
+                titleArea.Margin = new Thickness(0, 0, 0, 15);
+                layout.Children.Add(titleArea);
+
+                /* 분급 영역 */
+                var descArea = new Grid();
+                descArea.Height = 30;
+                layout.Children.Add(descArea);
+
+                /* 표 영역 */
+                var tableArea = new StackPanel();
+                tableArea.HorizontalAlignment = HorizontalAlignment.Center;
+                layout.Children.Add(tableArea);
+
+                /* 타이틀 텍스트 */
+                var title = new TextBlock();
+                title.TextAlignment = TextAlignment.Center;
+                title.FontSize = 16;
+                title.FontWeight = FontWeights.Bold;
+                title.Text = "\n" + "HALMASHAURI YA WILAYA YA " + region + "\n"
+                           + schoolName + "\n"
+                           + address + "\n"
+                           + "TAARIFA YA MAENDELEO YA MWANAFUNZI";
+                titleArea.Children.Add(title);
+
+                /* 분급 텍스트 */
+                var nameText = new TextBlock();
+                nameText.TextAlignment = TextAlignment.Left;
+                nameText.FontSize = 11;
+                nameText.Text = Space(5) + "JINA:" + Space(3) + studentItem.Item4;
+                descArea.Children.Add(nameText);
+
+                var semText = new TextBlock();
+                semText.TextAlignment = TextAlignment.Left;
+                semText.FontSize = 11;
+                semText.Text = Space(40) + "MUHULA:" + Space(3) + SelectedStudentSemesterComboBoxItem.Value;
+                descArea.Children.Add(semText);
+
+                var gradeText = new TextBlock();
+                gradeText.TextAlignment = TextAlignment.Left;
+                gradeText.FontSize = 11;
+                gradeText.Text = Space(70) + "GRADE:" + Space(3) + studentItem.Item1;
+                descArea.Children.Add(gradeText);
+
+                var classText = new TextBlock();
+                classText.TextAlignment = TextAlignment.Left;
+                classText.FontSize = 11;
+                classText.Text = Space(100) + "CLASS:" + Space(3) + studentItem.Item2;
+                descArea.Children.Add(classText);
+
+                var numberText = new TextBlock();
+                numberText.TextAlignment = TextAlignment.Left;
+                numberText.FontSize = 11;
+                numberText.Text = Space(130) + "NAMBA:" + Space(3) + studentItem.Item3;
+                descArea.Children.Add(numberText);
+
+
+                /* 문서 생성 */
+                var fixedDocument = GetFixedDocument(background, new PrintDialog());
+                var documentReference = new DocumentReference();
+                documentReference.SetDocument(fixedDocument);
+                fixedDocuments.References.Add(documentReference);
+            }
+
+            PrintDialog_DocumentViewer.Document = fixedDocuments;
+        }
+
         private void OnCloseButtonClicked(object sender, RoutedEventArgs e)
         {
             Close();
@@ -703,6 +863,5 @@ namespace TASMA.Dialog
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        
     }
 }
