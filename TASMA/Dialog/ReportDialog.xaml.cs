@@ -757,27 +757,32 @@ namespace TASMA.Dialog
                 var semText = new TextBlock();
                 semText.TextAlignment = TextAlignment.Left;
                 semText.FontSize = 11;
-                semText.Text = Space(40) + "MUHULA:" + Space(3) + SelectedStudentSemesterComboBoxItem.Value;
+                semText.Text = Space(55) + "MUHULA:" + Space(3) + SelectedStudentSemesterComboBoxItem.Value;
                 descArea.Children.Add(semText);
 
                 var gradeText = new TextBlock();
                 gradeText.TextAlignment = TextAlignment.Left;
                 gradeText.FontSize = 11;
-                gradeText.Text = Space(70) + "GRADE:" + Space(3) + studentItem.Item1;
+                gradeText.Text = Space(82) + "GRADE:" + Space(3) + studentItem.Item1;
                 descArea.Children.Add(gradeText);
 
                 var classText = new TextBlock();
                 classText.TextAlignment = TextAlignment.Left;
                 classText.FontSize = 11;
-                classText.Text = Space(100) + "CLASS:" + Space(3) + studentItem.Item2;
+                classText.Text = Space(109) + "CLASS:" + Space(3) + studentItem.Item2;
                 descArea.Children.Add(classText);
 
                 var numberText = new TextBlock();
                 numberText.TextAlignment = TextAlignment.Left;
                 numberText.FontSize = 11;
-                numberText.Text = Space(130) + "NAMBA:" + Space(3) + studentItem.Item3;
+                numberText.Text = Space(136) + "NAMBA:" + Space(3) + studentItem.Item3;
                 descArea.Children.Add(numberText);
 
+                var yearText = new TextBlock();
+                yearText.TextAlignment = TextAlignment.Left;
+                yearText.FontSize = 11;
+                yearText.Text = Space(163) + "MWAKA:" + Space(3) + year;
+                descArea.Children.Add(yearText);
 
                 /* 문서 생성 */
                 var fixedDocument = GetFixedDocument(background, new PrintDialog());

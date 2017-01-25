@@ -165,7 +165,7 @@
 
                         <ComboBox Style="{StaticResource tasmaComboBoxStyle}"
                                   ItemsSource="{Binding StudentSemesterComboBoxItems}"
-                                  SelectedItem="{Binding StudentSubjectSemesterComboBoxItem}"
+                                  SelectedItem="{Binding SelectedStudentSemesterComboBoxItem}"
                                   SelectionChanged="StudentSemesterComboBoxSelectionChanged"
                                   SelectedValuePath="Key" DisplayMemberPath="Value"
                                   Margin="0,0,0,8"/>
