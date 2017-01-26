@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Printing;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,6 +18,7 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using TASMA.Database;
 
 namespace TASMA.Dialog
@@ -27,7 +29,7 @@ namespace TASMA.Dialog
     public partial class ReportDialog : Window, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-
+        
         private AdminDAO adminDAO;
         private DataTable originalDataTable;
 
@@ -39,7 +41,15 @@ namespace TASMA.Dialog
         private string region;
         private string address;
 
-        /* ReportListBox Properties */
+        /* ProgressBar Properties */
+        private int progressValue = 0;
+        public int ProgressValue
+        {
+            get { return progressValue; }
+            set { progressValue = value;  OnPropertyChanged("ProgressValue"); }
+        }
+
+        /* Report ListBox Properties */
         private ObservableCollection<string> reportListBoxItems;
         public ObservableCollection<string> ReportListBoxItems
         {
@@ -149,7 +159,7 @@ namespace TASMA.Dialog
         public ReportDialog(AdminDAO adminDAO, DataTable dataTable)
         {
             this.adminDAO = adminDAO;
-
+            
             /* 데이터 테이블 복사 및 필터링 처리 루틴 */
             object copiedDataTable = dataTable.Copy() as object;
             this.originalDataTable = copiedDataTable as DataTable;
@@ -163,6 +173,7 @@ namespace TASMA.Dialog
                 }
             }
 
+            
             /* Class 리스트 초기화 */
             var allClasses = originalDataTable.AsEnumerable().Select
                                                (row => new {
@@ -193,10 +204,10 @@ namespace TASMA.Dialog
 
             /* 메타 데이터 획득 루틴 */
             var metaData = adminDAO.GetDBInfo();
-            schoolName = metaData[0];
+            schoolName = metaData[0].ToUpper();
             year = metaData[1];
-            region = metaData[2];
-            address = metaData[3];
+            region = metaData[2].ToUpper();
+            address = metaData[3].ToUpper();
 
             DataContext = this;
             InitializeComponent();
@@ -204,8 +215,9 @@ namespace TASMA.Dialog
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            
-            /* Datatable 예외처리 */
+            PrintDialog_DocumentViewer.FitToWidth();
+
+            /* Datatable 예외 처리 */
             if (originalDataTable == null ||
                 originalDataTable.Rows.Count == 0)
             {
@@ -237,16 +249,18 @@ namespace TASMA.Dialog
             tempSubjectList = tempSubjectList.Distinct().ToList();
             foreach(var subjectName in tempSubjectList)
                 SubjectComboBoxItems.Add(subjectName);
-            
+
+            /* Grade 리스트 초기화 */
+            var gradeList = originalDataTable.AsEnumerable().Select(r => r.Field<string>("GRADE")).Distinct().ToList();
+            foreach (var gradeName in gradeList)
+                NameSheetGradeComboBoxItems.Add(gradeName);
+
+
             /* Report 리스트박스 초기화 */
             ReportListBoxItems = new ObservableCollection<string>();
             ReportListBoxItems.Add("NameSheet");
             ReportListBoxItems.Add("Subject");
             ReportListBoxItems.Add("Student");
-
-            SelectedReportListBoxItem = "NameSheet";
-
-            PrintDialog_DocumentViewer.FitToWidth();
         }
 
         private void OnReportListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -258,19 +272,12 @@ namespace TASMA.Dialog
                 StudentReportOption.Visibility = Visibility.Hidden;
 
                 /* 바인딩 상태 초기화 */
-                NameSheetGradeComboBoxItems.Clear();
                 SelectedNameSheetGradeComboBoxItem = null;
-
-                NameSheetClassComboBoxItems.Clear();
                 SelectedNameSheetClassComboBoxItem = null;
 
                 /* Grade ComboBox 초기화 */
-                var gradeList = originalDataTable.AsEnumerable().Select(r => r.Field<string>("GRADE")).Distinct().ToList();
-                foreach (var gradeName in gradeList)
-                    NameSheetGradeComboBoxItems.Add(gradeName);
-                if (gradeList.Count != 0)
-                    SelectedNameSheetGradeComboBoxItem = gradeList[0];
-
+                SelectedNameSheetGradeComboBoxItem = NameSheetGradeComboBoxItems[0];
+                
             }
             else if (SelectedReportListBoxItem == "Subject")
             {
@@ -281,19 +288,17 @@ namespace TASMA.Dialog
                 /* Semester 초기화 */
                 if (1 < DateTime.Now.Month && DateTime.Now.Month <= 7)
                 {
+                    if (SelectedSubjectSemesterComboBoxItem.Key == SubjectSemesterComboBoxItems[0].Key)
+                        DisplaySubjectReport();
+
                     SelectedSubjectSemesterComboBoxItem = SubjectSemesterComboBoxItems[0];
                 }
                 else
                 {
+                    if (SelectedSubjectSemesterComboBoxItem.Key == SubjectSemesterComboBoxItems[1].Key)
+                        DisplaySubjectReport();
+
                     SelectedSubjectSemesterComboBoxItem = SubjectSemesterComboBoxItems[1];
-                }
-
-                if(SubjectComboBoxItems.Count != 0)
-                {
-                    SelectedSubjectComboBoxItem = SubjectComboBoxItems[0];
-
-                    if (SelectedSubjectComboBoxItem == SubjectComboBoxItems[0])
-                        SubjectComboBoxSelectionChanged(null, null);
                 }
 
             }
@@ -306,14 +311,25 @@ namespace TASMA.Dialog
                 /* Semester 초기화 */
                 if (1 < DateTime.Now.Month && DateTime.Now.Month <= 7)
                 {
+                    if (SelectedStudentSemesterComboBoxItem.Key == StudentSemesterComboBoxItems[0].Key)
+                    {
+                        DisplayStudentReport();
+                        return;
+                    }
+
                     SelectedStudentSemesterComboBoxItem = SubjectSemesterComboBoxItems[0];
                 }
                 else
                 {
+                    if (SelectedStudentSemesterComboBoxItem.Key == StudentSemesterComboBoxItems[1].Key)
+                    {
+                        DisplayStudentReport();
+                        return;
+                    }
+
                     SelectedStudentSemesterComboBoxItem = SubjectSemesterComboBoxItems[1];
                 }
 
-                DisplayStudentReport();
             }
         }
 
@@ -367,6 +383,11 @@ namespace TASMA.Dialog
 
         private void DisplayNameSheet()
         {
+
+            DocumentProgressBar.Dispatcher.Invoke(() =>
+                       DocumentProgressBar.Value = 0, DispatcherPriority.Background);
+
+
             /* 전체 레이아웃 */
             var background = new Grid();
             background.Width = 750;
@@ -457,6 +478,10 @@ namespace TASMA.Dialog
                 descArea.Children.Add(grade);
             }
 
+            DocumentProgressBar.Dispatcher.Invoke(() =>
+                       DocumentProgressBar.Value = 50, DispatcherPriority.Background);
+
+
             /* 학생 테이블 */
             DataGrid dataGrid = new DataGrid();
             dataGrid.HeadersVisibility = DataGridHeadersVisibility.Column;
@@ -517,14 +542,24 @@ namespace TASMA.Dialog
 
             var fixedDocument = GetFixedDocument(background, new PrintDialog());            
             PrintDialog_DocumentViewer.Document = fixedDocument;
+
+            DocumentProgressBar.Dispatcher.Invoke(() =>
+                       DocumentProgressBar.Value = 100, DispatcherPriority.Background);
+
         }
 
         private void DisplaySubjectReport()
         {
             var fixedDocuments = new FixedDocumentSequence();
 
+            double count = 0;
+            double max = classList.Count;
+
             foreach (var classItem in classList)
             {
+                DocumentProgressBar.Dispatcher.Invoke(() =>
+                       DocumentProgressBar.Value = 100.0 * ++count / max, DispatcherPriority.Background);
+
                 /* 전체 레이아웃 */
                 var background = new Grid();
                 background.Width = 750;
@@ -692,8 +727,15 @@ namespace TASMA.Dialog
         {
             var fixedDocuments = new FixedDocumentSequence();
 
+            double max = studentList.Count;
+            double count = 0.0;
+
             foreach (var studentItem in studentList)
             {
+                
+                DocumentProgressBar.Dispatcher.Invoke(() => 
+                        DocumentProgressBar.Value = 100.0 * ++count / max, DispatcherPriority.Background);
+
                 /* 전체 레이아웃 */
                 var background = new Grid();
                 background.Width = 750;
@@ -790,11 +832,12 @@ namespace TASMA.Dialog
 
                 foreach (var subjectName in subjectList)
                 {
+                    
                     /* 학생 테이블 */
                     var tableDesc = new TextBlock();
                     tableDesc.TextAlignment = TextAlignment.Left;
                     tableDesc.FontSize = 11;
-                    tableDesc.Text = Space(5) + subjectCount++ + "." + Space(3) + subjectName;
+                    tableDesc.Text = Space(5) + subjectCount++ + "." + Space(3) + subjectName + "\n";
                     tableArea.Children.Add(tableDesc);
 
                     DataGrid dataGrid = new DataGrid();
@@ -940,6 +983,21 @@ namespace TASMA.Dialog
 
             return result;
         }
+
+        //private void DocumentProgressAsync(DoWorkEventHandler method)
+        //{
+        //    backgroundWorker.CancelAsync();
+        //    backgroundWorker = null;
+        //    backgroundWorker = new BackgroundWorker();
+        //    backgroundWorker.WorkerSupportsCancellation = true;
+        //    backgroundWorker.WorkerReportsProgress = true;
+        //    backgroundWorker.ProgressChanged += (sender, e) =>
+        //    {
+        //        ProgressValue = e.ProgressPercentage;
+        //    };
+        //    backgroundWorker.DoWork += method;
+        //    backgroundWorker.RunWorkerAsync();
+        //}
 
         protected void OnPropertyChanged(string propertyName)
         {

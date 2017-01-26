@@ -61,13 +61,24 @@
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="35"/>
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="2*"/>
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
+                    <Grid Width="100">
+                    <ProgressBar
+                            Name="DocumentProgressBar"
+                            Height ="15"
+                            Minimum="0" Maximum="100"
+                            Background="{StaticResource tasmaWhite}"
+                            Foreground="LightBlue"/>
+                    </Grid>
+                </Grid>
+                <Grid Grid.Row="1">
                     <StackPanel Orientation="Vertical"
                                 HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
+                                VerticalAlignment="Top"
                                 Width="100">
                         <TextBlock Text="Report" 
                                    FontFamily="{StaticResource tasmaFont}"
@@ -84,7 +95,7 @@
                                  SelectionChanged="OnReportListBoxSelectionChanged"/>
                     </StackPanel>
                 </Grid>
-                <Grid Grid.Row="1">
+                <Grid Grid.Row="2">
                     <StackPanel Name="NameSheetOption"
                                 Width="100"
                                 Visibility="Hidden">
