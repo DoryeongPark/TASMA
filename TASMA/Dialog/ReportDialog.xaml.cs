@@ -779,6 +779,12 @@ namespace TASMA.Dialog
                 tableArea.Orientation = Orientation.Vertical;
                 layout.Children.Add(tableArea);
 
+                /* 전체 점수 영역 */
+                var totalArea = new Grid();
+                descArea.Height = 30;
+                layout.Children.Add(totalArea);
+
+
                 /* 타이틀 텍스트 */
                 var title = new TextBlock();
                 title.TextAlignment = TextAlignment.Center;
@@ -836,6 +842,7 @@ namespace TASMA.Dialog
                     /* 학생 테이블 */
                     var tableDesc = new TextBlock();
                     tableDesc.TextAlignment = TextAlignment.Left;
+                    tableDesc.FontWeight = FontWeights.Bold;
                     tableDesc.FontSize = 11;
                     tableDesc.Text = Space(5) + subjectCount++ + "." + Space(3) + subjectName + "\n";
                     tableArea.Children.Add(tableDesc);
@@ -868,20 +875,20 @@ namespace TASMA.Dialog
                     }
 
                     var avgColumn = new DataGridTextColumn();
-                    avgColumn.Header = "AVERAGE";
-                    avgColumn.Width = new DataGridLength(60);
+                    avgColumn.Header = "WASTANI";
+                    avgColumn.Width = new DataGridLength(70);
                     avgColumn.Binding = new Binding("AVERAGE");
                     dataGrid.Columns.Add(avgColumn);
 
                     var ratingColumn = new DataGridTextColumn();
-                    ratingColumn.Header = "GRADE";
-                    ratingColumn.Width = new DataGridLength(60);
+                    ratingColumn.Header = "DARAJA";
+                    ratingColumn.Width = new DataGridLength(70);
                     ratingColumn.Binding = new Binding("RATING");
                     dataGrid.Columns.Add(ratingColumn);
 
                     var posColumn = new DataGridTextColumn();
-                    posColumn.Header = "POSITION";
-                    posColumn.Width = new DataGridLength(60);
+                    posColumn.Header = "NAFASI";
+                    posColumn.Width = new DataGridLength(70);
                     posColumn.Binding = new Binding("POSITION");
                     dataGrid.Columns.Add(posColumn);
 
@@ -890,7 +897,6 @@ namespace TASMA.Dialog
                                                                          studentItem.Item2,
                                                                          subjectName,
                                                                          studentItem.Item3);
-
                     if (dataTable == null)
                         continue;
 
@@ -902,7 +908,25 @@ namespace TASMA.Dialog
                     tableNewLine.FontSize = 11;
                     tableNewLine.Text = "\n";
                     tableArea.Children.Add(tableNewLine);
-         
+
+                    var total = adminDAO.GetStudentTotalPosition(SelectedStudentSemesterComboBoxItem.Key,
+                                                                         studentItem.Item1,
+                                                                         studentItem.Item2,
+                                                                         studentItem.Item3);
+
+                    var totalText = new TextBlock();
+                    totalText.TextAlignment = TextAlignment.Left;
+                    totalText.FontSize = 11;
+                    totalText.Text = Space(5) + "WASTANI WA ALAMA:" + Space(3) + total.Item1;
+                    totalArea.Children.Add(totalText);
+
+                    var avgText = new TextBlock();
+                    avgText.TextAlignment = TextAlignment.Left;
+                    avgText.FontSize = 11;
+                    avgText.Text = Space(50) + "WASTANI WA WANAFUNZI:" + Space(3) + total.Item2;
+                    totalArea.Children.Add(avgText);
+
+
                 }
 
                 /* 문서 생성 */

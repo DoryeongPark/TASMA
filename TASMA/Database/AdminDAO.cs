@@ -1475,6 +1475,7 @@ namespace TASMA
             public List<string> GetSubjectList()
             {
                 var connStr = @"Data Source=" + currentDB + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
+
                 var conn = new SQLiteConnection(connStr);
                 conn.Open();
 
@@ -1974,6 +1975,87 @@ namespace TASMA
                 copiedDataTable.ImportRow(foundRows[0]);
 
                 return copiedDataTable;
+
+            }
+
+            public Tuple<double, double, int, int> GetStudentTotalPosition(int semester, string gradeName,
+                                                     string className, long sNum)
+            {
+                var subjectList = GetClassSubjects(gradeName, className);
+                var studentList = GetStudentList(gradeName, className);
+                studentList.Sort();
+
+                var resultSet = new DataTable();
+                resultSet.Columns.Add("SNUM", typeof(long));
+                resultSet.Columns.Add("AVERAGE", typeof(double));
+                resultSet.Columns.Add("POSITION", typeof(long));
+
+                foreach (var studentItem in studentList)
+                    resultSet.Rows.Add(new object[] { studentItem.Item1,
+                                                      0.0,
+                                                      0
+                                                    });               
+
+                foreach(var subjectName in subjectList)
+                {
+                    var originalDataTable = GetFilteredSubjectDataTable(semester, gradeName, 
+                                                                    className, subjectName);
+                    var dataView = originalDataTable.AsDataView();
+                    dataView.Sort = "SNUM asc";
+                    originalDataTable = dataView.ToTable();
+
+                    for (int i = 0; i < originalDataTable.Rows.Count; ++i)
+                    {
+                        resultSet.Rows[i]["AVERAGE"] = 
+                                        (double)resultSet.Rows[i]["AVERAGE"] + 
+                                        (float)originalDataTable.Rows[i]["AVERAGE"];
+                    }
+                }
+
+
+                /* 순위 삽입 */
+                var rsDataView = resultSet.AsDataView();
+                rsDataView.Sort = "AVERAGE desc";
+                resultSet = rsDataView.ToTable();
+
+                int position = 1;
+
+                for (int i = 0; i < resultSet.Rows.Count; ++i)
+                {
+                    if (i == 0)
+                    {
+                        resultSet.Rows[i]["POSITION"] = position;
+                        continue;
+                    }
+
+                    if (resultSet.Rows[i]["AVERAGE"] !=
+                        resultSet.Rows[i - 1]["AVERAGE"])
+                        ++position;
+
+                    resultSet.Rows[i]["POSITION"] = position;
+                }
+
+                /* 순위 추출 */
+                var resultRow = resultSet.AsEnumerable().Where(p => sNum == p.Field<long>("SNUM"));
+
+                if (resultRow.Count() == 0)
+                    return null;
+
+                double totalAverage = 0.0;
+
+                /* 전체 평균 계산 */
+                for (int i = 0; i < resultSet.Rows.Count; ++i)
+                {
+                    totalAverage += (double)resultSet.Rows[i]["AVERAGE"];
+                }
+
+                totalAverage = totalAverage / resultSet.Rows.Count;
+
+                return new Tuple<double, double, int, int>(
+                                Math.Round((double)resultRow.ElementAt(0)["AVERAGE"] / (double)subjectList.Count, 2),
+                                Math.Round(totalAverage, 2),
+                                (int)((long)resultRow.ElementAt(0)["POSITION"]),
+                                (int)resultSet.Rows.Count);
 
             }
         }
