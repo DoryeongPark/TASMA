@@ -669,11 +669,12 @@ namespace TASMA.Dialog
 
                 tableArea.Children.Add(dataGrid);
 
-                var dataTable = adminDAO.GetFilteredSubjectTable(originalDataTable,
+                var dataTable = adminDAO.GetFilteredSubjectDataTable(
                                                                  SelectedSubjectSemesterComboBoxItem.Key,
                                                                  classItem.Item1,
                                                                  classItem.Item2,
-                                                                 SelectedSubjectComboBoxItem);
+                                                                 SelectedSubjectComboBoxItem,
+                                                                 originalDataTable);
                 dataGrid.ItemsSource = dataTable.AsDataView();
 
                 /* 문서 생성 */
@@ -733,7 +734,7 @@ namespace TASMA.Dialog
 
                 /* 표 영역 */
                 var tableArea = new StackPanel();
-                tableArea.HorizontalAlignment = HorizontalAlignment.Center;
+                tableArea.Orientation = Orientation.Vertical;
                 layout.Children.Add(tableArea);
 
                 /* 타이틀 텍스트 */
@@ -783,6 +784,83 @@ namespace TASMA.Dialog
                 yearText.FontSize = 11;
                 yearText.Text = Space(163) + "MWAKA:" + Space(3) + year;
                 descArea.Children.Add(yearText);
+
+                var subjectList = adminDAO.GetClassSubjects(studentItem.Item1, studentItem.Item2);
+                int subjectCount = 1;
+
+                foreach (var subjectName in subjectList)
+                {
+                    /* 학생 테이블 */
+                    var tableDesc = new TextBlock();
+                    tableDesc.TextAlignment = TextAlignment.Left;
+                    tableDesc.FontSize = 11;
+                    tableDesc.Text = Space(5) + subjectCount++ + "." + Space(3) + subjectName;
+                    tableArea.Children.Add(tableDesc);
+
+                    DataGrid dataGrid = new DataGrid();
+                    dataGrid.HeadersVisibility = DataGridHeadersVisibility.Column;
+                    dataGrid.Width = 720;
+                    dataGrid.BorderBrush = Brushes.Black;
+                    dataGrid.Foreground = Brushes.Black;
+                    dataGrid.Background = Brushes.White;
+                    dataGrid.AutoGenerateColumns = false;
+                    dataGrid.CanUserAddRows = false;
+                    dataGrid.Visibility = Visibility.Visible;
+                    var headerStyle = new Style(typeof(DataGridColumnHeader));
+                    headerStyle.BasedOn = this.TryFindResource("printHeaderStyle") as Style;
+                    dataGrid.ColumnHeaderStyle = headerStyle;
+                    var cellStyle = new Style(typeof(DataGridCell));
+                    cellStyle.BasedOn = this.TryFindResource("printCellStyle") as Style;
+                    dataGrid.CellStyle = cellStyle;
+
+                    var evaluationList = adminDAO.GetEvaluationList(subjectName);
+
+                    foreach (var evaluation in evaluationList)
+                    {
+                        var evalColumn = new DataGridTextColumn();
+                        evalColumn.Header = evaluation.ToUpper();
+                        evalColumn.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
+                        evalColumn.Binding = new Binding(evaluation);
+                        dataGrid.Columns.Add(evalColumn);
+                    }
+
+                    var avgColumn = new DataGridTextColumn();
+                    avgColumn.Header = "AVERAGE";
+                    avgColumn.Width = new DataGridLength(60);
+                    avgColumn.Binding = new Binding("AVERAGE");
+                    dataGrid.Columns.Add(avgColumn);
+
+                    var ratingColumn = new DataGridTextColumn();
+                    ratingColumn.Header = "GRADE";
+                    ratingColumn.Width = new DataGridLength(60);
+                    ratingColumn.Binding = new Binding("RATING");
+                    dataGrid.Columns.Add(ratingColumn);
+
+                    var posColumn = new DataGridTextColumn();
+                    posColumn.Header = "POSITION";
+                    posColumn.Width = new DataGridLength(60);
+                    posColumn.Binding = new Binding("POSITION");
+                    dataGrid.Columns.Add(posColumn);
+
+                    var dataTable = adminDAO.GetScoreDataTableForStudent(SelectedStudentSemesterComboBoxItem.Key,
+                                                                         studentItem.Item1,
+                                                                         studentItem.Item2,
+                                                                         subjectName,
+                                                                         studentItem.Item3);
+
+                    if (dataTable == null)
+                        continue;
+
+                    dataGrid.ItemsSource = dataTable.AsDataView();
+                    tableArea.Children.Add(dataGrid);
+
+                    var tableNewLine = new TextBlock();
+                    tableNewLine.TextAlignment = TextAlignment.Left;
+                    tableNewLine.FontSize = 11;
+                    tableNewLine.Text = "\n";
+                    tableArea.Children.Add(tableNewLine);
+         
+                }
 
                 /* 문서 생성 */
                 var fixedDocument = GetFixedDocument(background, new PrintDialog());
