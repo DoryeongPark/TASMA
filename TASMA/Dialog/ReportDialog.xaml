@@ -21,7 +21,7 @@
             <Setter Property="VerticalAlignment" Value="Stretch"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="FontSize" Value="10"/>
-            <Setter Property="Height" Value="25" />
+            <Setter Property="Height" Value="20" />
         </Style>
         <Style x:Key="printCellStyle" TargetType="{x:Type DataGridCell}">
             <Setter Property="Background" Value="White"/>
@@ -31,7 +31,7 @@
             <Setter Property="BorderThickness" Value="0.3"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Height" Value="25" />
+            <Setter Property="Height" Value="20" />
         </Style>
     </Window.Resources>
     <Grid>
@@ -181,6 +181,28 @@
                                   SelectedValuePath="Key" DisplayMemberPath="Value"
                                   Margin="0,0,0,8"/>
 
+                        <TextBlock Text="Semester End Date"
+                                   Style="{StaticResource tasmaLabelStyle}"
+                                   Margin="0,0,0,3"/>
+
+                        <DatePicker SelectedDate="{Binding CloseDate, StringFormat = {}{0:dd-MM-yyyy}}"
+                                    SelectedDateChanged="OnSelectedDateChanged">
+                            <DatePicker.Resources>
+                                <Style TargetType="DatePickerTextBox">
+                                    <Setter Property="Control.Template">
+                                        <Setter.Value>
+                                            <ControlTemplate>
+                                                <TextBox x:Name="PART_TextBox"
+                                                     Focusable="false"
+                                                     FontSize="10"
+                                                     Text="{Binding Path=SelectedDate, StringFormat ={}{0:dd-MM-yyyy}, 
+                                                     RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" />              
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </DatePicker.Resources>
+                        </DatePicker>
 
                     </StackPanel>
                 </Grid>

@@ -1175,7 +1175,7 @@ namespace TASMA
                 {
                     cmd.CommandText = "INSERT INTO EVALUATION(SUBJECT, EVALUATION) VALUES('" + subjectName + "', '" + evaluationName + "');";
                     cmd.ExecuteNonQuery();
-                    cmd.CommandText = "ALTER TABLE " + subjectName + " ADD COLUMN " + evaluationName + " INTEGER;";
+                    cmd.CommandText = "ALTER TABLE " + subjectName + " ADD COLUMN " + evaluationName + " REAL;";
                     cmd.ExecuteNonQuery();
                 }catch(SQLiteException se)
                 {
@@ -1883,11 +1883,11 @@ namespace TASMA
                         double score;
 
                         if (currentRow[evaluationItem.Item1] == DBNull.Value)
-                            score = 0.0f;
+                            score = 0.0;
                         else
-                            score = (double)currentRow[evaluationItem.Item1];
+                            score = (double)((double)currentRow[evaluationItem.Item1]);
 
-                        var value = score * ((double)evaluationItem.Item2) / 100.0f;
+                        var value = score * ((double)evaluationItem.Item2) / 100.0;
                         average += value;
                     }
                     currentRow["AVERAGE"] = average;
@@ -1931,8 +1931,8 @@ namespace TASMA
                         continue;
                     }
                     
-                    if (dataTable.Rows[i]["AVERAGE"] !=
-                        dataTable.Rows[i - 1]["AVERAGE"])
+                    if ((float)dataTable.Rows[i]["AVERAGE"] !=
+                        (float)dataTable.Rows[i - 1]["AVERAGE"])
                         ++position;
                     
                     dataTable.Rows[i]["POSITION"] = position;    
@@ -1973,9 +1973,11 @@ namespace TASMA
                     return null;
 
                 copiedDataTable.ImportRow(foundRows[0]);
+                copiedDataTable.Columns.Add("SUBJECT", typeof(string));
+                copiedDataTable.Rows[0]["SUBJECT"] = subjectName;
 
                 return copiedDataTable;
-
+ 
             }
 
             public Tuple<double, double, int, int> GetStudentTotalPosition(int semester, string gradeName,
@@ -2028,8 +2030,8 @@ namespace TASMA
                         continue;
                     }
 
-                    if (resultSet.Rows[i]["AVERAGE"] !=
-                        resultSet.Rows[i - 1]["AVERAGE"])
+                    if ((double)resultSet.Rows[i]["AVERAGE"] !=
+                        (double)resultSet.Rows[i - 1]["AVERAGE"])
                         ++position;
 
                     resultSet.Rows[i]["POSITION"] = position;
@@ -2049,7 +2051,7 @@ namespace TASMA
                     totalAverage += (double)resultSet.Rows[i]["AVERAGE"];
                 }
 
-                totalAverage = totalAverage / resultSet.Rows.Count;
+                totalAverage = totalAverage / (resultSet.Rows.Count * subjectList.Count) ;
 
                 return new Tuple<double, double, int, int>(
                                 Math.Round((double)resultRow.ElementAt(0)["AVERAGE"] / (double)subjectList.Count, 2),

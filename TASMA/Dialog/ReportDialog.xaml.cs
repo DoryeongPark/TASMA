@@ -156,6 +156,13 @@ namespace TASMA.Dialog
             set { selectedStudentSemesterComboBoxItem = value; OnPropertyChanged("SelectedStudentSemesterComboBoxItem"); }
         }
 
+        private string closeDate;
+        public string CloseDate
+        {
+            get { return closeDate; }
+            set { closeDate = value;  OnPropertyChanged("CloseDate"); }
+        }
+
         public ReportDialog(AdminDAO adminDAO, DataTable dataTable)
         {
             this.adminDAO = adminDAO;
@@ -371,13 +378,16 @@ namespace TASMA.Dialog
 
         private void SubjectComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            /* Make & Show FixedDocuments */
             DisplaySubjectReport();
         }
 
         private void StudentSemesterComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        { 
+            DisplayStudentReport();
+        }
+
+        private void OnSelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            /* Make & Show FixedDocuments */
             DisplayStudentReport();
         }
 
@@ -402,6 +412,18 @@ namespace TASMA.Dialog
             image.Source = bit;
             image.VerticalAlignment = VerticalAlignment.Top;
             image.HorizontalAlignment = HorizontalAlignment.Left;
+            image.Width = 120;
+            image.Height = 120;
+            background.Children.Add(image);
+
+            image = new Image();
+            bit = new BitmapImage();
+            bit.BeginInit();
+            bit.UriSource = new Uri("pack://application:,,,/Tasma;component/Resources/Tasma_DepartmentMark.png");
+            bit.EndInit();
+            image.Source = bit;
+            image.VerticalAlignment = VerticalAlignment.Top;
+            image.HorizontalAlignment = HorizontalAlignment.Right;
             image.Width = 120;
             image.Height = 120;
             background.Children.Add(image);
@@ -578,6 +600,18 @@ namespace TASMA.Dialog
                 image.Height = 120;
                 background.Children.Add(image);
 
+                image = new Image();
+                bit = new BitmapImage();
+                bit.BeginInit();
+                bit.UriSource = new Uri("pack://application:,,,/Tasma;component/Resources/Tasma_DepartmentMark.png");
+                bit.EndInit();
+                image.Source = bit;
+                image.VerticalAlignment = VerticalAlignment.Top;
+                image.HorizontalAlignment = HorizontalAlignment.Right;
+                image.Width = 120;
+                image.Height = 120;
+                background.Children.Add(image);
+
                 var layout = new StackPanel();
                 layout.Orientation = Orientation.Vertical;
                 layout.HorizontalAlignment = HorizontalAlignment.Center;
@@ -616,32 +650,32 @@ namespace TASMA.Dialog
                 /* 분급 텍스트 */
                 var master = new TextBlock();
                 master.TextAlignment = TextAlignment.Left;
-                master.FontSize = 12;
+                master.FontSize = 11;
                 master.Text = Space(5) + "MASTER:";
                 descArea.Children.Add(master);
 
                 var semText = new TextBlock();
                 semText.TextAlignment = TextAlignment.Left;
-                semText.FontSize = 12;
-                semText.Text = Space(50) + "SEMESTER:" + Space(3) + SelectedSubjectSemesterComboBoxItem.Value;
+                semText.FontSize = 11;
+                semText.Text = Space(65) + "SEMESTER:" + Space(3) + SelectedSubjectSemesterComboBoxItem.Value;
                 descArea.Children.Add(semText);
 
                 var gradeText = new TextBlock();
                 gradeText.TextAlignment = TextAlignment.Left;
-                gradeText.FontSize = 12;
-                gradeText.Text = Space(80) + "GRADE:" + Space(3) + classItem.Item1;
+                gradeText.FontSize = 11;
+                gradeText.Text = Space(100) + "GRADE:" + Space(3) + classItem.Item1;
                 descArea.Children.Add(gradeText);
 
                 var classText = new TextBlock();
                 classText.TextAlignment = TextAlignment.Left;
-                classText.FontSize = 12;
-                classText.Text = Space(110) + "CLASS:" + Space(3) + classItem.Item2;
+                classText.FontSize = 11;
+                classText.Text = Space(135) + "CLASS:" + Space(3) + classItem.Item2;
                 descArea.Children.Add(classText);
 
                 var yearText = new TextBlock();
                 yearText.TextAlignment = TextAlignment.Left;
-                yearText.FontSize = 12;
-                yearText.Text = Space(140) + "YEAR:" + Space(3) + year;
+                yearText.FontSize = 11;
+                yearText.Text = Space(170) + "YEAR:" + Space(3) + year;
                 descArea.Children.Add(yearText);
 
                 /* 학생 테이블 */
@@ -754,6 +788,18 @@ namespace TASMA.Dialog
                 image.Height = 120;
                 background.Children.Add(image);
 
+                image = new Image();
+                bit = new BitmapImage();
+                bit.BeginInit();
+                bit.UriSource = new Uri("pack://application:,,,/Tasma;component/Resources/Tasma_DepartmentMark.png");
+                bit.EndInit();
+                image.Source = bit;
+                image.VerticalAlignment = VerticalAlignment.Top;
+                image.HorizontalAlignment = HorizontalAlignment.Right;
+                image.Width = 120;
+                image.Height = 120;
+                background.Children.Add(image);
+
                 var layout = new StackPanel();
                 layout.Orientation = Orientation.Vertical;
                 layout.HorizontalAlignment = HorizontalAlignment.Center;
@@ -784,6 +830,23 @@ namespace TASMA.Dialog
                 descArea.Height = 30;
                 layout.Children.Add(totalArea);
 
+                /* 태도 평가 영역 */
+                var tabiaArea  = new StackPanel();
+                tabiaArea.Width = 690;
+                tabiaArea.Orientation = Orientation.Vertical;
+                layout.Children.Add(tabiaArea);
+
+                /* 코멘트 영역 */
+                var commentArea = new StackPanel();
+                commentArea.Width = 670;
+                commentArea.Orientation = Orientation.Vertical;
+                layout.Children.Add(commentArea);
+
+                /* 부모님 영역 */
+                var parentArea = new StackPanel();
+                parentArea.Width = 670;
+                parentArea.Orientation = Orientation.Vertical;
+                layout.Children.Add(parentArea);
 
                 /* 타이틀 텍스트 */
                 var title = new TextBlock();
@@ -834,36 +897,44 @@ namespace TASMA.Dialog
                 descArea.Children.Add(yearText);
 
                 var subjectList = adminDAO.GetClassSubjects(studentItem.Item1, studentItem.Item2);
-                int subjectCount = 1;
-
+                var subjectCount = 0;
+                
+                /* 점수 테이블 */
                 foreach (var subjectName in subjectList)
                 {
-                    
-                    /* 학생 테이블 */
-                    var tableDesc = new TextBlock();
-                    tableDesc.TextAlignment = TextAlignment.Left;
-                    tableDesc.FontWeight = FontWeights.Bold;
-                    tableDesc.FontSize = 11;
-                    tableDesc.Text = Space(5) + subjectCount++ + "." + Space(3) + subjectName + "\n";
-                    tableArea.Children.Add(tableDesc);
+                    var subjectDesc = new TextBlock();
+                    subjectDesc.TextAlignment = TextAlignment.Left;
+                    subjectDesc.FontSize = 9;
+                    subjectDesc.FontWeight = FontWeights.Bold;
+                    subjectDesc.Text = Space(5) + ++subjectCount + ". " + subjectName + "\n";
+                    subjectDesc.Margin = new Thickness(0, 2, 0, 2);
+                    tableArea.Children.Add(subjectDesc);
 
-                    DataGrid dataGrid = new DataGrid();
-                    dataGrid.HeadersVisibility = DataGridHeadersVisibility.Column;
-                    dataGrid.Width = 720;
-                    dataGrid.BorderBrush = Brushes.Black;
-                    dataGrid.Foreground = Brushes.Black;
-                    dataGrid.Background = Brushes.White;
-                    dataGrid.AutoGenerateColumns = false;
-                    dataGrid.CanUserAddRows = false;
-                    dataGrid.Visibility = Visibility.Visible;
-                    var headerStyle = new Style(typeof(DataGridColumnHeader));
-                    headerStyle.BasedOn = this.TryFindResource("printHeaderStyle") as Style;
-                    dataGrid.ColumnHeaderStyle = headerStyle;
-                    var cellStyle = new Style(typeof(DataGridCell));
-                    cellStyle.BasedOn = this.TryFindResource("printCellStyle") as Style;
-                    dataGrid.CellStyle = cellStyle;
+                    DataGrid scoreGrid = new DataGrid();
+                    scoreGrid.HeadersVisibility = DataGridHeadersVisibility.Column;
+                    scoreGrid.Width = 720;
+                    scoreGrid.BorderBrush = Brushes.Black;
+                    scoreGrid.FontSize = 9;
+                    scoreGrid.Foreground = Brushes.Black;
+                    scoreGrid.Background = Brushes.White;
+                    scoreGrid.Margin = new Thickness(0, 0, 0, 10);
+                    scoreGrid.AutoGenerateColumns = false;
+                    scoreGrid.CanUserAddRows = false;
+                    scoreGrid.Visibility = Visibility.Visible;
+                    var tabiaHeaderStyle = new Style(typeof(DataGridColumnHeader));
+                    tabiaHeaderStyle.BasedOn = this.TryFindResource("printHeaderStyle") as Style;
+                    scoreGrid.ColumnHeaderStyle = tabiaHeaderStyle;
+                    var tabiaCellStyle = new Style(typeof(DataGridCell));
+                    tabiaCellStyle.BasedOn = this.TryFindResource("printCellStyle") as Style;
+                    scoreGrid.CellStyle = tabiaCellStyle;
 
                     var evaluationList = adminDAO.GetEvaluationList(subjectName);
+
+                    var subjectColumn = new DataGridTextColumn();
+                    subjectColumn.Header = "TAALUMA";
+                    subjectColumn.Width = new DataGridLength(150);
+                    subjectColumn.Binding = new Binding("SUBJECT");
+                    scoreGrid.Columns.Add(subjectColumn);
 
                     foreach (var evaluation in evaluationList)
                     {
@@ -871,63 +942,185 @@ namespace TASMA.Dialog
                         evalColumn.Header = evaluation.ToUpper();
                         evalColumn.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
                         evalColumn.Binding = new Binding(evaluation);
-                        dataGrid.Columns.Add(evalColumn);
+                        scoreGrid.Columns.Add(evalColumn);
                     }
 
                     var avgColumn = new DataGridTextColumn();
                     avgColumn.Header = "WASTANI";
                     avgColumn.Width = new DataGridLength(70);
                     avgColumn.Binding = new Binding("AVERAGE");
-                    dataGrid.Columns.Add(avgColumn);
+                    scoreGrid.Columns.Add(avgColumn);
 
                     var ratingColumn = new DataGridTextColumn();
                     ratingColumn.Header = "DARAJA";
                     ratingColumn.Width = new DataGridLength(70);
                     ratingColumn.Binding = new Binding("RATING");
-                    dataGrid.Columns.Add(ratingColumn);
+                    scoreGrid.Columns.Add(ratingColumn);
 
                     var posColumn = new DataGridTextColumn();
                     posColumn.Header = "NAFASI";
                     posColumn.Width = new DataGridLength(70);
                     posColumn.Binding = new Binding("POSITION");
-                    dataGrid.Columns.Add(posColumn);
+                    scoreGrid.Columns.Add(posColumn);
 
                     var dataTable = adminDAO.GetScoreDataTableForStudent(SelectedStudentSemesterComboBoxItem.Key,
                                                                          studentItem.Item1,
                                                                          studentItem.Item2,
                                                                          subjectName,
                                                                          studentItem.Item3);
+
                     if (dataTable == null)
                         continue;
 
-                    dataGrid.ItemsSource = dataTable.AsDataView();
-                    tableArea.Children.Add(dataGrid);
-
-                    var tableNewLine = new TextBlock();
-                    tableNewLine.TextAlignment = TextAlignment.Left;
-                    tableNewLine.FontSize = 11;
-                    tableNewLine.Text = "\n";
-                    tableArea.Children.Add(tableNewLine);
-
-                    var total = adminDAO.GetStudentTotalPosition(SelectedStudentSemesterComboBoxItem.Key,
-                                                                         studentItem.Item1,
-                                                                         studentItem.Item2,
-                                                                         studentItem.Item3);
-
-                    var totalText = new TextBlock();
-                    totalText.TextAlignment = TextAlignment.Left;
-                    totalText.FontSize = 11;
-                    totalText.Text = Space(5) + "WASTANI WA ALAMA:" + Space(3) + total.Item1;
-                    totalArea.Children.Add(totalText);
-
-                    var avgText = new TextBlock();
-                    avgText.TextAlignment = TextAlignment.Left;
-                    avgText.FontSize = 11;
-                    avgText.Text = Space(50) + "WASTANI WA WANAFUNZI:" + Space(3) + total.Item2;
-                    totalArea.Children.Add(avgText);
-
+                    scoreGrid.ItemsSource = dataTable.AsDataView();
+                    tableArea.Children.Add(scoreGrid);
 
                 }
+
+                var tableNewLine = new TextBlock();
+                tableNewLine.TextAlignment = TextAlignment.Left;
+                tableNewLine.FontSize = 11;
+                tableNewLine.Text = "\n";
+                tableArea.Children.Add(tableNewLine);
+
+                var total = adminDAO.GetStudentTotalPosition(SelectedStudentSemesterComboBoxItem.Key,
+                                                                     studentItem.Item1,
+                                                                     studentItem.Item2,
+                                                                     studentItem.Item3);
+
+                /* 종합 성적 텍스트 */
+                var totalText = new TextBlock();
+                totalText.TextAlignment = TextAlignment.Left;
+                totalText.FontSize = 11;
+                totalText.Text = Space(5) + "WASTANI WA ALAMA:" + Space(3) + total.Item1;
+                totalArea.Children.Add(totalText);
+
+                var avgText = new TextBlock();
+                avgText.TextAlignment = TextAlignment.Left;
+                avgText.FontSize = 11;
+                avgText.Text = Space(55) + "WASTANI WA WANAFUNZI:" + Space(3) + total.Item2;
+                totalArea.Children.Add(avgText);
+
+                var posText = new TextBlock();
+                posText.TextAlignment = TextAlignment.Left;
+                posText.FontSize = 11;
+                posText.Text = Space(115) + "NAFASI YAKE:" + Space(3) + total.Item3;
+                totalArea.Children.Add(posText);
+
+                var cntText = new TextBlock();
+                cntText.TextAlignment = TextAlignment.Left;
+                cntText.FontSize = 11;
+                cntText.Text = Space(155) + "KATI YA WANAFUNZI" + Space(3) + total.Item4;
+                totalArea.Children.Add(cntText);
+
+                /* 점수 산정 텍스트 */
+                var notifyText = new TextBlock();
+                notifyText.TextAlignment = TextAlignment.Left;
+                notifyText.FontSize = 11;
+                notifyText.Text = "\nMCHANGANUO WA ALAMA\n" +
+                                  "A: 100~80  B:79~60  C: 59~40  D: 39~20  F: 19~0\n";
+                tabiaArea.Children.Add(notifyText);
+
+                /* 행동 평가 표 */
+                var dataGrid = new DataGrid();
+                dataGrid.HeadersVisibility = DataGridHeadersVisibility.Column;
+                dataGrid.Width = 690;
+                dataGrid.BorderBrush = Brushes.Black;
+                dataGrid.Foreground = Brushes.Black;
+                dataGrid.Background = Brushes.White;
+                dataGrid.FontSize = 9;
+                dataGrid.AutoGenerateColumns = false;
+                dataGrid.CanUserAddRows = false;
+                dataGrid.Visibility = Visibility.Visible;
+                var headerStyle = new Style(typeof(DataGridColumnHeader));
+                headerStyle.BasedOn = this.TryFindResource("printHeaderStyle") as Style;
+                dataGrid.ColumnHeaderStyle = headerStyle;
+                var cellStyle = new Style(typeof(DataGridCell));
+                cellStyle.BasedOn = this.TryFindResource("printCellStyle") as Style;
+                dataGrid.CellStyle = cellStyle;
+
+                var noColumn = new DataGridTextColumn();
+                noColumn.Header = "No";
+                noColumn.Width = new DataGridLength(30);
+                noColumn.Binding = new Binding("NO");
+                dataGrid.Columns.Add(noColumn);
+
+                var tabiaColumn = new DataGridTextColumn();
+                tabiaColumn.Header = " ";
+                tabiaColumn.Binding = new Binding("TABIA");
+                tabiaColumn.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
+                dataGrid.Columns.Add(tabiaColumn);
+
+                var alamaColumn = new DataGridTextColumn();
+                alamaColumn.Header = "ALAMA";
+                alamaColumn.Width = new DataGridLength(120);
+                dataGrid.Columns.Add(alamaColumn);
+
+                /* 행동 평가 목록 추가 */
+                var tabiaDataTable = new DataTable();
+                tabiaDataTable.Columns.Add("NO", typeof(int));
+                tabiaDataTable.Columns.Add("TABIA", typeof(string));
+               
+                tabiaDataTable.Rows.Add(new object[] { 1, "KUFANYA KAZI KWA JUHUDI NA MAARIFA"});
+                tabiaDataTable.Rows.Add(new object[] { 2, "UTII / KAZI/DARASANI" });
+                tabiaDataTable.Rows.Add(new object[] { 3, "KUPENDA NA KUTHAMINI KAZI" });
+                tabiaDataTable.Rows.Add(new object[] { 4, "UTUNZAJI MALI YA UMMA" });
+                tabiaDataTable.Rows.Add(new object[] { 5, "USHURUKUANO NA WENZAKE" });
+                tabiaDataTable.Rows.Add(new object[] { 6, "HESHIMA KWA WOTE" });
+                tabiaDataTable.Rows.Add(new object[] { 7, "KUMUDU UONGOZI NA USHAURI" });
+                tabiaDataTable.Rows.Add(new object[] { 8, "JE, HUONESHA ADABU" });
+                tabiaDataTable.Rows.Add(new object[] { 9, "USAFI BINAFSI" });
+                tabiaDataTable.Rows.Add(new object[] { 10, "UAMINFU" });
+                tabiaDataTable.Rows.Add(new object[] { 11, "KUSHIRIKI MICHEZO / KUSHIRIKI UTAMADUNI" });
+
+                dataGrid.ItemsSource = tabiaDataTable.AsDataView();
+                tabiaArea.Children.Add(dataGrid);
+
+                string stringCloseDate = "";
+
+                if (CloseDate != null) 
+                    stringCloseDate = String.Format("{0:dd/MM/yyyy}", Convert.ToDateTime(CloseDate));
+
+                var closeDateText = new TextBlock();
+                closeDateText.TextAlignment = TextAlignment.Left;
+                closeDateText.FontSize = 11;
+                closeDateText.FontWeight = FontWeights.Bold;
+
+                closeDateText.Text = "1. Shule itafunguliwa tarehe:" + Space(3) + stringCloseDate;
+                closeDateText.Margin = new Thickness(0, 10, 0, 5);
+                commentArea.Children.Add(closeDateText);
+
+                var teacherCommentText = new TextBlock();
+                teacherCommentText.TextAlignment = TextAlignment.Left;
+                teacherCommentText.FontSize = 11;
+                teacherCommentText.FontWeight = FontWeights.Bold;
+                teacherCommentText.Text = "2. Mwanafunzi arudipo shuleni aje na yafuatayo";
+                teacherCommentText.Margin = new Thickness(0, 0, 0, 30);
+                commentArea.Children.Add(teacherCommentText);
+
+                var masterCommentText = new TextBlock();
+                masterCommentText.TextAlignment = TextAlignment.Left;
+                masterCommentText.FontSize = 11;
+                masterCommentText.FontWeight = FontWeights.Bold;
+                masterCommentText.Text = "3. Maoni na Sahihi ya Mkuu wa shule";
+                masterCommentText.Margin = new Thickness(0, 0, 0, 30);
+                commentArea.Children.Add(masterCommentText);
+
+                var currentDateText = new TextBlock();
+                currentDateText.TextAlignment = TextAlignment.Left;
+                currentDateText.FontSize = 11;
+                currentDateText.FontWeight = FontWeights.Bold;
+                currentDateText.Text = Space(10) + "Tarehe:" + Space(3) + string.Format("{0:dd/MM/yyyy}", DateTime.Now) +  Space(15) + "Sahihi:";
+                currentDateText.Margin = new Thickness(0, 0, 0, 35);
+                commentArea.Children.Add(currentDateText);
+
+                var parentText = new TextBlock();
+                parentText.TextAlignment = TextAlignment.Left;
+                parentText.FontSize = 20;
+                parentText.FontWeight = FontWeights.Bold;
+                parentText.HorizontalAlignment = HorizontalAlignment.Center;
+                parentText.Text = "WAZAZI WA " + studentItem.Item4.ToUpper();
+                parentArea.Children.Add(parentText);
 
                 /* 문서 생성 */
                 var fixedDocument = GetFixedDocument(background, new PrintDialog());
@@ -1008,25 +1201,11 @@ namespace TASMA.Dialog
             return result;
         }
 
-        //private void DocumentProgressAsync(DoWorkEventHandler method)
-        //{
-        //    backgroundWorker.CancelAsync();
-        //    backgroundWorker = null;
-        //    backgroundWorker = new BackgroundWorker();
-        //    backgroundWorker.WorkerSupportsCancellation = true;
-        //    backgroundWorker.WorkerReportsProgress = true;
-        //    backgroundWorker.ProgressChanged += (sender, e) =>
-        //    {
-        //        ProgressValue = e.ProgressPercentage;
-        //    };
-        //    backgroundWorker.DoWork += method;
-        //    backgroundWorker.RunWorkerAsync();
-        //}
-
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
 
     }
 }
