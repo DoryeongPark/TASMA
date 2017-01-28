@@ -53,7 +53,7 @@ namespace TASMA.Pages
         {
             var confirm = new TasmaConfirmationMessageBox("Auto number allocation", "Are you sure execute auto number allocation?");
             confirm.ShowDialog();
-            if (confirm.Yes == true)
+            if (confirm.Yes == false)
                 return;
 
             dataTable = adminDAO.GetStudentDataTable(StudentTableOption.AscByName);

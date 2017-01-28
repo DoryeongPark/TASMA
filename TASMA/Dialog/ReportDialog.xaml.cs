@@ -747,6 +747,8 @@ namespace TASMA.Dialog
                                                                  originalDataTable);
                 dataGrid.ItemsSource = dataTable.AsDataView();
 
+                Thread.Sleep(100);
+
                 /* 문서 생성 */
                 var fixedDocument = GetFixedDocument(background, new PrintDialog());
                 var documentReference = new DocumentReference();
