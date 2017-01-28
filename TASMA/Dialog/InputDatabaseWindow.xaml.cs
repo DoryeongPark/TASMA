@@ -12,8 +12,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using TASMA.MessageBox;
 
-namespace TASMA
+namespace TASMA.Dialog
 {
     /// <summary>
     /// 데이터베이스 생성 다이얼로그입니다.
@@ -93,31 +94,36 @@ namespace TASMA
         {
             if(DBName == "")
             {
-                MessageBox.Show("Please input DBName");
+                var alert = new TasmaAlertMessageBox("Alert", "Please input DBName");
+                alert.ShowDialog();
                 return false;
             }
 
             if(SchoolName == "")
             {
-                MessageBox.Show("Please input School Name");
+                var alert = new TasmaAlertMessageBox("Alert", "Please input School Name");
+                alert.ShowDialog();
                 return false;
             }
 
             if (Year == "")
             {
-                MessageBox.Show("Please input Year");
+                var alert = new TasmaAlertMessageBox("Alert", "Please input Year");
+                alert.ShowDialog();
                 return false;
             }
 
             if (Region == "")
             {
-                MessageBox.Show("Please input Region");
+                var alert = new TasmaAlertMessageBox("Alert", "Please input Region");
+                alert.ShowDialog();
                 return false;
             }
 
             if (Address == "")
             {
-                MessageBox.Show("Please input Address");
+                var alert = new TasmaAlertMessageBox("Alert", "Please input Address");
+                alert.ShowDialog();
                 return false;
             }
 

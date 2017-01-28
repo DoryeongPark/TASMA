@@ -4,6 +4,10 @@
              xmlns:local="clr-namespace:TASMA"
              StartupUri="Dialog/LoginWindow.xaml">
     <Application.Resources>
+        <Image x:Shared="false" x:Key="tasmaDataModify" Source="/Resources/Tasma_DataModify.png" Width="10" Height="10"/>
+        <Image x:Shared="false" x:Key="tasmaDataDelete" Source="/Resources/Tasma_DataDelete.png" Width="10" Height="10"/>
+        <Image x:Key="tasmaKoreaFlag" Source="/Resources/Tasma_KoreaFlag.png" Width="15" Height="15"/>
+        <Image x:Key="tasmaTanzaniaFlag" Source="/Resources/Tasma_TanzaniaFlag.png" Width="15" Height="15"/>
         <Image x:Key="tasmaCloseButton" Source="/Resources/Tasma_CloseButton.png" Width="15" Height="15"/>
         <Image x:Key="tasmaMinimizeButton" Source="/Resources/Tasma_MinimizeButton.png" Width="15" Height="15"/>
         <Image x:Key="tasmaCloseButton2" Source="/Resources/Tasma_CloseButton.png" Width="15" Height="15"/>

@@ -13,13 +13,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using TASMA.Database;
+using TASMA.MessageBox;
 
-namespace TASMA
+namespace TASMA.Dialog
 {
     /// <summary>
     /// 선생님 계정 등록 다이얼로그
     /// </summary>
-    public partial class RegistrationDialog : System.Windows.Window
+    public partial class RegistrationDialog : Window
     {
         private bool isDetermined = false;
 
@@ -60,19 +61,22 @@ namespace TASMA
             
             if(userName == "")
             {
-                MessageBox.Show("You should input Username");
+                var alert = new TasmaAlertMessageBox("Alert", "You should input Username");
+                alert.ShowDialog();
                 return;
             }
 
             if (password != confirmPassword)
             {
-                MessageBox.Show("Passwords are not matching");
+                var alert = new TasmaAlertMessageBox("Alert", "Passwords are not matching");
+                alert.ShowDialog();
                 return;
             }
 
             if(new FileInfo(userName + ".db").Exists)
             {
-                MessageBox.Show("ID already exists");
+                var alert = new TasmaAlertMessageBox("Alert", "ID already exists");
+                alert.ShowDialog();
                 return;
             }
 

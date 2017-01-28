@@ -15,13 +15,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using TASMA.Database;
+using TASMA.MessageBox;
 
-namespace TASMA
+namespace TASMA.Dialog
 {
     /// <summary>
     /// 선생님 계정의 데이터베이스 리스트를 불러옵니다.
     /// </summary>
-    public partial class DatabaseListWindow : System.Windows.Window, INotifyPropertyChanged
+    public partial class DatabaseListWindow : Window, INotifyPropertyChanged
     {
 
         private AdminDAO adminDAO;
@@ -100,7 +101,8 @@ namespace TASMA
                 if(dbListBoxItems.Any(item => item == cdd.DBName) ||
                     cdd.DBName == "Authentication")
                 {
-                    MessageBox.Show("Database already exists");
+                    var alert = new TasmaAlertMessageBox("Alert", "Database already exists");
+                    alert.ShowDialog();
                     return;
                 }
 
@@ -166,7 +168,8 @@ namespace TASMA
             /* 인증 여부 확인 */
             if(!adminDAO.Authenticate(authenticationPath, confirm.Input))
             {
-                MessageBox.Show("Password doesn't match");
+                var alert = new TasmaAlertMessageBox("Wrong Password", "Password doesn't match");
+                alert.ShowDialog();
                 return;
             }
            

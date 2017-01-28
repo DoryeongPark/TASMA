@@ -7,6 +7,7 @@ using System.Data.SQLite;
 using System.Windows;
 using System.IO;
 using System.Data;
+using TASMA.MessageBox;
 
 namespace TASMA
 {
@@ -73,7 +74,6 @@ namespace TASMA
             {
                 if (dbLoginState == false)
                 {
-                    MessageBox.Show("You should login first");
                     return false;
                 }
 
@@ -88,13 +88,11 @@ namespace TASMA
             {
                 if (dbLoginState == false)
                 {
-                    MessageBox.Show("You should login first");
                     return false;
                 }
 
                 if (currentGrade == null)
                 {
-                    MessageBox.Show("You should select grade first");
                     return false;
                 }
 
@@ -109,19 +107,16 @@ namespace TASMA
             {
                 if (dbLoginState == false)
                 {
-                    MessageBox.Show("You should login first");
                     return false;
                 }
 
                 if (currentGrade == null)
                 {
-                    MessageBox.Show("You should select grade first");
                     return false;
                 }
 
                 if (currentClass == null)
                 {
-                    MessageBox.Show("You should select class first");
                     return false;
                 }
 
@@ -151,13 +146,12 @@ namespace TASMA
                 {
                     if (Directory.Exists(id))
                     {
-                        MessageBox.Show("ID already exists");
                         return false;
                     }
 
                     Directory.CreateDirectory(id);
                 }
-                catch(Exception e)
+                catch(Exception)
                 {
                     return false;
                 }
@@ -182,7 +176,7 @@ namespace TASMA
                 try
                 {
                     cmd.ExecuteNonQuery();
-                }catch(SQLiteException se){
+                }catch(SQLiteException){
                     return false;
                 }
 
@@ -197,12 +191,13 @@ namespace TASMA
             /// </summary>
             /// <param name="id">계정</param>
             /// <param name="password">비밀번호</param>
-            /// <returns></returns>
+            /// <returns>인증 성공 여부</returns>
             public bool Authenticate(string id, string password)
             {
                 if (!Directory.Exists(id))
                 {
-                    MessageBox.Show("ID doesn't exist");
+                    var alert = new TasmaAlertMessageBox("Incorrect ID", "ID doesn't exist");
+                    alert.ShowDialog();
                     return false;
                 }
 
@@ -217,9 +212,10 @@ namespace TASMA
                 {
                     cmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException se)
+                catch (SQLiteException)
                 {
-                    MessageBox.Show("Password doesn't match");
+                    var alert = new TasmaAlertMessageBox("Wrong Password", "Password doesn't match");
+                    alert.ShowDialog();
                     return false;
                 }
 
@@ -228,6 +224,19 @@ namespace TASMA
 
                 currentPassword = password;
                 return true;
+            }
+
+            /// <summary>
+            /// 현재 접속한 계정의 비밀번호를 인증합니다.
+            /// </summary>
+            /// <param name="password">비밀번호</param>
+            /// <returns>인증 성공 여부</returns>
+            public bool Authenticate(string password)
+            {
+                if (password == currentPassword)
+                    return true;
+                else
+                    return false;
             }
 
             /// <summary>
@@ -240,7 +249,8 @@ namespace TASMA
             {
                 if (dbLoginState == true)
                 {
-                    MessageBox.Show("You should logout first");
+                    var alert = new TasmaAlertMessageBox("Alert", "You should logout first");
+                    alert.ShowDialog();
                     return false;
                 }
 
@@ -333,7 +343,6 @@ namespace TASMA
                 cmd.ExecuteNonQuery();
                                
                 conn.Close();
-                MessageBox.Show("Database is successfully created");
                 return true;
             }
 
@@ -415,13 +424,15 @@ namespace TASMA
             {
                 if(dbLoginState == true)
                 {
-                    MessageBox.Show("You should logout first");
+                    var alert = new TasmaAlertMessageBox("Alert", "You should logout first");
+                    alert.ShowDialog();
                     return false;
                 }
 
                 if (!new DirectoryInfo(id).Exists)
                 {
-                    MessageBox.Show("ID doesn't exist");
+                    var alert = new TasmaAlertMessageBox("Incorrect ID", "ID doesn't exist");
+                    alert.ShowDialog();
                     return false;
                 }
 
@@ -436,7 +447,6 @@ namespace TASMA
                     conn.Open();
                     conn.ChangePassword(newPassword);
                     conn.Close();
-                    MessageBox.Show("Password is successfully changed");
                 }
 
                 return true;
@@ -448,7 +458,7 @@ namespace TASMA
             /// </summary>
             /// <param name="dbPath">등록된 ID</param>
             /// <param name="password">비밀번호</param>
-            public void LoginDatabase(string dbPath)
+            public bool LoginDatabase(string dbPath)
             {
                 var connStr = @"Data Source=" + dbPath + ".db;Password=" + currentPassword + ";Foreign Keys=True;";
 
@@ -461,11 +471,9 @@ namespace TASMA
                 {
                     cmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException se)
+                catch (SQLiteException)
                 {
-                    conn.Close();
-                    MessageBox.Show(se.ErrorCode.ToString());
-                    return;
+                    return false;
                 }
 
                 cmd.Dispose();
@@ -473,6 +481,8 @@ namespace TASMA
 
                 currentDB = dbPath;
                 dbLoginState = true;
+
+                return true;
             }
 
             /// <summary>
@@ -537,10 +547,9 @@ namespace TASMA
 
                 try{
                     cmd.ExecuteNonQuery();
-                }catch(SQLiteException se)
+                }catch(SQLiteException)
                 {
                     conn.Close();
-                    MessageBox.Show(se.ErrorCode.ToString());
                     return false;
                 }
 
@@ -604,17 +613,15 @@ namespace TASMA
                 {
                     cmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException se)
+                catch (SQLiteException)
                 {
                     conn.Close();
-                    MessageBox.Show("Error code - " + se.ErrorCode.ToString());
                     return false;
                 }
 
                 cmd.Dispose();
                 conn.Close();
 
-                MessageBox.Show("Grade is successfully deleted");
                 return true;
             }
 
@@ -639,10 +646,9 @@ namespace TASMA
                 {
                     cmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException se)
+                catch (SQLiteException)
                 {
                     conn.Close();
-                    MessageBox.Show("Error code - " + se.ErrorCode.ToString());
                     return false;
                 }
 
@@ -688,10 +694,9 @@ namespace TASMA
                 {
                     cmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException se)
+                catch (SQLiteException)
                 {
                     conn.Close();
-                    MessageBox.Show("Error code - " + se.ErrorCode.ToString());
                     return false;
                 }
 
@@ -752,10 +757,9 @@ namespace TASMA
                 {
                     cmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException se)
+                catch (SQLiteException)
                 {
                     conn.Close();
-                    MessageBox.Show("Error code - " + se.ErrorCode.ToString());
                     return false;
                 }
 
@@ -784,10 +788,9 @@ namespace TASMA
                 {
                     cmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException se)
+                catch (SQLiteException)
                 {
                     conn.Close();
-                    MessageBox.Show("Error code - " + se.ErrorCode.ToString());
                     return false;
                 }
 
@@ -832,10 +835,9 @@ namespace TASMA
                 {
                     cmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException se)
+                catch (SQLiteException)
                 {
                     conn.Close();
-                    MessageBox.Show("Error code - " + se.ErrorCode.ToString());
                     return false;
                 }
 
@@ -906,10 +908,9 @@ namespace TASMA
                 {
                     cmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException se)
+                catch (SQLiteException)
                 {
                     conn.Close();
-                    MessageBox.Show("Error code - " + se.ErrorCode.ToString());
                     return false;
                 }
 
@@ -940,10 +941,9 @@ namespace TASMA
                 {
                     cmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException se)
+                catch (SQLiteException)
                 {
                     conn.Close();
-                    MessageBox.Show(se.Message);
                     return false;
                 }
 
@@ -1084,10 +1084,9 @@ namespace TASMA
                                     + ");";
                     cmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException se)
+                catch (SQLiteException)
                 {
-                    MessageBox.Show(se.Message);
-                    return false;
+                   return false;
                 }
                
                 cmd.Dispose();
@@ -1115,9 +1114,8 @@ namespace TASMA
                     cmd.ExecuteNonQuery();
                     cmd.CommandText = "ALTER TABLE " + oldSubjectName + " RENAME TO " + newSubjectName + ";";
                     cmd.ExecuteNonQuery();
-                }catch(SQLiteException se)
+                }catch(SQLiteException)
                 {
-                    MessageBox.Show(se.Message);
                     return false;
                 }
 
@@ -1146,9 +1144,8 @@ namespace TASMA
                     cmd.CommandText = "DROP TABLE " + subjectName + ";";
                     cmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException se)
+                catch (SQLiteException)
                 {
-                    MessageBox.Show(se.Message);
                     return false;
                 }
 
@@ -1177,9 +1174,8 @@ namespace TASMA
                     cmd.ExecuteNonQuery();
                     cmd.CommandText = "ALTER TABLE " + subjectName + " ADD COLUMN " + evaluationName + " REAL;";
                     cmd.ExecuteNonQuery();
-                }catch(SQLiteException se)
+                }catch(SQLiteException)
                 {
-                    MessageBox.Show(se.Message);
                     return false;
                 }
 
@@ -1207,9 +1203,8 @@ namespace TASMA
                     cmd.CommandText = "UPDATE EVALUATION SET RATIO = " + ratio + " WHERE SUBJECT = '" + subjectName + "' AND EVALUATION = '" + evaluationName + "';";
                     cmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException se)
+                catch (SQLiteException)
                 {
-                    MessageBox.Show(se.Message);
                     return false;
                 }
 
@@ -1325,9 +1320,8 @@ namespace TASMA
                     cmdStr += "COMMIT; ";
                     cmd.CommandText = cmdStr;
                     cmd.ExecuteNonQuery();   
-                }catch(SQLiteException se)
+                }catch(SQLiteException)
                 {
-                    MessageBox.Show(se.Message);
                     return false;
                 }
                 cmd.Dispose();
@@ -1397,9 +1391,8 @@ namespace TASMA
                     cmd.CommandText = cmdStr;
                     cmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException se)
+                catch (SQLiteException)
                 {
-                    MessageBox.Show(se.Message);
                     return false;
                 }
                 cmd.Dispose();
@@ -1427,9 +1420,8 @@ namespace TASMA
                 {
                     cmd.CommandText = "INSERT INTO CLASSSUBJECT(SUBJECT, GRADE, CLASS) VALUES('" + subjectName +"', '" + gradeName + "', '" + className + "');";
                     cmd.ExecuteNonQuery();
-                }catch(SQLiteException se)
+                }catch(SQLiteException)
                 {
-                    MessageBox.Show(se.Message);
                     return false;
                 }
 
@@ -1457,9 +1449,8 @@ namespace TASMA
                     cmd.CommandText = "DELETE FROM CLASSSUBJECT WHERE SUBJECT = '" + subjectName + "' AND GRADE = '" + gradeName + "' AND CLASS = '" + className + "';";
                     cmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException se)
+                catch (SQLiteException)
                 {
-                    MessageBox.Show(se.Message);
                     return false;
                 }
 
@@ -1646,9 +1637,8 @@ namespace TASMA
                     cmd.CommandText = "INSERT INTO " + subjectName + "(SEMESTER, GRADE, CLASS, SNUM) VALUES('1', '" + currentGrade + "', '" + currentClass + "', '" + sNum + "');";
                     cmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException se)
+                catch (SQLiteException)
                 {
-                    MessageBox.Show(se.Message);
                     return false;
                 }
 
@@ -1688,9 +1678,8 @@ namespace TASMA
                     cmd.ExecuteNonQuery();
 
                 }
-                catch (SQLiteException se)
+                catch (SQLiteException)
                 {
-                    MessageBox.Show(se.Message);
                     return false;
                 }
 

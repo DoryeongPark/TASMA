@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace TASMA
+namespace TASMA.MessageBox
 {
     /// <summary>
     /// Tasma 디자인의 확인 메세지 박스

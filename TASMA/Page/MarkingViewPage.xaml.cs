@@ -18,7 +18,7 @@ using System.Windows.Shapes;
 using TASMA.Database;
 using TASMA.Model;
 
-namespace TASMA
+namespace TASMA.Pages
 {
     /// <summary>
     /// 반 채점 테이블 페이지 입니다.
@@ -90,6 +90,13 @@ namespace TASMA
             set { selectedSemesterComboBoxItem = value; OnPropertyChanged("SelectedSemesterComboBoxItem"); }
         }
 
+        private int selectedGridIndex;
+        public int SelectedGridIndex
+        {
+            get { return selectedGridIndex; }
+            set { selectedGridIndex = value; OnPropertyChanged("SelectedGridIndex"); }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
@@ -99,7 +106,7 @@ namespace TASMA
         /// <param name="gradeName"></param>
         /// <param name="className"></param>
         /// <param name="subjectName"></param>
-        public MarkingViewPage(AdminDAO adminDAO, string currentGradeName = null, string currentClassName = null)
+        public MarkingViewPage(AdminDAO adminDAO, string currentGradeName = null, string currentClassName = null, long sNum = -1)
         {
             
             this.adminDAO = adminDAO;
@@ -128,7 +135,7 @@ namespace TASMA
             //Add Event
             scoreTable = new DataTable(); 
             scoreTable.ColumnChanged += OnValueChanged;
-            
+
             DataContext = this;
             InitializeComponent();
 
@@ -146,6 +153,16 @@ namespace TASMA
                     return;
                 SelectedSubjectComboBoxItem = subjectList[0];
                 OnSubjectComboBoxSelectionChanged(null, null);
+
+                for (int i = 0; i < scoreTable.Rows.Count; ++i)
+                {
+                    if ((int)scoreTable.Rows[i]["NO"] == sNum)
+                    {
+                        selectedGridIndex = i;
+                        return;
+                    }
+                }
+
             }
         }
         
@@ -158,9 +175,11 @@ namespace TASMA
         {
             MarkingViewPage_SubjectComboBox.SelectionChanged += OnSubjectComboBoxSelectionChanged;
             MarkingViewPage_SemesterComboBox.SelectionChanged += OnSemesterComboBoxSelected;
+
+            ScoreGrid.SelectedIndex = selectedGridIndex;
         }
 
-       
+
         /// <summary>
         /// 셀 편집 종료 시의 호출 루틴입니다. 데이터의 유효성을 검사합니다.
         /// </summary>

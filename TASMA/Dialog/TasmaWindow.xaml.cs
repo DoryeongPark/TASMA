@@ -12,126 +12,127 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using TASMA.Database;
+using TASMA.Pages;
 
-namespace TASMA
+namespace TASMA.Dialog
 {
-    /// <summary>
-    /// TASMA Main Window
-    /// </summary>
-    public partial class TasmaWindow : System.Windows.Window
-    {
-        private AdminDAO adminDAO;
-
-        private List<Button> menuButtons;
-
-        private Button btnClicked;
-
-        public TasmaWindow(AdminDAO adminDAO)
+        /// <summary>
+        /// TASMA Main Window
+        /// </summary>
+        public partial class TasmaWindow : Window
         {
-            InitializeComponent();
-            this.adminDAO = adminDAO;
+            private AdminDAO adminDAO;
 
-            menuButtons = new List<Button>();
+            private List<Button> menuButtons;
 
-            menuButtons.Add(TasmaWindow_Student);
-            menuButtons.Add(TasmaWindow_Subject);
-            menuButtons.Add(TasmaWindow_Marking);
-            menuButtons.Add(TasmaWindow_Search);
-            menuButtons.Add(TasmaWindow_Export);
+            private Button btnClicked;
 
-            foreach(var btn in menuButtons)
+            public TasmaWindow(AdminDAO adminDAO)
             {
-                btn.Click += OnClickMenuButton;
+                InitializeComponent();
+                this.adminDAO = adminDAO;
+
+                menuButtons = new List<Button>();
+
+                menuButtons.Add(TasmaWindow_Student);
+                menuButtons.Add(TasmaWindow_Subject);
+                menuButtons.Add(TasmaWindow_Marking);
+                menuButtons.Add(TasmaWindow_Search);
+                menuButtons.Add(TasmaWindow_Export);
+
+                foreach (var btn in menuButtons)
+                {
+                    btn.Click += OnClickMenuButton;
+                }
+
+                TasmaMenuButtons.Buttons = menuButtons;
+
             }
 
-            TasmaMenuButtons.Buttons = menuButtons;
-
-        }
-
-        private void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            OnClickMenuButton(TasmaWindow_Student, null);
-        }
-
-
-        /// <summary>
-        /// 메뉴 버튼 클릭 이벤트 루틴을 수행합니다.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnClickMenuButton(object sender, RoutedEventArgs e)
-        {
-            
-            adminDAO.ReturnToInitialState();
-
-            var menuBtn = sender as Button;
-            btnClicked = menuBtn;
-
-            foreach (var buttons in menuButtons)
+            private void OnLoaded(object sender, RoutedEventArgs e)
             {
-                buttons.IsDefault = false;
-                buttons.IsEnabled = true;
+                OnClickMenuButton(TasmaWindow_Student, null);
             }
-            
-            btnClicked.IsDefault = true;
-            btnClicked.IsEnabled = false;
 
-            //Event for each buttons
-            if (menuBtn.Equals(TasmaWindow_Student))
-                TasmaWindow_Frame.Navigate(new GradePage(adminDAO));
-            else if (menuBtn.Equals(TasmaWindow_Subject))
-                TasmaWindow_Frame.Navigate(new SubjectPage(adminDAO));
-            else if (menuBtn.Equals(TasmaWindow_Marking))
-                TasmaWindow_Frame.Navigate(new MarkingViewPage(adminDAO));
-            else if (menuBtn.Equals(TasmaWindow_Search))
-                TasmaWindow_Frame.Navigate(new SearchPage(adminDAO));
-            else if (menuBtn.Equals(TasmaWindow_Export))
-                return;
-            else
-                return; //Error
-        }
 
-        /// <summary>
-        /// 창 끌기 이벤트를 추가합니다.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnLeftMouseButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            DragMove();
-        }
+            /// <summary>
+            /// 메뉴 버튼 클릭 이벤트 루틴을 수행합니다.
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
+            private void OnClickMenuButton(object sender, RoutedEventArgs e)
+            {
 
-        /// <summary>
-        /// 창 최소화 이벤트를 추가합니다.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MinimizeRoutine(object sender, RoutedEventArgs e)
-        {
-            WindowState = WindowState.Minimized;
-        }
+                adminDAO.ReturnToInitialState();
 
-        /// <summary>
-        /// 로그아웃 루틴을 수행합니다.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnLogoutButtonClicked(object sender, EventArgs e)
-        {
-            adminDAO.LogoutAccount();
-            Close();
-        }
+                var menuBtn = sender as Button;
+                btnClicked = menuBtn;
 
-        /// <summary>
-        /// 프로그램 종료 루틴을 수행합니다.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnClosed(object sender, EventArgs e)
-        {
-            Owner.Close();
-        }
+                foreach (var buttons in menuButtons)
+                {
+                    buttons.IsDefault = false;
+                    buttons.IsEnabled = true;
+                }
 
-       
+                btnClicked.IsDefault = true;
+                btnClicked.IsEnabled = false;
+
+                //Event for each buttons
+                if (menuBtn.Equals(TasmaWindow_Student))
+                    TasmaWindow_Frame.Navigate(new GradePage(adminDAO));
+                else if (menuBtn.Equals(TasmaWindow_Subject))
+                    TasmaWindow_Frame.Navigate(new SubjectPage(adminDAO));
+                else if (menuBtn.Equals(TasmaWindow_Marking))
+                    TasmaWindow_Frame.Navigate(new MarkingViewPage(adminDAO));
+                else if (menuBtn.Equals(TasmaWindow_Search))
+                    TasmaWindow_Frame.Navigate(new SearchPage(adminDAO));
+                else if (menuBtn.Equals(TasmaWindow_Export))
+                    return;
+                else
+                    return; //Error
+            }
+
+            /// <summary>
+            /// 창 끌기 이벤트를 추가합니다.
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
+            private void OnLeftMouseButtonDown(object sender, MouseButtonEventArgs e)
+            {
+                DragMove();
+            }
+
+            /// <summary>
+            /// 창 최소화 이벤트를 추가합니다.
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
+            private void MinimizeRoutine(object sender, RoutedEventArgs e)
+            {
+                WindowState = WindowState.Minimized;
+            }
+
+            /// <summary>
+            /// 로그아웃 루틴을 수행합니다.
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
+            private void OnLogoutButtonClicked(object sender, EventArgs e)
+            {
+                adminDAO.LogoutAccount();
+                Close();
+            }
+
+            /// <summary>
+            /// 프로그램 종료 루틴을 수행합니다.
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
+            private void OnClosed(object sender, EventArgs e)
+            {
+                Owner.Close();
+            }
+
+        
     }
 }

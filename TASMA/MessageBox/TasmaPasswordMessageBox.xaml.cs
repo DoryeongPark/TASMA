@@ -15,12 +15,12 @@ using System.Windows.Shapes;
 namespace TASMA.MessageBox
 {
     /// <summary>
-    /// Tasma 디자인의 프롬프트 박스
+    /// Tasma 비밀번호 
     /// </summary>
-    public partial class TasmaPromptMessageBox : Window
+    public partial class TasmaPasswordMessageBox : Window
     {
         private bool isDetermined = false;
-        
+
         public bool IsDetermined
         {
             get { return isDetermined; }
@@ -34,32 +34,32 @@ namespace TASMA.MessageBox
             get { return input; }
         }
 
-        public TasmaPromptMessageBox(string title, string message)
+        public TasmaPasswordMessageBox(string title, string message)
         {
             InitializeComponent();
             InitialRoutine(title, message);
         }
 
-        public TasmaPromptMessageBox(string title, string message, string defaultInput)
+        public TasmaPasswordMessageBox(string title, string message, string defaultInput)
         {
             InitializeComponent();
             InitialRoutine(title, message);
-            TasmaPromptWindow_TextBox.Text = defaultInput;
+            TasmaPasswordWindow_PasswordBox.Password = defaultInput;
         }
 
         private void InitialRoutine(string title, string message)
         {
-            TasmaPromptWindow_Title.Text = title;
-            TasmaPromptWindow_Message.Text = message;
+            TasmaPasswordWindow_Title.Text = title;
+            TasmaPasswordWindow_Message.Text = message;
 
-            TasmaPromptWindow_CloseButton.Click += OnCancelButtonClicked;
-            TasmaPromptWindow_OK.Click += OnOKButtonClicked;
-            TasmaPromptWindow_Cancel.Click += OnCancelButtonClicked;
+            TasmaPasswordWindow_CloseButton.Click += OnCancelButtonClicked;
+            TasmaPasswordWindow_OK.Click += OnOKButtonClicked;
+            TasmaPasswordWindow_Cancel.Click += OnCancelButtonClicked;
         }
 
         private void OnOKButtonClicked(object sender, RoutedEventArgs e)
         {
-            input = TasmaPromptWindow_TextBox.Text;
+            input = TasmaPasswordWindow_PasswordBox.Password;
             isDetermined = true;
             Close();
         }
@@ -69,10 +69,10 @@ namespace TASMA.MessageBox
             isDetermined = false;
             Close();
         }
-        
+
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
         }
 
         private void OnLeftMouseButtonDown(object sender, MouseButtonEventArgs e)
@@ -82,7 +82,7 @@ namespace TASMA.MessageBox
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Enter)
+            if (e.Key == Key.Enter)
             {
                 OnOKButtonClicked(null, null);
             }

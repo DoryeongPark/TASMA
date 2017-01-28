@@ -18,7 +18,7 @@ using System.Windows.Shapes;
 using TASMA.Database;
 using TASMA.Dialog;
 
-namespace TASMA
+namespace TASMA.Pages
 {
     /// <summary>
     /// SearchPage.xaml에 대한 상호 작용 논리
@@ -164,14 +164,15 @@ namespace TASMA
         private void OnInfoButtonClicked(object sender, RoutedEventArgs e)
         {
             var row = SearchPage_DataGrid.SelectedIndex;
-            var gradeName = SearchTable.Rows[row]["Grade"] as string;
-            var className = SearchTable.Rows[row]["Class"] as string;
+            var gradeName = SearchTable.Rows[row]["GRADE"] as string;
+            var className = SearchTable.Rows[row]["CLASS"] as string;
+            var sNum = (long)SearchTable.Rows[row]["SNUM"];
 
             adminDAO.SelectGrade(gradeName);
             adminDAO.SelectClass(className);
 
             TasmaMenuButtons.UpdateButtonsState(TasmaMenuButtons.Buttons[0]);
-            NavigationService.Navigate(new StudentPage(adminDAO));
+            NavigationService.Navigate(new StudentPage(adminDAO, sNum));
             
         }
 
@@ -180,9 +181,10 @@ namespace TASMA
             var row = SearchPage_DataGrid.SelectedIndex;
             var gradeName = SearchTable.Rows[row]["GRADE"] as string;
             var className = SearchTable.Rows[row]["CLASS"] as string;
+            var sNum = (long)SearchTable.Rows[row]["SNUM"];
 
             TasmaMenuButtons.UpdateButtonsState(TasmaMenuButtons.Buttons[2]);
-            NavigationService.Navigate(new MarkingViewPage(adminDAO, gradeName, className));
+            NavigationService.Navigate(new MarkingViewPage(adminDAO, gradeName, className, sNum));
         }
 
         private void OnPrintButtonClicked(object sender, RoutedEventArgs e)

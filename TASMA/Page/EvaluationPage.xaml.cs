@@ -17,7 +17,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TASMA.Database;
 using TASMA.Dialog;
+using TASMA.MessageBox;
 using TASMA.Model;
+using TASMA.Pages;
 
 namespace TASMA
 {

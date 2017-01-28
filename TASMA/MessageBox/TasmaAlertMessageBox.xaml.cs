@@ -12,10 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace TASMA
+namespace TASMA.MessageBox
 {
     /// <summary>
-    /// 알람 메시지 박스 입니다.
+    /// 알림 메시지 박스 입니다.
     /// </summary>
     public partial class TasmaAlertMessageBox: System.Windows.Window
     {
@@ -34,20 +34,7 @@ namespace TASMA
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (Application.Current.Windows.Count == 1)
-            {
-                this.Top = Application.Current.Windows[0].Top +
-                    Application.Current.Windows[0].Height / 2 - Height / 2;
-                this.Left = Application.Current.Windows[0].Left +
-                    Application.Current.Windows[0].Width / 2 - Width / 2;
-            }
-            else
-            {
-                this.Top = Application.Current.Windows[1].Top + 
-                    Application.Current.Windows[1].Height / 2 - Height / 2;
-                this.Left = Application.Current.Windows[1].Left + 
-                    Application.Current.Windows[1].Width / 2 - Width / 2;
-            }
+            this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
         }
 
         private void OnOKButtonClicked(object sender, RoutedEventArgs e)

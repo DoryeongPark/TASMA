@@ -14,8 +14,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TASMA.Database;
 using TASMA.DataInterfaces;
+using TASMA.MessageBox;
 
-namespace TASMA
+namespace TASMA.Pages
 {
     /// <summary>
     /// 과목 등록을 위한 페이지입니다.
@@ -117,7 +118,8 @@ namespace TASMA
                 }
                 else
                 {
-                    MessageBox.Show("Subject already exists");
+                    var alert = new TasmaAlertMessageBox("Duplication", "Subject already exists");
+                    alert.ShowDialog();
                     return;
                 }
             }

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using TASMA.Database;
+using TASMA.MessageBox;
 
 namespace TASMA
 {
@@ -66,13 +67,15 @@ namespace TASMA
             
             if(username == "")
             {
-                MessageBox.Show("You should input username");
+                var alert = new TasmaAlertMessageBox("Alert","You should input username");
+                alert.ShowDialog();
                 return;
             }
 
             if(!adminDAO.Authenticate(username, password))
             {
-                MessageBox.Show("Username and password doesn't match");
+                var alert = new TasmaAlertMessageBox("Alert","Username and password doesn't match");
+                alert.ShowDialog();
                 return;
             }
 
@@ -80,7 +83,8 @@ namespace TASMA
 
             if(newPassword != confirmNewPassword)
             {
-                MessageBox.Show("Passwords are not matching");
+                var alert = new TasmaAlertMessageBox("Alert","Passwords are not matching");
+                alert.ShowDialog();
                 return;
             }
 

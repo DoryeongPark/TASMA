@@ -1,12 +1,13 @@
-﻿<Page x:Class="TASMA.StudentPage"
+﻿<Page x:Class="TASMA.Pages.StudentPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:TASMA"
+      xmlns:local="clr-namespace:TASMA.Pages"
       mc:Ignorable="d" 
       Title="StudentPage" Background="{StaticResource tasmaWhite}"
-      HorizontalAlignment="Stretch" VerticalAlignment="Stretch" d:DesignWidth="500" d:DesignHeight="350" Loaded="OnLoad">
+      HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+      d:DesignWidth="500" d:DesignHeight="350" Loaded="OnLoad">
     <Page.Resources>
         <Style x:Key="guideTextStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="12"/>
@@ -70,7 +71,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Width="1*" Header="No." Binding="{Binding Path=SNUM}" CanUserResize="False"/>
                     <DataGridTextColumn Width="4*" Header="Student Name" Binding="{Binding Path=SNAME}" CanUserResize="False"/>
-                    <DataGridComboBoxColumn Width="1*" Header="Sex" SelectedValueBinding="{Binding Path=SEX}"  CanUserResize="False" />
+                    <DataGridComboBoxColumn Width="1.5*" Header="Sex" SelectedValueBinding="{Binding Path=SEX}"  CanUserResize="False"/> 
                     <DataGridTextColumn Width="2.5*" Header="Phone" Binding="{Binding Path=PNUM}" CanUserResize="False"/>
                     <DataGridTextColumn Width="7*" Header="Address" Binding="{Binding Path=ADDRESS}" CanUserResize="False"/>
                 </DataGrid.Columns>

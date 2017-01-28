@@ -1,9 +1,9 @@
-﻿<Window x:Class="TASMA.InputDatabaseWindow"
+﻿<Window x:Class="TASMA.Dialog.InputDatabaseWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TASMA"
+        xmlns:local="clr-namespace:TASMA.Dialog"
         mc:Ignorable="d"
         Background="{StaticResource tasmaWhite}"
         Height="200" Width="300" WindowStyle="None" AllowsTransparency="True"
@@ -34,26 +34,27 @@
                 <ColumnDefinition Width="10"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
-                <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Vertical" Margin="3,0,0,0">
                     <TextBlock Style="{StaticResource tasmaLabelStyle}" 
-                               HorizontalAlignment="Right" Margin="1.5"
+                               HorizontalAlignment="Left" Margin="1.5"
                                Text="DB Name" Height="15"/>
                     <TextBlock Style="{StaticResource tasmaLabelStyle}" 
-                               HorizontalAlignment="Right" Margin="1.5"
+                               HorizontalAlignment="Left" Margin="1.5"
                                Text="School Name" Height="15"/>
                     <TextBlock Style="{StaticResource tasmaLabelStyle}"
-                               HorizontalAlignment="Right" Margin="1.5"
+                               HorizontalAlignment="Left" Margin="1.5"
                                Text="Year" Height="15"/>
                     <TextBlock Style="{StaticResource tasmaLabelStyle}"
-                               HorizontalAlignment="Right" Margin="1.5"
+                               HorizontalAlignment="Left" Margin="1.5"
                                Text="Region" Height="15"/>
                     <TextBlock Style="{StaticResource tasmaLabelStyle}"
-                               HorizontalAlignment="Right" Margin="1.5"
+                               HorizontalAlignment="Left" Margin="1.5"
                                Text="Address" Height="15"/>
                 </StackPanel>
             </Grid>
             <Grid Grid.Column="2">
-                <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Vertical"
+                            HorizontalAlignment="Center">
                     <TextBox Style="{StaticResource tasmaTextBoxStyle}"
                              Margin="1.5" HorizontalAlignment="Left"
                              Width="170" MaxLength="15"

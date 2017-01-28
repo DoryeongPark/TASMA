@@ -8,12 +8,13 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Input;
+using TASMA.MessageBox;
 
 namespace TASMA
 {
     namespace DataInterfaces
     {
-        class DataRectangle : DockPanel { 
+        class DataRectangle : Border { 
 
             private string data;
 
@@ -39,11 +40,17 @@ namespace TASMA
             public DataRectangle(string data)
             {
                 this.data = data;
+
                 Width = 120;
                 Height = 60;
                 Margin = new Thickness(10);
-                Background = Brushes.Honeydew; //Background
-               
+                CornerRadius = new CornerRadius(5);
+                Background = new SolidColorBrush(Color.FromRgb(197, 224, 206));
+
+                var background = new DockPanel();
+                background.Width = 120;
+                background.Height = 60;
+                
                 var layout = new DockPanel();
                 layout.Width = 120;
                 layout.Height = 50;
@@ -55,11 +62,19 @@ namespace TASMA
                 var deleteBtn = new Button();
                 deleteBtn.Width = 15;
                 deleteBtn.Height = 15;
+                deleteBtn.Content = Application.Current.TryFindResource("tasmaDataDelete");
+                deleteBtn.Background = Brushes.Transparent;
+                deleteBtn.Margin = new Thickness(0, 2, 2, 0);
+                deleteBtn.BorderThickness = new Thickness(0);
                 deleteBtn.Click += OnDeleteButtonClicked;
                 
                 var modifyBtn = new Button();
                 modifyBtn.Width = 15;
                 modifyBtn.Height = 15;
+                modifyBtn.Content = Application.Current.TryFindResource("tasmaDataModify");
+                modifyBtn.Background = Brushes.Transparent;
+                modifyBtn.Margin = new Thickness(0, 2, 0, 0);
+                modifyBtn.BorderThickness = new Thickness(0);
                 modifyBtn.Click += OnModifyButtonClicked;
 
                 var blank = new StackPanel();
@@ -83,25 +98,26 @@ namespace TASMA
                 textBlock = new TextBlock();
                 textBlock.FontFamily = new FontFamily("Segoe UI");
                 textBlock.FontSize = 15;
-                textBlock.Foreground = Brushes.Indigo; //Font Color
+                textBlock.Foreground = Brushes.Black;
                 textBlock.FontWeight = FontWeights.Bold;
                 textBlock.Text = data;
 
                 btnArea.Children.Add(deleteBtn);
                 btnArea.Children.Add(modifyBtn);
                 btnArea.Children.Add(blank);
-                SetDock(deleteBtn, Dock.Right);
-                SetDock(modifyBtn, Dock.Right);
-                SetDock(blank, Dock.Top);
+                DockPanel.SetDock(deleteBtn, Dock.Right);
+                DockPanel.SetDock(modifyBtn, Dock.Right);
+                DockPanel.SetDock(blank, Dock.Top);
                 viewBox.Child = textBlock;
                 textArea.Children.Add(viewBox);
 
-                this.Children.Add(btnArea);
-                this.Children.Add(textArea);
+                background.Children.Add(btnArea);
+                background.Children.Add(textArea);
 
-                SetDock(btnArea, Dock.Top);
-                SetDock(textArea, Dock.Bottom);
+                DockPanel.SetDock(btnArea, Dock.Top);
+                DockPanel.SetDock(textArea, Dock.Bottom);
 
+                this.Child = background;
                 
             } 
 
@@ -142,7 +158,7 @@ namespace TASMA
                 textBox.Focus();
                 textBox.Text = data;
                 textBox.Select(0, data.Length);
-               // textBox.RaiseEvent(new RoutedEventArgs(TextBox.MouseDownEvent));
+               
 
                 //이벤트 등록 - 텍스트박스가 포커스를 잃어버리면 현재의 객체 참조를 보내고 알려준다.
                 textBox.LostFocus += (s, ea) =>
@@ -158,7 +174,8 @@ namespace TASMA
                     //아이템 중복 여부 체크
                     if(OnCheckDuplication.Invoke(textBox.Text))
                     {
-                        MessageBox.Show("Data already exists");
+                        var alert = new TasmaAlertMessageBox("Duplication", "Data already exists");
+                        alert.ShowDialog();
                         return;
                     }
 

@@ -16,8 +16,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TASMA.Database;
+using TASMA.MessageBox;
 
-namespace TASMA
+namespace TASMA.Pages
 {
     /// <summary>
     /// 학생 정보 페이지 입니다.
@@ -27,11 +28,15 @@ namespace TASMA
         private AdminDAO adminDAO;
 
         private DataTable dataTable;
+
+        private long preSelectedSnum = -1;
         
-        public StudentPage(AdminDAO adminDAO)
+        public StudentPage(AdminDAO adminDAO, long sNum = -1)
         {
             InitializeComponent();
             this.adminDAO = adminDAO;
+
+            this.preSelectedSnum = sNum;
 
             StudentPage_Class.Text = "GRADE: " + adminDAO.CurrentGrade + "  CLASS: " + adminDAO.CurrentClass;
 
@@ -46,8 +51,9 @@ namespace TASMA
         /// <param name="e"></param>
         private void OnSortButtonClicked(object sender, RoutedEventArgs e)
         {
-            var messageBoxResult = MessageBox.Show("Are you sure execute auto number allocation?", "Auto number allocation", MessageBoxButton.YesNo);
-            if (messageBoxResult == MessageBoxResult.No)
+            var confirm = new TasmaConfirmationMessageBox("Auto number allocation", "Are you sure execute auto number allocation?");
+            confirm.ShowDialog();
+            if (confirm.Yes == true)
                 return;
 
             dataTable = adminDAO.GetStudentDataTable(StudentTableOption.AscByName);
@@ -98,6 +104,16 @@ namespace TASMA
                     new object[] { adminDAO.CurrentGrade, adminDAO.CurrentClass, GetAvailableStudentNumber(), "New Student", "M", null, null });
                 StudentDataTable.ItemsSource = dataTable.AsDataView();
             }
+
+            if (preSelectedSnum != -1) {
+                for (int i = 0; i < dataTable.Rows.Count; ++i) {
+                    if ((long)dataTable.Rows[i]["SNUM"] == preSelectedSnum) {
+                        StudentDataTable.Focus();
+                        StudentDataTable.SelectedIndex = i;
+                        return;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -139,7 +155,8 @@ namespace TASMA
                         var studentNumber = (long)dataTable.Rows[i][2];
                         if (studentNumberEdited == studentNumber)
                         {
-                            MessageBox.Show("Student numbers are duplicated");
+                            var alert = new TasmaAlertMessageBox("Duplication", "Student numbers are duplicated");
+                            alert.ShowDialog();
                             textBox.Text = dataTable.Rows[rowIndex][2].ToString();
                             return;
                         }
@@ -149,7 +166,8 @@ namespace TASMA
                 }
                 catch
                 {
-                    MessageBox.Show("You should input number");
+                    var alert = new TasmaAlertMessageBox("Input number", "You should input number");
+                    alert.ShowDialog();
                     textBox.Text = GetAvailableStudentNumber().ToString();
                     return;
                 }
@@ -190,8 +208,10 @@ namespace TASMA
                 var selectedStudentNumber = (long)drv["SNUM"];
                 var selectedStudentName = drv["SNAME"];
 
-                var messageBoxResult = MessageBox.Show("Are you sure delete student? - " + selectedStudentName, "Delete Student", MessageBoxButton.YesNo);
-                if (messageBoxResult == MessageBoxResult.No)
+                var confirm = new TasmaConfirmationMessageBox("Delete Student", "Are you sure delete student? - " + selectedStudentName);
+                confirm.ShowDialog();
+
+                if (confirm.Yes == true)
                     return;
                  
                 for (int i = dataTable.Rows.Count - 1; i >= 0; i--)

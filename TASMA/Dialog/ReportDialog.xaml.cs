@@ -20,6 +20,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using TASMA.Database;
+using TASMA.MessageBox;
 
 namespace TASMA.Dialog
 {

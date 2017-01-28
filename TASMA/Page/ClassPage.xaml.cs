@@ -14,8 +14,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TASMA.Database;
 using TASMA.DataInterfaces;
+using TASMA.MessageBox;
 
-namespace TASMA
+namespace TASMA.Pages
 {
     /// <summary>
     /// 반에 대한 페이지 입니다.
@@ -112,8 +113,23 @@ namespace TASMA
                 return;
 
             var dataRect = sender as DataRectangle;
-            adminDAO.DeleteClass(dataRect.Data);
-            Invalidate();
+
+            var passwordConfirm = new TasmaPasswordMessageBox("Input password", "Input password to delete class");
+            passwordConfirm.ShowDialog();
+
+            if (passwordConfirm.IsDetermined)
+            {
+                if (adminDAO.Authenticate(passwordConfirm.Input))
+                {
+                    adminDAO.DeleteClass(dataRect.Data);
+                    Invalidate();
+                }
+                else
+                {
+                    var alert = new TasmaAlertMessageBox("Incorrect password", "Password doesn't match");
+                    alert.ShowDialog();
+                }
+            }
         }
 
         private void OnClickClass(object sender, RoutedEventArgs e)
@@ -145,7 +161,8 @@ namespace TASMA
                 }
                 else
                 {
-                    MessageBox.Show("Class already exists");
+                    var alert = new TasmaAlertMessageBox("Duplication", "Class already exists");
+                    alert.ShowDialog();
                     return;
                 }
             }
