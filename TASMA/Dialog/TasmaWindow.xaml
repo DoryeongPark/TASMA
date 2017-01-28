@@ -60,19 +60,15 @@
             </Grid>
             <Grid Grid.Row="2">
                 <StackPanel Orientation="Horizontal"
-                            Margin="0,15,0,0">
+                            Margin="0,0,0,0">
                     <Image Width="64" Height="60">
                         <Image.Source>
-                        <BitmapImage UriSource="/Resources/Tasma_TanzaniaFlag.png" />
+                            <BitmapImage UriSource="/Resources/Tasma_TanzaniaFlag.png" />
                         </Image.Source>
                     </Image>
-                    <Image Width="64" Height="60">
-                        <Image.Source>
-                            <BitmapImage UriSource="/Resources/Tasma_KoreaFlag.png" />
-                        </Image.Source>
-                    </Image>
+                    <Image Width="64" Height="60" Source="/Resources/Tasma_KoreaFlag.png"/>
                 </StackPanel>
-                </Grid>
+            </Grid>
         </Grid>
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
