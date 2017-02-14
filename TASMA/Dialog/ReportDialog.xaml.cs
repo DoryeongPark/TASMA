@@ -296,18 +296,14 @@ namespace TASMA.Dialog
                 /* Semester 초기화 */
                 if (1 < DateTime.Now.Month && DateTime.Now.Month <= 7)
                 {
-                    if (SelectedSubjectSemesterComboBoxItem.Key == SubjectSemesterComboBoxItems[0].Key)
-                        DisplaySubjectReport();
-
                     SelectedSubjectSemesterComboBoxItem = SubjectSemesterComboBoxItems[0];
                 }
                 else
                 {
-                    if (SelectedSubjectSemesterComboBoxItem.Key == SubjectSemesterComboBoxItems[1].Key)
-                        DisplaySubjectReport();
-
-                    SelectedSubjectSemesterComboBoxItem = SubjectSemesterComboBoxItems[1];
+                   SelectedSubjectSemesterComboBoxItem = SubjectSemesterComboBoxItems[1];
                 }
+
+                SelectedSubjectComboBoxItem = SubjectComboBoxItems[0];
 
             }
             else if(SelectedReportListBoxItem == "Student")
@@ -319,25 +315,12 @@ namespace TASMA.Dialog
                 /* Semester 초기화 */
                 if (1 < DateTime.Now.Month && DateTime.Now.Month <= 7)
                 {
-                    if (SelectedStudentSemesterComboBoxItem.Key == StudentSemesterComboBoxItems[0].Key)
-                    {
-                        DisplayStudentReport();
-                        return;
-                    }
-
                     SelectedStudentSemesterComboBoxItem = SubjectSemesterComboBoxItems[0];
                 }
                 else
                 {
-                    if (SelectedStudentSemesterComboBoxItem.Key == StudentSemesterComboBoxItems[1].Key)
-                    {
-                        DisplayStudentReport();
-                        return;
-                    }
-
                     SelectedStudentSemesterComboBoxItem = SubjectSemesterComboBoxItems[1];
                 }
-
             }
         }
 

@@ -211,7 +211,7 @@ namespace TASMA.Pages
                 var confirm = new TasmaConfirmationMessageBox("Delete Student", "Are you sure delete student? - " + selectedStudentName);
                 confirm.ShowDialog();
 
-                if (confirm.Yes == true)
+                if (confirm.Yes != true)
                     return;
                  
                 for (int i = dataTable.Rows.Count - 1; i >= 0; i--)

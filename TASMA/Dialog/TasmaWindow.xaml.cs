@@ -38,7 +38,7 @@ namespace TASMA.Dialog
                 menuButtons.Add(TasmaWindow_Subject);
                 menuButtons.Add(TasmaWindow_Marking);
                 menuButtons.Add(TasmaWindow_Search);
-                menuButtons.Add(TasmaWindow_Export);
+                //menuButtons.Add(TasmaWindow_Export);
 
                 foreach (var btn in menuButtons)
                 {
@@ -86,8 +86,8 @@ namespace TASMA.Dialog
                     TasmaWindow_Frame.Navigate(new MarkingViewPage(adminDAO));
                 else if (menuBtn.Equals(TasmaWindow_Search))
                     TasmaWindow_Frame.Navigate(new SearchPage(adminDAO));
-                else if (menuBtn.Equals(TasmaWindow_Export))
-                    return;
+                //else if (menuBtn.Equals(TasmaWindow_Export))
+                //    return;
                 else
                     return; //Error
             }

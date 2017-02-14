@@ -50,11 +50,11 @@
                             <ImageSource>/Resources/Tasma_PrintButton.png</ImageSource>
                         </Button.Tag>
                     </Button>
-                    <Button Name="TasmaWindow_Export" Style="{StaticResource menuButtonStyle}" Content="Export" Focusable="False">
+                    <!--<Button Name="TasmaWindow_Export" Style="{StaticResource menuButtonStyle}" Content="Export" Focusable="False">
                         <Button.Tag>
                             <ImageSource>/Resources/Tasma_ExportMenuButton.png</ImageSource>
                         </Button.Tag>
-                    </Button>
+                    </Button>-->
                 </StackPanel>
                 <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource tasmaDimGray}" Grid.ColumnSpan="2" Margin="0,0,0,0.4" />
             </Grid>
