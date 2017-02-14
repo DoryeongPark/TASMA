@@ -37,19 +37,29 @@
                 <StackPanel Orientation="Vertical" Margin="3,0,0,0">
                     <TextBlock Style="{StaticResource tasmaLabelStyle}" 
                                HorizontalAlignment="Left" Margin="1.5"
-                               Text="DB Name" Height="15"/>
+                               Text="DB Name" Height="15"
+                               FontWeight="Bold"
+                               FontSize="9"/>
                     <TextBlock Style="{StaticResource tasmaLabelStyle}" 
                                HorizontalAlignment="Left" Margin="1.5"
-                               Text="School Name" Height="15"/>
+                               Text="School Name" Height="15"
+                               FontSize="9"
+                               FontWeight="Bold"/>
                     <TextBlock Style="{StaticResource tasmaLabelStyle}"
                                HorizontalAlignment="Left" Margin="1.5"
-                               Text="Year" Height="15"/>
+                               Text="Year" Height="15"
+                               FontSize="9"
+                               FontWeight="Bold"/>
                     <TextBlock Style="{StaticResource tasmaLabelStyle}"
                                HorizontalAlignment="Left" Margin="1.5"
-                               Text="Region" Height="15"/>
+                               Text="Region" Height="15"
+                               FontSize="9"
+                               FontWeight="Bold"/>
                     <TextBlock Style="{StaticResource tasmaLabelStyle}"
                                HorizontalAlignment="Left" Margin="1.5"
-                               Text="Address" Height="15"/>
+                               Text="Address" Height="15"
+                               FontSize="9"
+                               FontWeight="Bold"/>
                 </StackPanel>
             </Grid>
             <Grid Grid.Column="2">

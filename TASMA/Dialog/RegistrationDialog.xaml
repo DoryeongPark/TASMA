@@ -44,7 +44,7 @@
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="1">
-                <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left">
                     <Label Content="Username" FontFamily="{StaticResource tasmaFont}" Foreground="{StaticResource tasmaDemiGray}" FontSize="9" FontWeight="Bold" Height="20"/>
                     <Label Content="Password" FontFamily="{StaticResource tasmaFont}" Foreground="{StaticResource tasmaDemiGray}" FontSize="9" FontWeight="Bold" Height="20"/>
                     <Label Content="Confirm Password" FontFamily="{StaticResource tasmaFont}" Foreground="{StaticResource tasmaDemiGray}" FontSize="9" FontWeight="Bold" Height="20"/>
